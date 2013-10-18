@@ -81,6 +81,7 @@ public class DaoInfoStudent implements DaoTable {
 			pstmt.setDate(3, new Date(std.getStartDate().getTime()));
 			pstmt.setDate(4, new Date(std.getEndDate().getTime()));
 			pstmt.setString(5, std.getMobile());
+			System.out.println(std.getMobile());
 			pstmt.setString(6, std.getTel());
 			pstmt.setString(7, std.getStdAddr());
 			pstmt.setInt(8, std.getRoomNum());
