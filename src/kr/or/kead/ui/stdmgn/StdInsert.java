@@ -1,26 +1,18 @@
 package kr.or.kead.ui.stdmgn;
 
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.StringTokenizer;
-import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -61,6 +53,10 @@ public class StdInsert extends JDialog implements ActionListener {
 	};
 	
 	static final int[] grade={ 1, 2, 3, 4, 5, 6};
+	
+	static final String[] mobileNum={
+		"010","011","107","019"
+	};
 	
 	/**
 	 * Create the panel.
@@ -235,8 +231,8 @@ public class StdInsert extends JDialog implements ActionListener {
 			textEndDate.setTxtDate(end_st.nextToken(), end_st.nextToken(), end_st.nextToken());	
 			comboStdType.setSelectedIndex(getType(std.getStdType()));
 			comboGrade.setSelectedIndex(std.getGrade()-1);
-			StringTokenizer first_num = new 
-			textMobile.setText(std.getMobile());
+			StringTokenizer mobile = new StringTokenizer(std.getMobile(), "-");
+			textMobile.setMobile(getMobile(mobile.nextToken()), mobile.nextToken(), mobile.nextToken());
 			textTel.setText(std.getTel());
 			textAddr.setText(std.getStdAddr());
 			textRoomNum.setText(Integer.toString(std.getRoomNum()));
@@ -312,7 +308,10 @@ public class StdInsert extends JDialog implements ActionListener {
 				std.setJuminNum(textJumin.getText());
 				std.setStartDate(startCal.getTime());
 				std.setStartDate(endCal.getTime());
-				std.setMobile(textMobile.getText());
+				std.setMobile(mobileNum[textMobile.getComboFN().getSelectedIndex()]+"-"+
+				textMobile.getTxtSN()+ "-" + textMobile.getTxtTN());
+				System.out.println(mobileNum[textMobile.getComboFN().getSelectedIndex()]+"-"+
+				textMobile.getTxtSN()+ "-" + textMobile.getTxtTN());
 				std.setTel(textTel.getText());
 				std.setStdAddr(textAddr.getText());
 				std.setRoomNum(Integer.parseInt(textRoomNum.getText()));
@@ -343,7 +342,8 @@ public class StdInsert extends JDialog implements ActionListener {
 			GregorianCalendar endCal = new GregorianCalendar(Integer.parseInt(textEndDate.getTxtYear()),
 					Integer.parseInt(textEndDate.getTxtMonth()),Integer.parseInt(textEndDate.getTxtDay()));
 			std = new InfoStudent(textName.getText(), textJumin.getText(),
-					startCal.getTime(), endCal.getTime(), textMobile.getText(),
+					startCal.getTime(), endCal.getTime(), mobileNum[textMobile.getComboFN().getSelectedIndex()]+"-"+
+							textMobile.getTxtSN()+ "-" + textMobile.getTxtTN(),
 					textTel.getText(), textAddr.getText(), Integer.parseInt(textRoomNum.getText()),
 					typeValue[comboStdType.getSelectedIndex()], comboGrade.getSelectedIndex()+1
 					, textEmail.getText());		
@@ -365,7 +365,8 @@ public class StdInsert extends JDialog implements ActionListener {
 		if(textName.getText().equals("") || textJumin.getText().equals("")||textStartDate.getTxtYear().equals("") ||
 				textStartDate.getTxtMonth().equals("") ||textStartDate.getTxtDay().equals("") ||
 				textEndDate.getTxtYear().equals("") || textEndDate.getTxtMonth().equals("") ||
-				textEndDate.getTxtDay().equals("") ||	textMobile.getText().equals("") ||
+				textEndDate.getTxtDay().equals("") ||	textMobile.getTxtSN().equals("") ||
+				textMobile.getTxtTN().equals("") ||
 				textTel.getText().equals("") || textAddr.getText().equals("") ||				
 				textEmail.getText().equals("") ||textRoomNum.getText().equals("")) {
 			compare = false;
@@ -378,7 +379,7 @@ public class StdInsert extends JDialog implements ActionListener {
 		textStartDate.setTxtDate(null, null, null);
 		textEndDate.setTxtDate(null, null, null);
 		textAddr.setText("");
-		textMobile.setText("");
+		textMobile.setMobile(0, "", "");
 		textTel.setText("");
 		textRoomNum.setText("");
 		comboStdType.setSelectedIndex(0);
@@ -406,7 +407,15 @@ public class StdInsert extends JDialog implements ActionListener {
 		case 221 : return 14;
 		default :
 			return 0;		
+		}		
+	}
+	public int getMobile(String mobile) {
+		switch(mobile) {
+		case "010" : return 0;
+		case "011" : return 1;
+		case "017" : return 2;
+		case "019" : return 3;
+		default : return 0;		
 		}
-		
 	}
 }

@@ -12,8 +12,16 @@ stdType integer not null,
 email varchar(40)
 );
 
---insert into infoStudent values(null, '±Ë≈¬»Ò','123456-1234567','2013/10/02','2013/11/02','010-1234-5678'
---,'053-1234-5678','¥Î±∏ ¥ﬁº≠±∏',200,0,'abcd@abc.com');
+create table post(
+	seq int(5) primary key,
+	zipcode char(7),
+	sido varchar(4),
+	gugun varchar(17),
+	dong varchar(52),
+	bunji varchar(17)
+);
+
+
 
 update infoStudent set stdType = 0 where idx='1';
 select * from infoStudent;
