@@ -42,9 +42,10 @@ public class DaoInfoStudent implements DaoTable {
 			pstmt.setInt(9, std.getStdType());
 			pstmt.setInt(10, std.getGrade());
 			pstmt.setString(11, std.getEmail());
-			
+			System.out.println(pstmt);
 			pstmt.execute();			
-		} catch (SQLException e) {			
+		} catch (SQLException e) {
+			e.printStackTrace();
 			return -1;
 		}finally {
 			try {
@@ -80,8 +81,7 @@ public class DaoInfoStudent implements DaoTable {
 			pstmt.setString(2, std.getJuminNum());
 			pstmt.setDate(3, new Date(std.getStartDate().getTime()));
 			pstmt.setDate(4, new Date(std.getEndDate().getTime()));
-			pstmt.setString(5, std.getMobile());
-			System.out.println(std.getMobile());
+			pstmt.setString(5, std.getMobile());		
 			pstmt.setString(6, std.getTel());
 			pstmt.setString(7, std.getStdAddr());
 			pstmt.setInt(8, std.getRoomNum());
@@ -181,7 +181,7 @@ public class DaoInfoStudent implements DaoTable {
 				std.setGrade(Integer.parseInt(rs.getString("grade")));
 				std.setEmail(rs.getString("email"));
 			}else {
-				JOptionPane.showMessageDialog(null, "°Ë»öÇÏ½Å ÀÎµ¦½º´Â Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+				JOptionPane.showMessageDialog(null, "ï¿½Ë»ï¿½ï¿½Ï½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½.");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
