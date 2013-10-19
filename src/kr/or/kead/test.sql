@@ -32,6 +32,8 @@ drop table infostudent;
 
 select count(seq) as cnt from post;
 
+insert into infoStudent values(null,'wfwefew','fdgfdgdfg','2013-11-19','2014-12-18','010-1234-1231','124124','dfgdgd',222,111,1,'fdgdfgfdg');
+
 select * from post where seq = 40000;
 
 desc infostudent;

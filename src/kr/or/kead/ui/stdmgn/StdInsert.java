@@ -27,7 +27,7 @@ public class StdInsert extends JDialog implements ActionListener {
 	private RegDate textStartDate;
 	private RegDate textEndDate;
 	private RegMobile textMobile;
-	private JTextField textTel;
+	private RegMobile textTel;
 	private JTextField textAddr;
 	private JTextField textRoomNum;
 	private JComboBox<String> comboStdType;
@@ -58,6 +58,11 @@ public class StdInsert extends JDialog implements ActionListener {
 	
 	static final String[] mobileNum={
 		"010","011","017","019"
+	};
+	
+	static final String[] telNum={
+		"02", "031", "032", "033", "041", "042", "043", "044",
+		"051", "052", "053", "054", "055", "061", "062", "063", "064"
 	};
 	
 	/**
@@ -132,7 +137,7 @@ public class StdInsert extends JDialog implements ActionListener {
 		lblMobile.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblMobile);
 		
-		textMobile = new RegMobile();			
+		textMobile = new RegMobile(1);			
 		add(textMobile);
 		
 		
@@ -141,11 +146,9 @@ public class StdInsert extends JDialog implements ActionListener {
 		lblTel.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblTel);
 		
-		textTel = new JTextField();
-		textTel.addActionListener(this);
-		textTel.setHorizontalAlignment(SwingConstants.CENTER);
+		textTel = new RegMobile(2);		
 		add(textTel);
-		textTel.setColumns(10);
+		
 		
 		JLabel lblAddr = new JLabel("주    소");
 		lblAddr.setFont(new Font("궁서체", Font.BOLD, 12));
@@ -237,7 +240,8 @@ public class StdInsert extends JDialog implements ActionListener {
 			comboGrade.setSelectedIndex(std.getGrade()-1);
 			StringTokenizer mobile = new StringTokenizer(std.getMobile(), "-");
 			textMobile.setMobile(getMobile(mobile.nextToken()), mobile.nextToken(), mobile.nextToken());
-			textTel.setText(std.getTel());
+			StringTokenizer tel = new StringTokenizer(std.getMobile(), "-");
+			textTel.setMobile(getMobile(tel.nextToken()), tel.nextToken(), tel.nextToken());			
 			textAddr.setText(std.getStdAddr());
 			textRoomNum.setText(Integer.toString(std.getRoomNum()));
 			textEmail.setText(std.getEmail());
@@ -294,9 +298,8 @@ public class StdInsert extends JDialog implements ActionListener {
 				std.setStartDate(endCal.getTime());
 				std.setMobile(mobileNum[textMobile.getComboFN().getSelectedIndex()]+"-"+
 				textMobile.getTxtSN()+ "-" + textMobile.getTxtTN());
-				System.out.println(mobileNum[textMobile.getComboFN().getSelectedIndex()]+"-"+
-				textMobile.getTxtSN()+ "-" + textMobile.getTxtTN());
-				std.setTel(textTel.getText());
+				std.setTel(telNum[textTel.getComboFN().getSelectedIndex()]+"-"+
+						textTel.getTxtSN()+ "-" + textTel.getTxtTN());				
 				std.setStdAddr(textAddr.getText());
 				std.setRoomNum(Integer.parseInt(textRoomNum.getText()));
 				std.setStdType(typeValue[comboStdType.getSelectedIndex()]);
@@ -327,17 +330,20 @@ public class StdInsert extends JDialog implements ActionListener {
 					Integer.parseInt(textEndDate.getTxtMonth()),Integer.parseInt(textEndDate.getTxtDay()));
 			std = new InfoStudent(textName.getText(), textJumin.getText(),
 					startCal.getTime(), endCal.getTime(), mobileNum[textMobile.getComboFN().getSelectedIndex()]+"-"+
-							textMobile.getTxtSN()+ "-" + textMobile.getTxtTN(),
-					textTel.getText(), textAddr.getText(), Integer.parseInt(textRoomNum.getText()),
+					textMobile.getTxtSN()+ "-" + textMobile.getTxtTN(),
+					telNum[textTel.getComboFN().getSelectedIndex()]+"-"+
+					textTel.getTxtSN()+ "-" + textTel.getTxtTN(),
+					textAddr.getText(), Integer.parseInt(textRoomNum.getText()),
 					typeValue[comboStdType.getSelectedIndex()], comboGrade.getSelectedIndex()+1
 					, textEmail.getText());		
 			dao = new DaoInfoStudent();
+					
 			if(dao.insertDao(std) == 0 ) {
 				cleanTextField();
 				menuMgn.refreshList();
 				JOptionPane.showMessageDialog(null, "저장을 완료하였습니다.");				
 				this.dispose();
-			}else {
+			}else {				
 				JOptionPane.showMessageDialog(null, "저장을 완료 하지 못하였습니다.");
 			}
 		}else {
@@ -349,9 +355,9 @@ public class StdInsert extends JDialog implements ActionListener {
 		if(textName.getText().equals("") || textJumin.getText().equals("")||textStartDate.getTxtYear().equals("") ||
 				textStartDate.getTxtMonth().equals("") ||textStartDate.getTxtDay().equals("") ||
 				textEndDate.getTxtYear().equals("") || textEndDate.getTxtMonth().equals("") ||
-				textEndDate.getTxtDay().equals("") ||	textMobile.getTxtSN().equals("") ||
-				textMobile.getTxtTN().equals("") ||
-				textTel.getText().equals("") || textAddr.getText().equals("") ||				
+				textEndDate.getTxtDay().equals("") ||	textMobile.getTxtSN().equals("") ||				
+				textMobile.getTxtTN().equals("") ||	textTel.getTxtSN().equals("") ||
+				textTel.getTxtTN().equals("") || textAddr.getText().equals("") ||				
 				textEmail.getText().equals("") ||textRoomNum.getText().equals("")) {
 			compare = false;
 		}		
@@ -364,7 +370,7 @@ public class StdInsert extends JDialog implements ActionListener {
 		textEndDate.setTxtDate(null, null, null);
 		textAddr.setText("");
 		textMobile.setMobile(0, "", "");
-		textTel.setText("");
+		textTel.setMobile(0, "", "");
 		textRoomNum.setText("");
 		comboStdType.setSelectedIndex(0);
 		comboGrade.setSelectedIndex(0);

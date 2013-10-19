@@ -11,15 +11,29 @@ public class RegMobile extends JPanel {
 	private JTextField txtSN;
 	private JTextField txtTN;
 	private JComboBox comboFN;
+	
+	static final String[] mobileNum={
+		"010","011","017","019"
+	};
+	
+	static final String[] telNum={
+		"02", "031", "032", "033", "041", "042", "043", "044",
+		"051", "052", "053", "054", "055", "061", "062", "063", "064"
+	};
 
 	/**
 	 * Create the panel.
 	 */
-	public RegMobile() {
+	public RegMobile(int flag) {
 		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		comboFN = new JComboBox();
-		comboFN.setModel(new DefaultComboBoxModel(new String[] {"010", "011", "017", "019"}));
+		if(flag==1) {
+			comboFN.setModel(new DefaultComboBoxModel(mobileNum));
+		}else {
+			comboFN.setModel(new DefaultComboBoxModel(telNum));
+		}
+		
 		add(comboFN);
 		
 		JLabel lblNewLabel = new JLabel("-");
