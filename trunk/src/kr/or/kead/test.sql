@@ -2,12 +2,12 @@ create table infoStudent(
 idx integer auto_increment primary key,
 stdName varchar(20) not null,
 juminNum char(14) not null,
-startDate char(10) not null,
-endDate char(10),
+startDate date not null,
+endDate date,
 mobile char(13),
 tel char(13),
 stdAddr varchar(40),
-roorNum integer(3) not null,
+roomNum integer(3) not null,
 stdType integer not null,
 email varchar(40)
 );
@@ -21,7 +21,7 @@ create table post(
 	bunji varchar(17)
 );
 
-
+delete from post;
 
 update infoStudent set stdType = 0 where idx='1';
 select * from infoStudent;
@@ -29,6 +29,10 @@ select * from infoStudent;
 show variables like '%char%';
 
 drop table infostudent;
+
+select count(seq) as cnt from post;
+
+select * from post where seq = 40000;
 
 desc infostudent;
 
