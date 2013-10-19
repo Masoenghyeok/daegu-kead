@@ -17,21 +17,21 @@ public class RegDate extends JPanel {
 		add(txtYear);
 		txtYear.setColumns(4);
 		
-		JLabel lbl_year = new JLabel("≥‚");
+		JLabel lbl_year = new JLabel("ÎÖÑ");
 		add(lbl_year);
 		
 		txtMonth = new JTextField();
 		add(txtMonth);
 		txtMonth.setColumns(2);
 		
-		JLabel lbl_month = new JLabel("ø˘");
+		JLabel lbl_month = new JLabel("Ïõî");
 		add(lbl_month);
 		
 		txtDay = new JTextField();
 		add(txtDay);
 		txtDay.setColumns(2);
 		
-		JLabel lbl_day = new JLabel("¿œ");
+		JLabel lbl_day = new JLabel("Ïùº");
 		add(lbl_day);
 
 	}

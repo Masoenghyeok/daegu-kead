@@ -37,13 +37,13 @@ public class RegMobile extends JPanel {
 		txtTN.setColumns(4);
 	}
 
-	public JTextField getTxtSN() {
-		return txtSN;
+	public String getTxtSN() {
+		return txtSN.getText();
 	}
 
 	
-	public JTextField getTxtTN() {
-		return txtTN;
+	public String getTxtTN() {
+		return txtTN.getText();
 	}
 
 	public JComboBox getComboFN() {

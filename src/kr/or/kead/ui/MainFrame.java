@@ -17,7 +17,7 @@ public class MainFrame extends JFrame {
 		setJMenuBar(menu);
 		
 		
-		setTitle("�л� ����");
+		setTitle("대구직업능력개발원 학사관리");
 		setSize(new Dimension(1120, 300));
 		
 		setVisible(true);

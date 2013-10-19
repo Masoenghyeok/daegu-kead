@@ -95,9 +95,9 @@ public class StdList extends JPanel implements TableModelListener {
 				Integer.parseInt((String)model.getValueAt(row, 10))
 				, (String)model.getValueAt(row, 11));
 		if(dao.updateDao(std) == 0) {
-			JOptionPane.showMessageDialog(null, "¼º°øÀûÀ¸·Î ¼öÁ¤ µÇ¾ú½À´Ï´Ù.");
+			JOptionPane.showMessageDialog(null, "ìˆ˜ì •ë˜ì—ˆìŠµë‹ˆë‹¤.");
 		}else {
-			JOptionPane.showMessageDialog(null, "¼öÁ¤¿¡ ½ÇÆĞ ÇÏ¿´½À´Ï´Ù.");
+			JOptionPane.showMessageDialog(null, "ìˆ˜ì •ì„ ì™„ë£Œ í•˜ì§€ ëª»í•˜ì˜€ìŠµë‹ˆë‹¤.");
 		}		
 	}
 

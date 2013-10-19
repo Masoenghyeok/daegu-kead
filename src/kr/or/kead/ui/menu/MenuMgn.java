@@ -20,11 +20,11 @@ import kr.or.kead.ui.stdmgn.StdInsert;
 import kr.or.kead.ui.stdmgn.StdList;
 
 public class MenuMgn extends JMenuBar implements ActionListener {
-	private JMenu stdMgn;			// ÇĞ»ı °ü¸®
-	private JMenuItem stdAdd;		// ÇĞ»ı Ãß°¡
-	private JMenuItem stdDel;		// ÇĞ»ı »èÁ¦
-	private JMenuItem stdUpdate;	// ÇĞ»ı ¼öÁ¤
-	private JMenuItem stdList;		// ÇĞ»ı ¸®½ºÆ®
+	private JMenu stdMgn;			// í•™ìƒê´€ë¦¬
+	private JMenuItem stdAdd;		// í•™ìƒì¶”ê°€
+	private JMenuItem stdDel;		// í•™ìƒì‚­ì œ
+	private JMenuItem stdUpdate;	// í•™ìƒìˆ˜ì •
+	private JMenuItem stdList;		// í•™ìƒ ë¦¬ìŠ¤íŠ¸
 	private Container contentPane;
 	private StdList listView;	
 		
@@ -36,14 +36,14 @@ public class MenuMgn extends JMenuBar implements ActionListener {
 
 
 	private void init() {
-		stdMgn = new JMenu("ÇĞ»ı °ü¸®");
-		stdAdd = new JMenuItem("Ãß°¡");
+		stdMgn = new JMenu("í•™ìƒê´€ë¦¬");
+		stdAdd = new JMenuItem("ì¶”ê°€");
 		stdAdd.addActionListener(this);
-		stdDel = new JMenuItem("»èÁ¦");
+		stdDel = new JMenuItem("ì‚­ì œ");
 		stdDel.addActionListener(this);
-		stdUpdate = new JMenuItem("¼öÁ¤");
+		stdUpdate = new JMenuItem("ìˆ˜ì •");
 		stdUpdate.addActionListener(this);
-		stdList = new JMenuItem("¸®½ºÆ®");
+		stdList = new JMenuItem("ë¦¬ìŠ¤íŠ¸");
 		stdList.addActionListener(this);
 		
 		stdMgn.add(stdAdd);
@@ -67,7 +67,7 @@ public class MenuMgn extends JMenuBar implements ActionListener {
 			StdInsert launcher = new StdInsert(this);
 			launcher.setVisible(true);			
 		}else if(e.getSource() == stdDel) {
-			String stdId = JOptionPane.showInputDialog(null, "»èÁ¦ÇÏ½Ç ÇĞ»ıÀÇ ID¸¦ ÀÔ·ÂÇÏ¼¼¿ä");
+			String stdId = JOptionPane.showInputDialog(null, "ì‚­ì œ í•  í•™ìƒ IDë¥¼ ì…ë ¥í•˜ì„¸ìš”");
 			if(stdId != null) {
 				DaoTable dao = new DaoInfoStudent();
 				InfoStudent std = new InfoStudent();
@@ -75,21 +75,21 @@ public class MenuMgn extends JMenuBar implements ActionListener {
 				if(std.getIdx() != 0) {
 					int confirmDel = JOptionPane.showConfirmDialog(
 							null,
-							std.getStdName() +" ÇĞ»ıÀ» »èÁ¦ ÇÏ½Ã°Ú½À´Ï±î?",
-							"»èÁ¦¸Ş½ÃÁö", 
+							std.getStdName() +" í•™ìƒì„ ì‚­ì œ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?",
+							"ì‚­ì œë©”ì‹œì§€", 
 							JOptionPane.YES_NO_OPTION,
 							JOptionPane.WARNING_MESSAGE);
 					if(confirmDel == 0) {
 						if(dao.deleteDao(Integer.parseInt(stdId))==0) {
-							JOptionPane.showMessageDialog(null, "»èÁ¦ µÇ¾ú½À´Ï´Ù.");
+							JOptionPane.showMessageDialog(null, "ì‚­ì œê°€ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.");
 						}else {
-							JOptionPane.showMessageDialog(null, "»èÁ¦°¡ ½ÇÇà µÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+							JOptionPane.showMessageDialog(null, "ì‚­ì œê°€ ì™„ë£Œ ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
 						}
 					}					
 				}				
 			}			
 		}else if(e.getSource() == stdUpdate) {
-			String stdId = JOptionPane.showInputDialog(null, "¼öÁ¤ÇÏ½Ç ÇĞ»ıÀÇ ID¸¦ ÀÔ·ÂÇÏ¼¼¿ä");
+			String stdId = JOptionPane.showInputDialog(null, "ìˆ˜ì •í•  í•™ìƒì˜ IDë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
 			if(stdId != null) {
 				StdInsert stdUpdate = new StdInsert(Integer.parseInt(stdId), this);
 				stdUpdate.setVisible(true);

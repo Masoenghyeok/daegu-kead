@@ -12,11 +12,12 @@ import kr.or.kead.service.DaoTable;
 public class CustomTableModel extends AbstractTableModel {
 	private ArrayList<InfoStudent> students;
 		
-	// Å×ÀÌºí °¢ ¿­¿¡ ´ëÇÑ ÀÌ¸§
-	private static final String[] columnNames = {"¹øÈ£","ÀÌ¸§","ÁÖ¹Î¹øÈ£","ÀÔ¼ÒÀÏÀÚ","Åğ¼ÒÀÏÀÚ",
-		"ÈŞ´ëÆù","Áı","ÁÖ¼Ò","ÅëÇĞ/±â¼÷","Àå¾ÖÅ¸ÀÔ","Àå¾Öµî±Ş","Email"};
+	// ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½
+	private static final String[] columnNames = {"ë²ˆí˜¸","ì´ë¦„","ì£¼ë¯¼ë²ˆí˜¸","ì…í•™ì¼ì","ìˆ˜ë£Œì¼ì","íœ´ëŒ€í°",
+		"ì§‘ì „í™”","ì£¼ì†Œ","í†µí•™/ê¸°ìˆ™",
+		"ì¥ì• ìœ í˜•","ì¥ì• ë“±ê¸‰","Email"};
 	
-	// Å×ÀÌºí °¢ ¿­¿¡ ´ëÇÑ Å¬·¡½º
+	// ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
 	private static final Class[] columnClasses = {
 		Integer.class, String.class, String.class, String.class, String.class, String.class,
 		String.class, String.class, Integer.class, Integer.class, Integer.class, String.class
@@ -60,9 +61,9 @@ public class CustomTableModel extends AbstractTableModel {
 		case 5 : return std.getMobile();
 		case 6 : return std.getTel();
 		case 7 : return "  " + std.getStdAddr();
-		case 8 : return std.getRoomNum() == 500?"ÅëÇĞ":std.getRoomNum();
+		case 8 : return std.getRoomNum() == 500?"í†µí•™":std.getRoomNum();
 		case 9 : return StdInsert.type[StdInsert.getType(std.getStdType())];
-		case 10 : return std.getGrade() + "µî±Ş";
+		case 10 : return std.getGrade() + "ê¸‰";
 		case 11 : return "  " + std.getEmail();
 		}
 		return "";

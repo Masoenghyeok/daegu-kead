@@ -42,9 +42,11 @@ public class StdInsert extends JDialog implements ActionListener {
 	private MenuMgn menuMgn;
 		
 	
-	static final String[] type={"ÁöÃ¼Àå¾Ö","³úº´º¯Àå¾Ö","½Ã°¢Àå¾Ö","Ã»°¢Àå¾Ö","¾ğ¾îÀå¾Ö","¾È¸éÀå¾Ö",
-		"½ÅÀåÀå¾Ö","½ÉÀåÀå¾Ö","°£Àå¾Ö","È£Èí±âÀå¾Ö","Àå·ç,¿ä·çÀå¾Ö","°£ÁúÀå¾Ö","ÁöÀûÀå¾Ö","ÀÚÆó¼ºÀå¾Ö",
-		"Á¤½ÅÀå¾Ö"};
+	static final String[] type={"ì§€ì²´ì¥ì• ","ë‡Œë³‘ë³€ì¥ì• ","ì‹œê°ì¥ì• ","ì²­ê°ì¥ì• ",
+		"ì–¸ì–´ì¥ì• ", "ì•ˆë©´ì¥ì• ",
+		"ì‹ ì¥ì¥ì• ","ì‹¬ì¥ì¥ì• ","ê°„ì¥ì•¨","í˜¸í¡ê¸°ì¥ì• ",
+		"ì¥ë£¨,ìš”ë£¨ì¥ì• ","ê°„ì§ˆì¥ì• ",
+		"ì§€ì ì¥ì• ","ìíì„±ì¥ì• ","ì •ì‹ ì¥ì• "};
 	static final int[] typeValue={		
 		111,112,113,114,115,116,
 		121,122,123,124,125,126,
@@ -55,17 +57,19 @@ public class StdInsert extends JDialog implements ActionListener {
 	static final int[] grade={ 1, 2, 3, 4, 5, 6};
 	
 	static final String[] mobileNum={
-		"010","011","107","019"
+		"010","011","017","019"
 	};
 	
 	/**
 	 * Create the panel.
 	 */
 	public StdInsert(MenuMgn menuMgn) {
+		this.setTitle("í•™ìƒì¶”ê°€");
 		makeComponent();
 		this.menuMgn = menuMgn;
 	}
-	public StdInsert(int stdId, MenuMgn menu) {
+	public StdInsert(int stdId, MenuMgn menuMgn) {
+		this.setTitle("í•™ìƒìˆ˜ì •");
 		this.stdId = stdId;
 		makeComponent();
 		fillText(stdId);
@@ -74,8 +78,8 @@ public class StdInsert extends JDialog implements ActionListener {
 	
 	public void makeComponent() {
 		setLayout(new GridLayout(12, 2, 2,2 ));		
-		JLabel lblName = new JLabel("ÀÌ      ¸§");
-		lblName.setFont(new Font("±Ã¼­Ã¼", Font.BOLD, 12));
+		JLabel lblName = new JLabel("ì„±    ëª…");
+		lblName.setFont(new Font("ê¶ì„œì²´", Font.BOLD, 12));
 		lblName.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblName);
 		
@@ -85,8 +89,8 @@ public class StdInsert extends JDialog implements ActionListener {
 		add(textName);
 		textName.setColumns(10);
 		
-		JLabel lblJuminnum = new JLabel("ÁÖ¹Îµî·Ï¹øÈ£");
-		lblJuminnum.setFont(new Font("±Ã¼­Ã¼", Font.BOLD, 12));
+		JLabel lblJuminnum = new JLabel("ì£¼ë¯¼ë²ˆí˜¸");
+		lblJuminnum.setFont(new Font("ê¶ì„œì²´", Font.BOLD, 12));
 		lblJuminnum.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblJuminnum);
 		
@@ -96,8 +100,8 @@ public class StdInsert extends JDialog implements ActionListener {
 		add(textJumin);
 		textJumin.setColumns(10);
 		
-		JLabel lblStartDate = new JLabel("ÀÔÇĞ³¯Â¥");
-		lblStartDate.setFont(new Font("±Ã¼­Ã¼", Font.BOLD, 12));
+		JLabel lblStartDate = new JLabel("ì…í•™ë‚ ì§œ");
+		lblStartDate.setFont(new Font("ê¶ì„œì²´", Font.BOLD, 12));
 		lblStartDate.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblStartDate);
 		
@@ -109,8 +113,8 @@ public class StdInsert extends JDialog implements ActionListener {
 		add(textStartDate);
 		
 		
-		JLabel lblEndDate = new JLabel("¼ö·á³¯Â¥");
-		lblEndDate.setFont(new Font("±Ã¼­Ã¼", Font.BOLD, 12));
+		JLabel lblEndDate = new JLabel("ìˆ˜ë£Œë‚ ì§œ");
+		lblEndDate.setFont(new Font("ê¶ì„œì²´", Font.BOLD, 12));
 		lblEndDate.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblEndDate);
 		
@@ -123,8 +127,8 @@ public class StdInsert extends JDialog implements ActionListener {
 				String.valueOf(endDate.get(Calendar.DATE)));
 		add(textEndDate);
 		
-		JLabel lblMobile = new JLabel("ÈŞ´ëÀüÈ­");
-		lblMobile.setFont(new Font("±Ã¼­Ã¼", Font.BOLD, 12));
+		JLabel lblMobile = new JLabel("íœ´ëŒ€ì „í™”");
+		lblMobile.setFont(new Font("ê¶ì„œì²´", Font.BOLD, 12));
 		lblMobile.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblMobile);
 		
@@ -132,8 +136,8 @@ public class StdInsert extends JDialog implements ActionListener {
 		add(textMobile);
 		
 		
-		JLabel lblTel = new JLabel("ÀüÈ­¹øÈ£");
-		lblTel.setFont(new Font("±Ã¼­Ã¼", Font.BOLD, 12));
+		JLabel lblTel = new JLabel("ì „í™”ë²ˆí˜¸");
+		lblTel.setFont(new Font("ê¶ì„œì²´", Font.BOLD, 12));
 		lblTel.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblTel);
 		
@@ -143,8 +147,8 @@ public class StdInsert extends JDialog implements ActionListener {
 		add(textTel);
 		textTel.setColumns(10);
 		
-		JLabel lblAddr = new JLabel("ÁÖ      ¼Ò");
-		lblAddr.setFont(new Font("±Ã¼­Ã¼", Font.BOLD, 12));
+		JLabel lblAddr = new JLabel("ì£¼    ì†Œ");
+		lblAddr.setFont(new Font("ê¶ì„œì²´", Font.BOLD, 12));
 		lblAddr.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblAddr);
 		
@@ -154,8 +158,8 @@ public class StdInsert extends JDialog implements ActionListener {
 		add(textAddr);
 		textAddr.setColumns(10);
 		
-		JLabel lblRoomNum = new JLabel("±â¼÷»ç¿©ºÎ");
-		lblRoomNum.setFont(new Font("±Ã¼­Ã¼", Font.BOLD, 12));
+		JLabel lblRoomNum = new JLabel("ê¸°ìˆ™ì‚¬/í†µí•™");
+		lblRoomNum.setFont(new Font("ê¶ì„œì²´", Font.BOLD, 12));
 		lblRoomNum.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblRoomNum);
 		
@@ -165,8 +169,8 @@ public class StdInsert extends JDialog implements ActionListener {
 		add(textRoomNum);
 		textRoomNum.setColumns(10);
 		
-		JLabel lblStdType = new JLabel("Àå¾ÖÀ¯Çü");
-		lblStdType.setFont(new Font("±Ã¼­Ã¼", Font.BOLD, 12));
+		JLabel lblStdType = new JLabel("ì¥ì• ìœ í˜•");
+		lblStdType.setFont(new Font("ê¶ì„œì²´", Font.BOLD, 12));
 		lblStdType.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblStdType);
 		
@@ -178,22 +182,22 @@ public class StdInsert extends JDialog implements ActionListener {
 		add(comboStdType);
 		
 		
-		JLabel lblGrade = new JLabel("Àå¾Öµî±Ş");
-		lblGrade.setFont(new Font("±Ã¼­Ã¼", Font.BOLD, 12));
+		JLabel lblGrade = new JLabel("ë“±ê¸‰");
+		lblGrade.setFont(new Font("ê¶ì„œì²´", Font.BOLD, 12));
 		lblGrade.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblGrade);
 		
 		comboGrade = new JComboBox<>();
 		len = grade.length;
 		for(int i=0;i<len;i++) {
-			comboGrade.addItem(grade[i] + "±Ş");
+			comboGrade.addItem(grade[i] + "ê¸‰");
 		}
 		comboGrade.addActionListener(this);		
 		add(comboGrade);
 		
 		
-		JLabel lblEmail = new JLabel("ÀÌ¸ŞÀÏ");
-		lblEmail.setFont(new Font("±Ã¼­Ã¼", Font.BOLD, 12));
+		JLabel lblEmail = new JLabel("EMAIL");
+		lblEmail.setFont(new Font("ê¶ì„œì²´", Font.BOLD, 12));
 		lblEmail.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblEmail);
 		
@@ -203,13 +207,13 @@ public class StdInsert extends JDialog implements ActionListener {
 		add(textEmail);
 		textEmail.setColumns(10);
 		
-		btnInsert = new JButton("ÀúÀå");	
+		btnInsert = new JButton("ì €ì¥");	
 		btnInsert.addActionListener(this);
 		
 		
 		add(btnInsert);
 		
-		btnCancel = new JButton("Ãë¼Ò");
+		btnCancel = new JButton("ì·¨ì†Œ");
 		btnCancel.addActionListener(this);
 		
 		
@@ -237,7 +241,7 @@ public class StdInsert extends JDialog implements ActionListener {
 			textAddr.setText(std.getStdAddr());
 			textRoomNum.setText(Integer.toString(std.getRoomNum()));
 			textEmail.setText(std.getEmail());
-			btnInsert.setText("¼öÁ¤");
+			btnInsert.setText("ìˆ˜ì •");
 		}else {			
 			this.dispose();
 		}
@@ -265,15 +269,10 @@ public class StdInsert extends JDialog implements ActionListener {
 		}else if (e.getSource() == comboGrade) {
 			textEmail.requestFocus();
 		}else if (e.getSource() == btnInsert) {
-			if(e.getActionCommand().equals("ÀúÀå")) {					
+			if(e.getActionCommand().equals("ì €ì¥")) {					
 				btnInsertActionPerformed(e);
-			}else if(e.getActionCommand().equals("¼öÁ¤")) {
+			}else if(e.getActionCommand().equals("ìˆ˜ì •")) {
 				btnModifyActionPerformed(e);				
-			}else if(e.getActionCommand().equals("»èÁ¦")) {
-				int i = JOptionPane.showConfirmDialog(null, "»èÁ¦ÇÏ½Ã°Ú½À´Ï±î?", "»èÁ¦¸Ş½ÃÁö", JOptionPane.YES_NO_OPTION);
-				if(i == 0) {
-					btnDeleteActionPerformed(e);
-				}
 			}
 		}else if (e.getSource() == btnCancel) {			
 			btnCancelActionPerformed(e);
@@ -281,21 +280,6 @@ public class StdInsert extends JDialog implements ActionListener {
 		}
 	}
 	
-	
-	private void btnDeleteActionPerformed(ActionEvent e) {
-		dao = new DaoInfoStudent();		
-		if(isFieldCheck()) {			
-			if(dao.deleteDao(Integer.parseInt(compareMenu)) == 0){
-				cleanTextField();
-				JOptionPane.showMessageDialog(null, "¼º°øÀûÀ¸·Î »èÁ¦ µÇ¾ú½À´Ï´Ù.");
-			}else {
-				JOptionPane.showMessageDialog(null, "»èÁ¦°¡ ½ÇÆĞ ÇÏ¿´½À´Ï´Ù.");
-			}
-		}
-	}
-
-
-
 	private void btnModifyActionPerformed(ActionEvent e) {
 		dao = new DaoInfoStudent();
 			if(isFieldCheck()) {
@@ -322,10 +306,10 @@ public class StdInsert extends JDialog implements ActionListener {
 					this.dispose();
 					menuMgn.refreshList();
 				}else {
-					JOptionPane.showMessageDialog(null, "¼öÁ¤¿¡ ½ÇÆĞ ÇÏ¿´½À´Ï´Ù.");
+					JOptionPane.showMessageDialog(null, "ìˆ˜ì •ì„ ì™„ë£Œí•˜ì˜€ìŠµë‹ˆë‹¤.");
 				}
 			}else {
-				JOptionPane.showMessageDialog(null, "ÇÊ¼ö ÀÔ·Â Ç×¸ñ¿¡ ÀÔ·ÂÀÌ µÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+				JOptionPane.showMessageDialog(null, "ìˆ˜ì •ì„ ì™„ë£Œí•˜ì§€ ëª»í•˜ì˜€ìŠµë‹ˆë‹¤.");
 			}		
 	}
 
@@ -351,13 +335,13 @@ public class StdInsert extends JDialog implements ActionListener {
 			if(dao.insertDao(std) == 0 ) {
 				cleanTextField();
 				menuMgn.refreshList();
-				JOptionPane.showMessageDialog(null, "¼º°øÀûÀ¸·Î ÀúÀå µÇ¾ú½À´Ï´Ù.");				
+				JOptionPane.showMessageDialog(null, "ì €ì¥ì„ ì™„ë£Œí•˜ì˜€ìŠµë‹ˆë‹¤.");				
 				this.dispose();
 			}else {
-				JOptionPane.showMessageDialog(null, "ÀúÀå¿¡ ½ÇÆĞ ÇÏ¿´½À´Ï´Ù.");
+				JOptionPane.showMessageDialog(null, "ì €ì¥ì„ ì™„ë£Œ í•˜ì§€ ëª»í•˜ì˜€ìŠµë‹ˆë‹¤.");
 			}
 		}else {
-			JOptionPane.showMessageDialog(null, "ÇÊ¼ö ÀÔ·Â Ç×¸ñ¿¡ ÀÔ·ÂÀÌ µÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+			JOptionPane.showMessageDialog(null, "í•„ìˆ˜ì…ë ¥ìš”ì†Œê°€ ì…ë ¥ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
 		}				
 	}
 	private boolean isFieldCheck() {
