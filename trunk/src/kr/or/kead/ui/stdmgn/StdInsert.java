@@ -23,7 +23,7 @@ import kr.or.kead.ui.menu.MenuMgn;
 
 public class StdInsert extends JDialog implements ActionListener {
 	private JTextField textName;
-	private JTextField textJumin;
+	private RegJumin textJumin;
 	private RegDate textStartDate;
 	private RegDate textEndDate;
 	private RegMobile textMobile;
@@ -99,11 +99,8 @@ public class StdInsert extends JDialog implements ActionListener {
 		lblJuminnum.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblJuminnum);
 		
-		textJumin = new JTextField();
-		textJumin.addActionListener(this);
-		textJumin.setHorizontalAlignment(SwingConstants.CENTER);
-		add(textJumin);
-		textJumin.setColumns(10);
+		textJumin = new RegJumin();		
+		add(textJumin);		
 		
 		JLabel lblStartDate = new JLabel("입학날짜");
 		lblStartDate.setFont(new Font("궁서체", Font.BOLD, 12));
@@ -231,7 +228,8 @@ public class StdInsert extends JDialog implements ActionListener {
 		std = dao.selectStudentById(stdId);	
 		if(std.getIdx() != 0) {
 			textName.setText(std.getStdName());
-			textJumin.setText(std.getJuminNum());
+			StringTokenizer juminNum = new StringTokenizer(std.getJuminNum(), "-");
+			textJumin.setTxtJumin1(juminNum.nextToken(), juminNum.nextToken());
 			StringTokenizer start_st = new StringTokenizer(String.valueOf(std.getStartDate()), "-");			
 			textStartDate.setTxtDate(start_st.nextToken(), start_st.nextToken(), start_st.nextToken());
 			StringTokenizer end_st = new StringTokenizer(String.valueOf(std.getEndDate()), "-");
@@ -293,7 +291,7 @@ public class StdInsert extends JDialog implements ActionListener {
 						Integer.parseInt(textEndDate.getTxtMonth()),Integer.parseInt(textEndDate.getTxtDay()));
 				std.setIdx(stdId);
 				std.setStdName(textName.getText());
-				std.setJuminNum(textJumin.getText());
+				std.setJuminNum(textJumin.getTxtJumin1() + "-"+ textJumin.getTxtJumin2());
 				std.setStartDate(startCal.getTime());
 				std.setStartDate(endCal.getTime());
 				std.setMobile(mobileNum[textMobile.getComboFN().getSelectedIndex()]+"-"+
@@ -328,7 +326,7 @@ public class StdInsert extends JDialog implements ActionListener {
 					Integer.parseInt(textStartDate.getTxtMonth()),Integer.parseInt(textStartDate.getTxtDay()));
 			GregorianCalendar endCal = new GregorianCalendar(Integer.parseInt(textEndDate.getTxtYear()),
 					Integer.parseInt(textEndDate.getTxtMonth()),Integer.parseInt(textEndDate.getTxtDay()));
-			std = new InfoStudent(textName.getText(), textJumin.getText(),
+			std = new InfoStudent(textName.getText(), textJumin.getTxtJumin1() + "-"+ textJumin.getTxtJumin2(),
 					startCal.getTime(), endCal.getTime(), mobileNum[textMobile.getComboFN().getSelectedIndex()]+"-"+
 					textMobile.getTxtSN()+ "-" + textMobile.getTxtTN(),
 					telNum[textTel.getComboFN().getSelectedIndex()]+"-"+
@@ -352,7 +350,8 @@ public class StdInsert extends JDialog implements ActionListener {
 	}
 	private boolean isFieldCheck() {
 		boolean compare = true;
-		if(textName.getText().equals("") || textJumin.getText().equals("")||textStartDate.getTxtYear().equals("") ||
+		if(textName.getText().equals("") || textJumin.getTxtJumin1().equals("")||
+				textJumin.getTxtJumin2().equals("")||textStartDate.getTxtYear().equals("") ||
 				textStartDate.getTxtMonth().equals("") ||textStartDate.getTxtDay().equals("") ||
 				textEndDate.getTxtYear().equals("") || textEndDate.getTxtMonth().equals("") ||
 				textEndDate.getTxtDay().equals("") ||	textMobile.getTxtSN().equals("") ||				
@@ -365,7 +364,7 @@ public class StdInsert extends JDialog implements ActionListener {
 	}	
 	public void cleanTextField() {
 		textName.setText("");
-		textJumin.setText("");
+		textJumin.setTxtJumin1("", "");
 		textStartDate.setTxtDate(null, null, null);
 		textEndDate.setTxtDate(null, null, null);
 		textAddr.setText("");
