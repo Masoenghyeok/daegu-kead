@@ -1,13 +1,17 @@
 package kr.or.kead.ui.stdmgn;
 
 import javax.swing.JPanel;
+
 import java.awt.FlowLayout;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.DefaultComboBoxModel;
 
-public class RegMobile extends JPanel {
+public class RegMobile extends JPanel implements KeyListener {
 	private JTextField txtSN;
 	private JTextField txtTN;
 	private JComboBox comboFN;
@@ -42,6 +46,7 @@ public class RegMobile extends JPanel {
 		txtSN = new JTextField();
 		add(txtSN);
 		txtSN.setColumns(4);
+		txtSN.addKeyListener(this);
 		
 		JLabel lblNewLabel_1 = new JLabel("-");
 		add(lblNewLabel_1);
@@ -69,6 +74,20 @@ public class RegMobile extends JPanel {
 		this.txtSN.setText(secondNum);
 		this.txtTN.setText(thirdNum);
 	}
+
+	@Override
+	public void keyPressed(KeyEvent arg0) {}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		if(txtSN.getText().length() == 4) {
+			txtTN.requestFocus();
+		}
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {}
 
 
 }

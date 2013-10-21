@@ -29,7 +29,7 @@ public class StdInsert extends JDialog implements ActionListener {
 	private RegMobile textMobile;
 	private RegMobile textTel;
 	private JTextField textAddr;
-	private JTextField textRoomNum;
+	private RegDormitory textRoomNum;
 	private JComboBox<String> comboStdType;
 	private JComboBox<String> comboGrade;
 	private JTextField textEmail;
@@ -163,11 +163,8 @@ public class StdInsert extends JDialog implements ActionListener {
 		lblRoomNum.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblRoomNum);
 		
-		textRoomNum = new JTextField();
-		textRoomNum.addActionListener(this);
-		textRoomNum.setHorizontalAlignment(SwingConstants.CENTER);
-		add(textRoomNum);
-		textRoomNum.setColumns(10);
+		textRoomNum = new RegDormitory();		
+		add(textRoomNum);		
 		
 		JLabel lblStdType = new JLabel("장애유형");
 		lblStdType.setFont(new Font("궁서체", Font.BOLD, 12));
@@ -242,6 +239,9 @@ public class StdInsert extends JDialog implements ActionListener {
 			textTel.setMobile(getMobile(tel.nextToken()), tel.nextToken(), tel.nextToken());			
 			textAddr.setText(std.getStdAddr());
 			textRoomNum.setText(Integer.toString(std.getRoomNum()));
+			if(std.getRoomNum() == 500) {
+				textRoomNum.
+			}
 			textEmail.setText(std.getEmail());
 			btnInsert.setText("수정");
 		}else {			
