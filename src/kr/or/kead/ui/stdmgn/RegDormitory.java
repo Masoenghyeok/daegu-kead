@@ -39,43 +39,44 @@ public class RegDormitory extends JPanel implements ActionListener {
 		txtRoomNum = new JTextField();
 		add(txtRoomNum);
 		txtRoomNum.setColumns(10);
+		txtRoomNum.setEditable(false);
 
 	}
 	
 	
 
-	public JTextField getTxtRoomNum() {
-		return txtRoomNum;
+	public String getTxtRoomNum() {
+		return txtRoomNum.getText();
 	}
 
 
 
-	public void setTxtRoomNum(JTextField txtRoomNum) {
-		this.txtRoomNum = txtRoomNum;
+	public void setTxtRoomNum(String txtRoomNum) {
+		this.txtRoomNum.setText(txtRoomNum);
 	}
 
 
 
-	public JRadioButton getRadioBtn1() {
-		return radioBtn1;
+	public boolean getRadioBtn1() {
+		return radioBtn1.isSelected();
 	}
 
 
 
-	public void setRadioBtn1(JRadioButton radioBtn1) {
-		this.radioBtn1 = radioBtn1;
+	public void setRadioBtn1(boolean compare) {
+		radioBtn1.setSelected(compare);
 	}
 
 
 
-	public JRadioButton getRadioBtn2() {
-		return radioBtn2;
+	public boolean getRadioBtn2() {
+		return radioBtn2.isSelected();
 	}
 
 
 
-	public void setRadioBtn2(JRadioButton radioBtn2) {
-		this.radioBtn2 = radioBtn2;
+	public void setRadioBtn2(boolean compare) {
+		radioBtn2.setSelected(compare);
 	}
 
 
