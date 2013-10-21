@@ -238,10 +238,13 @@ public class StdInsert extends JDialog implements ActionListener {
 			StringTokenizer tel = new StringTokenizer(std.getMobile(), "-");
 			textTel.setMobile(getMobile(tel.nextToken()), tel.nextToken(), tel.nextToken());			
 			textAddr.setText(std.getStdAddr());
-			textRoomNum.setText(Integer.toString(std.getRoomNum()));
 			if(std.getRoomNum() == 500) {
-				textRoomNum.
-			}
+				textRoomNum.setRadioBtn1(true);
+			}else {
+				textRoomNum.setRadioBtn1(false);
+				textRoomNum.setRadioBtn2(true);
+				textRoomNum.setTxtRoomNum(String.valueOf(std.getRoomNum()));
+			}			
 			textEmail.setText(std.getEmail());
 			btnInsert.setText("수정");
 		}else {			
@@ -299,7 +302,11 @@ public class StdInsert extends JDialog implements ActionListener {
 				std.setTel(telNum[textTel.getComboFN().getSelectedIndex()]+"-"+
 						textTel.getTxtSN()+ "-" + textTel.getTxtTN());				
 				std.setStdAddr(textAddr.getText());
-				std.setRoomNum(Integer.parseInt(textRoomNum.getText()));
+				if(textRoomNum.getRadioBtn1()) {
+					std.setRoomNum(500);
+				}else {
+					std.setRoomNum(Integer.parseInt(textRoomNum.getTxtRoomNum()));
+				}				
 				std.setStdType(typeValue[comboStdType.getSelectedIndex()]);
 				std.setGrade(comboGrade.getSelectedIndex()+1);
 				std.setEmail(textEmail.getText());				
@@ -326,12 +333,18 @@ public class StdInsert extends JDialog implements ActionListener {
 					Integer.parseInt(textStartDate.getTxtMonth()),Integer.parseInt(textStartDate.getTxtDay()));
 			GregorianCalendar endCal = new GregorianCalendar(Integer.parseInt(textEndDate.getTxtYear()),
 					Integer.parseInt(textEndDate.getTxtMonth()),Integer.parseInt(textEndDate.getTxtDay()));
+			int roomNum;
+			if(textRoomNum.getRadioBtn1()) {
+				roomNum = 500;
+			}else {
+				roomNum = Integer.parseInt(textRoomNum.getTxtRoomNum());
+			}
 			std = new InfoStudent(textName.getText(), textJumin.getTxtJumin1() + "-"+ textJumin.getTxtJumin2(),
 					startCal.getTime(), endCal.getTime(), mobileNum[textMobile.getComboFN().getSelectedIndex()]+"-"+
 					textMobile.getTxtSN()+ "-" + textMobile.getTxtTN(),
 					telNum[textTel.getComboFN().getSelectedIndex()]+"-"+
 					textTel.getTxtSN()+ "-" + textTel.getTxtTN(),
-					textAddr.getText(), Integer.parseInt(textRoomNum.getText()),
+					textAddr.getText(),	roomNum,
 					typeValue[comboStdType.getSelectedIndex()], comboGrade.getSelectedIndex()+1
 					, textEmail.getText());		
 			dao = new DaoInfoStudent();
@@ -357,7 +370,7 @@ public class StdInsert extends JDialog implements ActionListener {
 				textEndDate.getTxtDay().equals("") ||	textMobile.getTxtSN().equals("") ||				
 				textMobile.getTxtTN().equals("") ||	textTel.getTxtSN().equals("") ||
 				textTel.getTxtTN().equals("") || textAddr.getText().equals("") ||				
-				textEmail.getText().equals("") ||textRoomNum.getText().equals("")) {
+				textEmail.getText().equals("")) {
 			compare = false;
 		}		
 		return compare;		
@@ -369,8 +382,7 @@ public class StdInsert extends JDialog implements ActionListener {
 		textEndDate.setTxtDate(null, null, null);
 		textAddr.setText("");
 		textMobile.setMobile(0, "", "");
-		textTel.setMobile(0, "", "");
-		textRoomNum.setText("");
+		textTel.setMobile(0, "", "");		
 		comboStdType.setSelectedIndex(0);
 		comboGrade.setSelectedIndex(0);
 		textEmail.setText("");
