@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import kr.or.kead.domain.InfoStudent;
+import kr.or.kead.domain.StdAddress;
 import kr.or.kead.utils.MysqlCon;
 
 public class DaoInfoStudent implements DaoTable {
@@ -195,11 +196,11 @@ public class DaoInfoStudent implements DaoTable {
 		}		
 		return std;
 	}
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
+	@Override
+	public ArrayList<StdAddress> selectStdAddrByDong(String dong) {
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
 	
 }

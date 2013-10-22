@@ -28,6 +28,8 @@ select * from infoStudent;
 
 show variables like '%char%';
 
+select * from post where dong like '%송현동%'
+
 drop table infostudent;
 
 select count(seq) as cnt from post;
