@@ -17,12 +17,15 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import kr.or.kead.domain.InfoStudent;
+import kr.or.kead.module.RegDate;
 import kr.or.kead.service.DaoInfoStudent;
 import kr.or.kead.service.DaoTable;
 import kr.or.kead.ui.menu.MenuMgn;
 
+import java.awt.FlowLayout;
+
 public class StdInsert extends JDialog implements ActionListener {
-	private JTextField textName;
+	private JTextField textName;	
 	private RegJumin textJumin;
 	private RegDate textStartDate;
 	private RegDate textEndDate;
@@ -73,6 +76,9 @@ public class StdInsert extends JDialog implements ActionListener {
 		makeComponent();
 		this.menuMgn = menuMgn;
 	}
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public StdInsert(int stdId, MenuMgn menuMgn) {
 		this.setTitle("학생수정");
 		this.stdId = stdId;
@@ -82,107 +88,110 @@ public class StdInsert extends JDialog implements ActionListener {
 	}	
 	
 	public void makeComponent() {
-		setLayout(new GridLayout(12, 2, 2,2 ));		
+		getContentPane().setLayout(new GridLayout(12, 2, 2,2 ));		
 		JLabel lblName = new JLabel("성    명");
 		lblName.setFont(new Font("궁서체", Font.BOLD, 12));
 		lblName.setHorizontalAlignment(SwingConstants.CENTER);
-		add(lblName);
+		getContentPane().add(lblName);
 		
 		textName = new JTextField();
 		textName.addActionListener(this);
 		textName.setHorizontalAlignment(SwingConstants.CENTER);
-		add(textName);
+		getContentPane().add(textName);
 		textName.setColumns(10);
+		
+	
 		
 		JLabel lblJuminnum = new JLabel("주민번호");
 		lblJuminnum.setFont(new Font("궁서체", Font.BOLD, 12));
 		lblJuminnum.setHorizontalAlignment(SwingConstants.CENTER);
-		add(lblJuminnum);
+		getContentPane().add(lblJuminnum);
 		
 		textJumin = new RegJumin();		
-		add(textJumin);		
+		FlowLayout flowLayout = (FlowLayout) textJumin.getLayout();
+		getContentPane().add(textJumin);		
 		
 		JLabel lblStartDate = new JLabel("입학날짜");
 		lblStartDate.setFont(new Font("궁서체", Font.BOLD, 12));
 		lblStartDate.setHorizontalAlignment(SwingConstants.CENTER);
-		add(lblStartDate);
+		getContentPane().add(lblStartDate);
 		
 		textStartDate = new RegDate();
 		GregorianCalendar now = new GregorianCalendar();	
-		textStartDate.setTxtDate(String.valueOf(now.get(Calendar.YEAR)),
-				String.valueOf(now.get(GregorianCalendar.MONTH)+1),
-				String.valueOf(now.get(GregorianCalendar.DATE)));
-		add(textStartDate);
+		textStartDate.setTxtDate(now.get(Calendar.YEAR),
+				now.get(GregorianCalendar.MONTH)+1,
+				now.get(GregorianCalendar.DATE));
+		getContentPane().add(textStartDate);
 		
 		
 		JLabel lblEndDate = new JLabel("수료날짜");
 		lblEndDate.setFont(new Font("궁서체", Font.BOLD, 12));
 		lblEndDate.setHorizontalAlignment(SwingConstants.CENTER);
-		add(lblEndDate);
+		getContentPane().add(lblEndDate);
 		
 		textEndDate = new RegDate();
-		GregorianCalendar endDate = new GregorianCalendar(Integer.parseInt(textStartDate.getTxtYear())+1,
-				Integer.parseInt(textStartDate.getTxtMonth()),Integer.parseInt(textStartDate.getTxtDay()));
+		GregorianCalendar endDate = new GregorianCalendar(textStartDate.getYear()+1,
+				textStartDate.getMonth(),textStartDate.getDay());
 		endDate.add(Calendar.DATE, -1);		
-		textEndDate.setTxtDate(String.valueOf(endDate.get(Calendar.YEAR)),
-				String.valueOf(endDate.get(Calendar.MONTH)+1),
-				String.valueOf(endDate.get(Calendar.DATE)));
-		add(textEndDate);
+		textEndDate.setTxtDate(endDate.get(Calendar.YEAR),
+				endDate.get(Calendar.MONTH),
+				endDate.get(Calendar.DATE));
+		getContentPane().add(textEndDate);
 		
 		JLabel lblMobile = new JLabel("휴대전화");
 		lblMobile.setFont(new Font("궁서체", Font.BOLD, 12));
 		lblMobile.setHorizontalAlignment(SwingConstants.CENTER);
-		add(lblMobile);
+		getContentPane().add(lblMobile);
 		
 		textMobile = new RegMobile(1);			
-		add(textMobile);
+		getContentPane().add(textMobile);
 		
 		
 		JLabel lblTel = new JLabel("전화번호");
 		lblTel.setFont(new Font("궁서체", Font.BOLD, 12));
 		lblTel.setHorizontalAlignment(SwingConstants.CENTER);
-		add(lblTel);
+		getContentPane().add(lblTel);
 		
 		textTel = new RegMobile(2);		
-		add(textTel);
+		getContentPane().add(textTel);
 		
 		
 		JLabel lblAddr = new JLabel("주    소");
 		lblAddr.setFont(new Font("궁서체", Font.BOLD, 12));
 		lblAddr.setHorizontalAlignment(SwingConstants.CENTER);
-		add(lblAddr);
+		getContentPane().add(lblAddr);
 		
 		textAddr = new JTextField();
 		textAddr.addActionListener(this);
 		textAddr.setHorizontalAlignment(SwingConstants.CENTER);
-		add(textAddr);
+		getContentPane().add(textAddr);
 		textAddr.setColumns(10);
 		
 		JLabel lblRoomNum = new JLabel("기숙사/통학");
 		lblRoomNum.setFont(new Font("궁서체", Font.BOLD, 12));
 		lblRoomNum.setHorizontalAlignment(SwingConstants.CENTER);
-		add(lblRoomNum);
+		getContentPane().add(lblRoomNum);
 		
 		textRoomNum = new RegDormitory();		
-		add(textRoomNum);		
+		getContentPane().add(textRoomNum);		
 		
 		JLabel lblStdType = new JLabel("장애유형");
 		lblStdType.setFont(new Font("궁서체", Font.BOLD, 12));
 		lblStdType.setHorizontalAlignment(SwingConstants.CENTER);
-		add(lblStdType);
+		getContentPane().add(lblStdType);
 		
 		comboStdType = new JComboBox<>();
 		int len = type.length;
 		for(int i=0;i<len;i++) {
 			comboStdType.addItem(type[i]);
 		}				
-		add(comboStdType);
+		getContentPane().add(comboStdType);
 		
 		
 		JLabel lblGrade = new JLabel("등급");
 		lblGrade.setFont(new Font("궁서체", Font.BOLD, 12));
 		lblGrade.setHorizontalAlignment(SwingConstants.CENTER);
-		add(lblGrade);
+		getContentPane().add(lblGrade);
 		
 		comboGrade = new JComboBox<>();
 		len = grade.length;
@@ -190,31 +199,31 @@ public class StdInsert extends JDialog implements ActionListener {
 			comboGrade.addItem(grade[i] + "급");
 		}
 		comboGrade.addActionListener(this);		
-		add(comboGrade);
+		getContentPane().add(comboGrade);
 		
 		
 		JLabel lblEmail = new JLabel("EMAIL");
 		lblEmail.setFont(new Font("궁서체", Font.BOLD, 12));
 		lblEmail.setHorizontalAlignment(SwingConstants.CENTER);
-		add(lblEmail);
+		getContentPane().add(lblEmail);
 		
 		textEmail = new JTextField();
 		textEmail.addActionListener(this);
 		textEmail.setHorizontalAlignment(SwingConstants.CENTER);
-		add(textEmail);
+		getContentPane().add(textEmail);
 		textEmail.setColumns(10);
 		
 		btnInsert = new JButton("저장");	
 		btnInsert.addActionListener(this);
 		
 		
-		add(btnInsert);
+		getContentPane().add(btnInsert);
 		
 		btnCancel = new JButton("취소");
 		btnCancel.addActionListener(this);
 		
 		
-		add(btnCancel);
+		getContentPane().add(btnCancel);
 		this.setVisible(true);			
 		pack();
 	}	
@@ -228,9 +237,13 @@ public class StdInsert extends JDialog implements ActionListener {
 			StringTokenizer juminNum = new StringTokenizer(std.getJuminNum(), "-");
 			textJumin.setTxtJumin1(juminNum.nextToken(), juminNum.nextToken());
 			StringTokenizer start_st = new StringTokenizer(String.valueOf(std.getStartDate()), "-");			
-			textStartDate.setTxtDate(start_st.nextToken(), start_st.nextToken(), start_st.nextToken());
+			textStartDate.setTxtDate(Integer.parseInt(start_st.nextToken()),
+					Integer.parseInt(start_st.nextToken()),
+					Integer.parseInt(start_st.nextToken()));
 			StringTokenizer end_st = new StringTokenizer(String.valueOf(std.getEndDate()), "-");
-			textEndDate.setTxtDate(end_st.nextToken(), end_st.nextToken(), end_st.nextToken());	
+			textEndDate.setTxtDate(Integer.parseInt(end_st.nextToken()), 
+					Integer.parseInt(end_st.nextToken()), 
+					Integer.parseInt(end_st.nextToken()));	
 			comboStdType.setSelectedIndex(getType(std.getStdType()));
 			comboGrade.setSelectedIndex(std.getGrade()-1);
 			StringTokenizer mobile = new StringTokenizer(std.getMobile(), "-");
@@ -288,10 +301,10 @@ public class StdInsert extends JDialog implements ActionListener {
 	private void btnModifyActionPerformed(ActionEvent e) {
 		dao = new DaoInfoStudent();
 			if(isFieldCheck()) {
-				GregorianCalendar startCal = new GregorianCalendar(Integer.parseInt(textStartDate.getTxtYear()),
-						Integer.parseInt(textStartDate.getTxtMonth()),Integer.parseInt(textStartDate.getTxtDay()));
-				GregorianCalendar endCal = new GregorianCalendar(Integer.parseInt(textEndDate.getTxtYear()),
-						Integer.parseInt(textEndDate.getTxtMonth()),Integer.parseInt(textEndDate.getTxtDay()));
+				GregorianCalendar startCal = new GregorianCalendar(textStartDate.getYear(),
+						textStartDate.getMonth(),textStartDate.getDay());
+				GregorianCalendar endCal = new GregorianCalendar(textEndDate.getYear(),
+						textEndDate.getMonth(),textEndDate.getDay());
 				std.setIdx(stdId);
 				std.setStdName(textName.getText());
 				std.setJuminNum(textJumin.getTxtJumin1() + "-"+ textJumin.getTxtJumin2());
@@ -329,10 +342,10 @@ public class StdInsert extends JDialog implements ActionListener {
 
 	protected void btnInsertActionPerformed(ActionEvent e) {
 		if(isFieldCheck()) {
-			GregorianCalendar startCal = new GregorianCalendar(Integer.parseInt(textStartDate.getTxtYear()),
-					Integer.parseInt(textStartDate.getTxtMonth()),Integer.parseInt(textStartDate.getTxtDay()));
-			GregorianCalendar endCal = new GregorianCalendar(Integer.parseInt(textEndDate.getTxtYear()),
-					Integer.parseInt(textEndDate.getTxtMonth()),Integer.parseInt(textEndDate.getTxtDay()));
+			GregorianCalendar startCal = new GregorianCalendar(textStartDate.getYear(),
+					textStartDate.getMonth()-1,textStartDate.getDay());
+			GregorianCalendar endCal = new GregorianCalendar(textEndDate.getYear(),
+					textEndDate.getMonth()-1,textEndDate.getDay());
 			int roomNum;
 			if(textRoomNum.getRadioBtn1()) {
 				roomNum = 500;
@@ -364,10 +377,7 @@ public class StdInsert extends JDialog implements ActionListener {
 	private boolean isFieldCheck() {
 		boolean compare = true;
 		if(textName.getText().equals("") || textJumin.getTxtJumin1().equals("")||
-				textJumin.getTxtJumin2().equals("")||textStartDate.getTxtYear().equals("") ||
-				textStartDate.getTxtMonth().equals("") ||textStartDate.getTxtDay().equals("") ||
-				textEndDate.getTxtYear().equals("") || textEndDate.getTxtMonth().equals("") ||
-				textEndDate.getTxtDay().equals("") ||	textMobile.getTxtSN().equals("") ||				
+				textJumin.getTxtJumin2().equals("")|| textMobile.getTxtSN().equals("") ||				
 				textMobile.getTxtTN().equals("") ||	textTel.getTxtSN().equals("") ||
 				textTel.getTxtTN().equals("") || textAddr.getText().equals("") ||				
 				textEmail.getText().equals("")) {
@@ -378,8 +388,13 @@ public class StdInsert extends JDialog implements ActionListener {
 	public void cleanTextField() {
 		textName.setText("");
 		textJumin.setTxtJumin1("", "");
-		textStartDate.setTxtDate(null, null, null);
-		textEndDate.setTxtDate(null, null, null);
+		Calendar now = Calendar.getInstance();
+		textStartDate.setTxtDate(now.get(Calendar.YEAR),
+				now.get(Calendar.MONTH)+1,
+				now.get(Calendar.DATE));
+		textEndDate.setTxtDate(now.get(Calendar.YEAR) + 1,
+				now.get(Calendar.MONTH)+1,
+				now.get(Calendar.DATE)-1);
 		textAddr.setText("");
 		textMobile.setMobile(0, "", "");
 		textTel.setMobile(0, "", "");		
