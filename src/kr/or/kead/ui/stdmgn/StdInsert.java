@@ -17,29 +17,30 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import kr.or.kead.domain.InfoStudent;
+import kr.or.kead.module.PhoneCheck;
 import kr.or.kead.module.RegDate;
 import kr.or.kead.module.RegJumin;
-import kr.or.kead.module.RegPhone;
+import kr.or.kead.module.RoomCheck;
 import kr.or.kead.service.DaoInfoStudent;
 import kr.or.kead.service.DaoTable;
 import kr.or.kead.ui.menu.MenuMgn;
 
-import java.awt.FlowLayout;
-
+@SuppressWarnings("serial")
 public class StdInsert extends JDialog implements ActionListener {
 	private JTextField textName;	
 	private RegJumin textJumin;
 	private RegDate textStartDate;
 	private RegDate textEndDate;
-	private RegPhone textMobile;
-	private RegPhone textTel;
+	private PhoneCheck textMobile;
+	private PhoneCheck textTel;
 	private JTextField textAddr;
-	private RegDormitory textRoomNum;
+	private RoomCheck textRoomNum;
 	private JComboBox<String> comboStdType;
 	private JComboBox<String> comboGrade;
 	private JTextField textEmail;
 	private JButton btnCancel;
 	private JButton btnInsert;
+	@SuppressWarnings("unused")
 	private String compareMenu= null;
 	private InfoStudent std = new InfoStudent();
 	private DaoTable dao;
@@ -88,15 +89,12 @@ public class StdInsert extends JDialog implements ActionListener {
 		getContentPane().add(textName);
 		textName.setColumns(10);
 		
-	
-		
 		JLabel lblJuminnum = new JLabel("주민번호");
 		lblJuminnum.setFont(new Font("궁서체", Font.BOLD, 12));
 		lblJuminnum.setHorizontalAlignment(SwingConstants.CENTER);
 		getContentPane().add(lblJuminnum);
 		
 		textJumin = new RegJumin();		
-		FlowLayout flowLayout = (FlowLayout) textJumin.getLayout();
 		getContentPane().add(textJumin);		
 		
 		JLabel lblStartDate = new JLabel("입학날짜");
@@ -131,18 +129,16 @@ public class StdInsert extends JDialog implements ActionListener {
 		lblMobile.setHorizontalAlignment(SwingConstants.CENTER);
 		getContentPane().add(lblMobile);
 		
-		textMobile = new RegPhone(1);			
-		getContentPane().add(textMobile);
-		
+		textMobile = new PhoneCheck(true);		
+		getContentPane().add(textMobile);		
 		
 		JLabel lblTel = new JLabel("전화번호");
 		lblTel.setFont(new Font("궁서체", Font.BOLD, 12));
 		lblTel.setHorizontalAlignment(SwingConstants.CENTER);
 		getContentPane().add(lblTel);
 		
-		textTel = new RegPhone(2);		
-		getContentPane().add(textTel);
-		
+		textTel = new PhoneCheck(false);		
+		getContentPane().add(textTel);		
 		
 		JLabel lblAddr = new JLabel("주    소");
 		lblAddr.setFont(new Font("궁서체", Font.BOLD, 12));
@@ -160,7 +156,7 @@ public class StdInsert extends JDialog implements ActionListener {
 		lblRoomNum.setHorizontalAlignment(SwingConstants.CENTER);
 		getContentPane().add(lblRoomNum);
 		
-		textRoomNum = new RegDormitory();		
+		textRoomNum = new RoomCheck();		
 		getContentPane().add(textRoomNum);		
 		
 		JLabel lblStdType = new JLabel("장애유형");
@@ -173,8 +169,7 @@ public class StdInsert extends JDialog implements ActionListener {
 		for(int i=0;i<len;i++) {
 			comboStdType.addItem(type[i]);
 		}				
-		getContentPane().add(comboStdType);
-		
+		getContentPane().add(comboStdType);		
 		
 		JLabel lblGrade = new JLabel("등급");
 		lblGrade.setFont(new Font("궁서체", Font.BOLD, 12));
@@ -187,8 +182,7 @@ public class StdInsert extends JDialog implements ActionListener {
 			comboGrade.addItem(grade[i] + "급");
 		}
 		comboGrade.addActionListener(this);		
-		getContentPane().add(comboGrade);
-		
+		getContentPane().add(comboGrade);		
 		
 		JLabel lblEmail = new JLabel("EMAIL");
 		lblEmail.setFont(new Font("궁서체", Font.BOLD, 12));
@@ -203,19 +197,16 @@ public class StdInsert extends JDialog implements ActionListener {
 		
 		btnInsert = new JButton("저장");	
 		btnInsert.addActionListener(this);
-		
-		
+				
 		getContentPane().add(btnInsert);
 		
 		btnCancel = new JButton("취소");
-		btnCancel.addActionListener(this);
-		
+		btnCancel.addActionListener(this);		
 		
 		getContentPane().add(btnCancel);
 		this.setVisible(true);			
 		pack();
 	}	
-	
 	
 	private void fillText(int stdId) {
 		dao = new DaoInfoStudent();
@@ -249,9 +240,7 @@ public class StdInsert extends JDialog implements ActionListener {
 			this.dispose();
 		}
 	}
-
-
-
+	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == textName) {
 			textJumin.requestFocus();
@@ -295,8 +284,8 @@ public class StdInsert extends JDialog implements ActionListener {
 				std.setJuminNum(textJumin.getJumin());
 				std.setStartDate(startCal.getTime());
 				std.setEndDate(endCal.getTime());
-				std.setMobile(textMobile.getPhoneNum());			
-				std.setTel(textTel.getPhoneNum());				
+				std.setMobile(textMobile.getPhone());			
+				std.setTel(textTel.getPhone());				
 				std.setStdAddr(textAddr.getText());
 				if(textRoomNum.getRadioBtn1()) {
 					std.setRoomNum(500);
@@ -317,8 +306,6 @@ public class StdInsert extends JDialog implements ActionListener {
 			}		
 	}
 
-
-
 	protected void btnCancelActionPerformed(ActionEvent e) {
 		cleanTextField();		
 	}
@@ -336,8 +323,8 @@ public class StdInsert extends JDialog implements ActionListener {
 				roomNum = Integer.parseInt(textRoomNum.getTxtRoomNum());
 			}
 			std = new InfoStudent(textName.getText(), textJumin.getJumin(),
-					startCal.getTime(), endCal.getTime(), textMobile.getPhoneNum(),
-					textTel.getPhoneNum(),
+					startCal.getTime(), endCal.getTime(), textMobile.getPhone(),
+					textTel.getPhone(),
 					textAddr.getText(),	roomNum,
 					typeValue[comboStdType.getSelectedIndex()], comboGrade.getSelectedIndex()+1
 					, textEmail.getText());		
@@ -355,16 +342,18 @@ public class StdInsert extends JDialog implements ActionListener {
 			JOptionPane.showMessageDialog(null, "필수입력요소가 입력되지 않았습니다.");
 		}				
 	}
+	
 	private boolean isFieldCheck() {
 		boolean compare = true;
 		if(textName.getText().equals("") || textJumin.getJumin().equals("")||
-				textMobile.getPhoneNum().equals("") ||				
-				textTel.getPhoneNum().equals("") || textAddr.getText().equals("") ||				
+				textMobile.getPhone().equals("") ||				
+				textTel.getPhone().equals("") || textAddr.getText().equals("") ||				
 				textEmail.getText().equals("")) {
 			compare = false;
 		}		
 		return compare;		
-	}	
+	}
+	
 	public void cleanTextField() {
 		textName.setText("");
 		textJumin.setJumin(" - ");
@@ -382,6 +371,7 @@ public class StdInsert extends JDialog implements ActionListener {
 		comboGrade.setSelectedIndex(0);
 		textEmail.setText("");
 	}
+	
 	public static int getType(int stdType) {		
 		switch(stdType) {
 		case 111 : return 0;
@@ -405,6 +395,7 @@ public class StdInsert extends JDialog implements ActionListener {
 			return 0;		
 		}		
 	}
+	
 	public int getMobile(String mobile) {
 		switch(mobile) {
 		case "010" : return 0;

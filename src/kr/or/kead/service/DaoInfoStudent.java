@@ -13,25 +13,15 @@ import kr.or.kead.domain.InfoStudent;
 import kr.or.kead.domain.StdAddress;
 import kr.or.kead.utils.MysqlCon;
 
-public class DaoInfoStudent implements DaoTable {
-	
-	public Connection getConnection() {
-		Connection con = null;
-		try {
-			con = MysqlCon.getDatabaseConnection();
-		} catch (ClassNotFoundException e1) {			
-			e1.printStackTrace();
-		}
-		return con;
-	}
-	
+public class DaoInfoStudent implements DaoTable {	
 	@Override
 	public int insertDao(Object obj) {
-		Connection con = getConnection();		
+		Connection con = MysqlCon.getConnection();		
 		InfoStudent std = (InfoStudent) obj;
-		String sql = "insert into infoStudent values(null,?,?,?,?,?,?,?,?,?,?,?)";		
+		String sql = "insert into infoStudent values(null,?,?,?,?,?,?,?,?,?,?,?)";	
+		PreparedStatement pstmt = null;
 		try {
-			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, std.getStdName());
 			pstmt.setString(2, std.getJuminNum());
 			pstmt.setDate(3, new Date(std.getStartDate().getTime()));
@@ -42,14 +32,14 @@ public class DaoInfoStudent implements DaoTable {
 			pstmt.setInt(8, std.getRoomNum());
 			pstmt.setInt(9, std.getStdType());
 			pstmt.setInt(10, std.getGrade());
-			pstmt.setString(11, std.getEmail());
-			System.out.println(pstmt);
+			pstmt.setString(11, std.getEmail());			
 			pstmt.execute();			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return -1;
 		}finally {
 			try {
+				pstmt.close();
 				con.close();
 			} catch (SQLException e) {			
 				e.printStackTrace();
@@ -61,7 +51,7 @@ public class DaoInfoStudent implements DaoTable {
 
 	@Override
 	public int updateDao(Object obj) {
-		Connection con = getConnection();
+		Connection con = MysqlCon.getConnection();
 		InfoStudent std = (InfoStudent) obj;
 		String sql = "update infoStudent set"
 				+ " stdName=?,"
@@ -76,8 +66,9 @@ public class DaoInfoStudent implements DaoTable {
 				+ " grade=?,"
 				+ " email=? where idx=?";		
 		System.out.println(sql);
+		PreparedStatement pstmt=null;
 		try {
-			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, std.getStdName());			
 			pstmt.setString(2, std.getJuminNum());
 			pstmt.setDate(3, new Date(std.getStartDate().getTime()));
@@ -97,6 +88,7 @@ public class DaoInfoStudent implements DaoTable {
 			return -1;
 		}finally {
 			try {
+				pstmt.close();
 				con.close();
 			} catch (SQLException e) {			
 				e.printStackTrace();
@@ -107,10 +99,11 @@ public class DaoInfoStudent implements DaoTable {
 
 	@Override
 	public int deleteDao(int regNo) {
-		Connection con = getConnection();
+		Connection con = MysqlCon.getConnection();
 		String sql = "delete from infoStudent where idx = ?";
+		PreparedStatement pstmt = null;
 		try {
-			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, regNo);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {			
@@ -118,6 +111,7 @@ public class DaoInfoStudent implements DaoTable {
 			return -1;
 		}finally {
 			try {
+				pstmt.close();
 				con.close();
 			} catch (SQLException e) {			
 				e.printStackTrace();
@@ -128,12 +122,13 @@ public class DaoInfoStudent implements DaoTable {
 
 	@Override
 	public ArrayList<InfoStudent> selectDao() {
-		Connection con = getConnection();
+		Connection con = MysqlCon.getConnection();
 		String sql = "select * from infoStudent";
 		InfoStudent std;
 		ArrayList<InfoStudent> sendValue = new ArrayList<>();
+		PreparedStatement pstmt = null;
 		try {
-			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt = con.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
 				std = new InfoStudent();
@@ -155,17 +150,25 @@ public class DaoInfoStudent implements DaoTable {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			try {
+				pstmt.close();
+				con.close();
+			} catch (SQLException e) {			
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}
 	
 	@Override
 	public InfoStudent selectStudentById(int stdId) {
-		Connection con = getConnection();		
+		Connection con = MysqlCon.getConnection();		
 		String sql = "select * from infoStudent where idx= ?";
-		InfoStudent std = new InfoStudent();		
+		InfoStudent std = new InfoStudent();	
+		PreparedStatement pstmt=null;
 		try {
-			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, stdId);
 			ResultSet rs = pstmt.executeQuery();
 			if(rs.next()) {
@@ -182,13 +185,14 @@ public class DaoInfoStudent implements DaoTable {
 				std.setGrade(Integer.parseInt(rs.getString("grade")));
 				std.setEmail(rs.getString("email"));
 			}else {
-				JOptionPane.showMessageDialog(null, "�˻��Ͻ� �ε����� �������� �ʽ��ϴ�.");
+				JOptionPane.showMessageDialog(null, "아이디를 찾을 수 없습니다.");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
 			try {
+				pstmt.close();
 				con.close();
 			} catch (SQLException e) {			
 				e.printStackTrace();
@@ -199,7 +203,16 @@ public class DaoInfoStudent implements DaoTable {
 
 	@Override
 	public ArrayList<StdAddress> selectStdAddrByDong(String dong) {
-		// TODO Auto-generated method stub
+		Connection con = MysqlCon.getConnection();		
+		String sql = "select * from infoStudent where idx= ?";
+		StdAddress stdAddr = new StdAddress();
+		PreparedStatement pstmt =null;
+		try {
+			pstmt = con.prepareStatement(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 	

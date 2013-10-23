@@ -82,6 +82,7 @@ public class MenuMgn extends JMenuBar implements ActionListener {
 					if(confirmDel == 0) {
 						if(dao.deleteDao(Integer.parseInt(stdId))==0) {
 							JOptionPane.showMessageDialog(null, "삭제가 완료되었습니다.");
+							refreshList();
 						}else {
 							JOptionPane.showMessageDialog(null, "삭제가 완료 되지 않았습니다.");
 						}
