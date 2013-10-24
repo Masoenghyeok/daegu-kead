@@ -10,8 +10,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-import kr.or.kead.service.DaoTable;
-
 public class CreateInsertPostAddr {
 	
 	public void makeInsertSql() {
@@ -27,7 +25,7 @@ public class CreateInsertPostAddr {
 		
 		String[] data;
 		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(readFile), "euc-kr"));
+			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(readFile)));
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(sqlFile), "euc-kr"));
 			String str;			
 			br.readLine();

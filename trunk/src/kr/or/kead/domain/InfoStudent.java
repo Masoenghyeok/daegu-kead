@@ -6,15 +6,16 @@ public class InfoStudent {
 	private int idx;
 	private String stdName;
 	private String juminNum;
-	private Date startDate;			// ÀÔÇÐ³âµµ
-	private Date endDate;			// ¼ö·á³âµµ
+	private Date startDate;			// ï¿½ï¿½ï¿½Ð³âµµ
+	private Date endDate;			// ï¿½ï¿½ï¿½ï¿½âµµ
 	private String mobile;
 	private String tel;
 	private String stdAddr;
-	private int roomNum;			// ±â¼÷»ç À¯¹« 500ÅëÇÐ, 200¹ø, 300¹ø, 400¹ø
-	private int stdType;			// Àå¾ÖÀ¯Çü
-	private int grade;				// Àå¾Öµî±Þ
+	private int roomNum;			// ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 500ï¿½ï¿½ï¿½ï¿½, 200ï¿½ï¿½, 300ï¿½ï¿½, 400ï¿½ï¿½
+	private int stdType;			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	private int grade;				// ï¿½ï¿½Öµï¿½ï¿½
 	private String email;
+	private int departCode;
 	
 	
 	public InfoStudent() {
@@ -23,7 +24,8 @@ public class InfoStudent {
 	
 	public InfoStudent(int idx, String stdName, String juminNum,
 			Date startDate, Date endDate, String mobile, String tel,
-			String stdAddr, int roomNum, int stdType, int grade, String email) {
+			String stdAddr, int roomNum, int stdType, int grade, String email,
+			int departCode) {
 		this.idx = idx;
 		this.stdName = stdName;
 		this.juminNum = juminNum;
@@ -36,11 +38,12 @@ public class InfoStudent {
 		this.stdType = stdType;
 		this.grade = grade;
 		this.email = email;
+		this.departCode = departCode;
 	}
 	
 	public InfoStudent(String stdName, String juminNum, Date startDate,
 			Date endDate, String mobile, String tel, String stdAddr,
-			int roomNum, int stdType, int grade, String email) {
+			int roomNum, int stdType, int grade, String email, int departCode) {
 		this.stdName = stdName;
 		this.juminNum = juminNum;
 		this.startDate = startDate;
@@ -52,6 +55,7 @@ public class InfoStudent {
 		this.stdType = stdType;
 		this.grade = grade;
 		this.email = email;
+		this.departCode = departCode;
 	}
 
 	public int getIdx() {
@@ -148,16 +152,24 @@ public class InfoStudent {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}	
+
+	public int getDepartCode() {
+		return departCode;
 	}
-	
-	
+
+	public void setDepartCode(int departCode) {
+		this.departCode = departCode;
+	}
 
 	@Override
 	public String toString() {
 		return String
-				.format("InfoStudent [idx=%s, stdName=%s, juminNum=%s, startDate=%s, endDate=%s, mobile=%s, tel=%s, stdAddr=%s, roomNum=%s, stdType=%s, grade=%s, email=%s]",
+				.format("InfoStudent [idx=%s, stdName=%s, juminNum=%s, startDate=%s,"
+						+ " endDate=%s, mobile=%s, tel=%s, stdAddr=%s, roomNum=%s, "
+						+ "stdType=%s, grade=%s, email=%s, departCode=%s]",
 						idx, stdName, juminNum, startDate, endDate, mobile,
-						tel, stdAddr, roomNum, stdType, grade, email);
+						tel, stdAddr, roomNum, stdType, grade, email, departCode);
 	}
 	
 	

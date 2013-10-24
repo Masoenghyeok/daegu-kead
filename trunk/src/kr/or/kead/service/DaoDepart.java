@@ -93,6 +93,7 @@ public class DaoDepart implements DaoTable{
 				departs.add(new Depart(rs.getInt("code"),rs.getString("name"),
 						rs.getInt("prof"),rs.getString("tel")));
 			}
+			return departs;
 		} catch (SQLException e) {			
 			e.printStackTrace();
 			return null;
@@ -100,17 +101,17 @@ public class DaoDepart implements DaoTable{
 			try { pstmt.close(); con.close();} 
 			catch (SQLException e) { e.printStackTrace();}			
 		}
-		return departs;
+		
 	}
 
 	@Override
-	public Object selectTableById(int idx) {
+	public Object selectTableById(int code) {
 		Connection con = MysqlCon.getConnection();		
 		String sql = "select code, name, prof, tel from depart where code = ?";
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, idx);
+			pstmt.setInt(1, code);
 			ResultSet rs = pstmt.executeQuery();
 			if(rs.next()) {				
 				return new Depart(rs.getInt("code"),rs.getString("name"),

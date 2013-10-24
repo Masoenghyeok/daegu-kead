@@ -2,10 +2,12 @@ package kr.or.kead.ui.stdmgn;
 
 import java.util.ArrayList;
 
-import javax.swing.event.TableModelEvent;
+import javax.swing.JComboBox;
 import javax.swing.table.AbstractTableModel;
 
+import kr.or.kead.domain.Depart;
 import kr.or.kead.domain.InfoStudent;
+import kr.or.kead.service.DaoDepart;
 import kr.or.kead.service.DaoInfoStudent;
 import kr.or.kead.service.DaoTable;
 
@@ -15,12 +17,13 @@ public class CustomTableModel extends AbstractTableModel {
 	// ���̺� �� ���� ���� �̸�
 	private static final String[] columnNames = {"번호","이름","주민번호","입학일자","수료일자","휴대폰",
 		"집전화","주소","통학/기숙",
-		"장애유형","장애등급","Email"};
+		"장애유형","장애등급","Email","분야"};
 	
 	// ���̺� �� ���� ���� Ŭ����
 	private static final Class[] columnClasses = {
 		Integer.class, String.class, String.class, String.class, String.class, String.class,
-		String.class, String.class, Integer.class, Integer.class, Integer.class, String.class
+		String.class, String.class, Integer.class, Integer.class, Integer.class, String.class,
+		Integer.class
 	};
 	
 	public CustomTableModel() {
@@ -52,6 +55,9 @@ public class CustomTableModel extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int row, int col) {
 		InfoStudent std = (InfoStudent)students.get(row);
+		DaoTable dao = new DaoDepart();
+		Depart depart = (Depart)dao.selectTableById(std.getDepartCode());	
+			
 		switch(col) {
 		case 0 : return std.getIdx();
 		case 1 : return std.getStdName();
@@ -65,6 +71,7 @@ public class CustomTableModel extends AbstractTableModel {
 		case 9 : return StdInsert.type[StdInsert.getType(std.getStdType())];
 		case 10 : return std.getGrade() + "급";
 		case 11 : return "  " + std.getEmail();
+		case 12 : return depart.getName();
 		}
 		return "";
 	}

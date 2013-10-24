@@ -1,15 +1,14 @@
 package kr.or.kead.ui.stdmgn;
 
-import javax.swing.JPanel;
-
 import java.awt.FlowLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.DefaultComboBoxModel;
 
 public class RegMobile extends JPanel implements KeyListener {
 	private JTextField txtSN;
