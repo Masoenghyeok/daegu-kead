@@ -161,7 +161,7 @@ public class DaoInfoStudent implements DaoTable {
 	}
 	
 	@Override
-	public InfoStudent selectById(int idx) {
+	public InfoStudent selectTableById(int idx) {
 		Connection con = MysqlCon.getConnection();		
 		String sql = "select * from infoStudent where idx= ?";
 		InfoStudent std = new InfoStudent();	
