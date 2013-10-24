@@ -51,3 +51,25 @@ alter table infoStudent modify column startDate date;
 alter table infoStudent modify column endDate date;
 
 desc infoStudent;
+
+
+-- 컴퓨터응용기계분야 전자분야 정보기술분야 디자인분야 의상분야 경영회계분야 텔레마케팅 
+-- 시각특화훈련분야 청각특화훈련분야 지적특화훈련분야
+-- 맞춤훈련
+
+create table depart(
+	code int primary key,
+	name varchar(20) not null,
+	prof int,
+	tel char(13) not null	
+);
+
+insert into depart values (100, "정보", null, "053-111-1111");
+insert into depart values (200, "전자", null, "053-222-2222");
+insert into depart values (300, "기계", null, "053-333-3333");
+insert into depart values (400, "디자인", null, "053-444-4444");
+
+
+
+select * from depart;
+
