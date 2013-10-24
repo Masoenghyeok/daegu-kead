@@ -1,17 +1,12 @@
 package kr.or.kead;
 
-import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
-
-import kr.or.kead.domain.Depart;
-import kr.or.kead.service.DaoDepart;
-import kr.or.kead.service.DaoTable;
+import kr.or.kead.ui.MainFrame;
 
 public class TestMain {
 
 	public static void main(String[] args) {
-//		new MainFrame();
+		new MainFrame();
 //		CreateInsertPostAddr cip = new CreateInsertPostAddr();
 //		cip.makeInsertSql();
 //		StdAddr run = new StdAddr();
@@ -23,6 +18,7 @@ public class TestMain {
 //			JOptionPane.showMessageDialog(null, "성공");
 //		}
 		
+		/*
 		DaoDepart dao = new DaoDepart();
 		ArrayList<Object> departs = dao.selectDao();
 		for(Object depart:departs) {
@@ -58,5 +54,7 @@ public class TestMain {
 			msg = "실패";			
 		}
 		JOptionPane.showMessageDialog(null, msg);
+	}
+	*/
 	}
 }

@@ -1,9 +1,6 @@
 package kr.or.kead.ui.stdmgn;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.JOptionPane;
@@ -14,7 +11,6 @@ import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
@@ -55,7 +51,7 @@ public class StdList extends JPanel implements TableModelListener {
 		model.getColumn(9).setPreferredWidth(20);
 		model.getColumn(10).setPreferredWidth(20);
 		model.getColumn(11).setPreferredWidth(100);	
-		
+		model.getColumn(12).setPreferredWidth(100);
 		for(int i=0;i<model.getColumnCount();i++) {
 			if(i==7||i==11) {
 				model.getColumn(i).setCellRenderer(dtcrLeft);
@@ -92,8 +88,9 @@ public class StdList extends JPanel implements TableModelListener {
 				(String)model.getValueAt(row, 7),
 				Integer.parseInt((String)model.getValueAt(row, 8)),
 				Integer.parseInt((String)model.getValueAt(row, 9)),
-				Integer.parseInt((String)model.getValueAt(row, 10))
-				, (String)model.getValueAt(row, 11));
+				Integer.parseInt((String)model.getValueAt(row, 10)),
+				(String)model.getValueAt(row, 11),
+				Integer.parseInt((String)model.getValueAt(row, 12)));
 		if(dao.updateDao(std) == 0) {
 			JOptionPane.showMessageDialog(null, "수정되었습니다.");
 		}else {

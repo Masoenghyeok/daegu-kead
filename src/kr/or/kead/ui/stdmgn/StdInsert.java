@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.StringTokenizer;
@@ -18,12 +19,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import kr.or.kead.domain.Depart;
 import kr.or.kead.domain.InfoStudent;
 import kr.or.kead.module.PhoneCheck;
 import kr.or.kead.module.PostGetAddr;
 import kr.or.kead.module.RegDate;
+import kr.or.kead.module.RegEmail;
 import kr.or.kead.module.RegJumin;
 import kr.or.kead.module.RoomCheck;
+import kr.or.kead.service.DaoDepart;
 import kr.or.kead.service.DaoInfoStudent;
 import kr.or.kead.service.DaoTable;
 import kr.or.kead.ui.menu.MenuMgn;
@@ -40,15 +44,18 @@ public class StdInsert extends JDialog implements ActionListener {
 	private RoomCheck textRoomNum;
 	private JComboBox<String> comboStdType;
 	private JComboBox<String> comboGrade;
-	private JTextField textEmail;
+	private RegEmail textEmail;
+	private JLabel lblNewLabel;
+	private JComboBox<String> comboDepart;
 	private JButton btnCancel;
-	private JButton btnInsert;
+	private JButton btnInsert;	
 	@SuppressWarnings("unused")
 	private String compareMenu= null;
 	private InfoStudent std = new InfoStudent();
 	private DaoTable dao;
 	private int stdId;
 	private MenuMgn menuMgn;
+	Depart depart;
 		
 	
 	static final String[] type={"지체장애","뇌병변장애","시각장애","청각장애",
@@ -64,8 +71,7 @@ public class StdInsert extends JDialog implements ActionListener {
 	};
 	
 	static final int[] grade={ 1, 2, 3, 4, 5, 6};
-	private JLabel lblNewLabel;
-	private JComboBox comboBox;
+	
 	
 	/**
 	 * @wbp.parser.constructor
@@ -208,19 +214,27 @@ public class StdInsert extends JDialog implements ActionListener {
 		lblEmail.setHorizontalAlignment(SwingConstants.CENTER);
 		getContentPane().add(lblEmail);
 		
-		textEmail = new JTextField();
-		textEmail.addActionListener(this);
-		textEmail.setHorizontalAlignment(SwingConstants.CENTER);
+		textEmail = new RegEmail();		
 		getContentPane().add(textEmail);
-		textEmail.setColumns(10);
+		
 		
 		lblNewLabel = new JLabel("학과");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("궁서체", Font.BOLD, 12));
 		getContentPane().add(lblNewLabel);
 		
-		comboBox = new JComboBox();
-		getContentPane().add(comboBox);
+		
+		dao = new DaoDepart();
+		ArrayList<Object> departNames = dao.selectDao();
+		comboDepart = new JComboBox<>();
+		len = departNames.size();
+		System.out.println("len = " + len);
+		for(int i=0;i<len;i++) {
+			depart = (Depart)departNames.get(i);			
+			comboDepart.addItem(depart.getName());
+			comboDepart.updateUI();
+		}
+		getContentPane().add(comboDepart);
 		
 		btnInsert = new JButton("저장");	
 		btnInsert.addActionListener(this);
@@ -261,7 +275,9 @@ public class StdInsert extends JDialog implements ActionListener {
 				textRoomNum.setRadioBtn2(true);
 				textRoomNum.setTxtRoomNum(String.valueOf(std.getRoomNum()));
 			}			
-			textEmail.setText(std.getEmail());
+			textEmail.setEmail(std.getEmail());
+			depart = (Depart)new DaoDepart().selectTableById(std.getDepartCode());
+			comboDepart.setSelectedItem(depart.getName());
 			btnInsert.setText("수정");
 		}else {			
 			this.dispose();
@@ -321,7 +337,11 @@ public class StdInsert extends JDialog implements ActionListener {
 				}				
 				std.setStdType(typeValue[comboStdType.getSelectedIndex()]);
 				std.setGrade(comboGrade.getSelectedIndex()+1);
-				std.setEmail(textEmail.getText());				
+				std.setEmail(textEmail.getEmail());
+				
+				
+				std.setDepartCode(new DaoDepart().selectCodeDepartByName(
+						(String)comboDepart.getSelectedItem()));
 				if(dao.updateDao(std) == 0){					
 					this.dispose();
 					menuMgn.refreshList();
@@ -349,12 +369,14 @@ public class StdInsert extends JDialog implements ActionListener {
 			}else {
 				roomNum = Integer.parseInt(textRoomNum.getTxtRoomNum());
 			}
+			DaoDepart deprat = new DaoDepart();
 			std = new InfoStudent(textName.getText(), textJumin.getJumin(),
 					startCal.getTime(), endCal.getTime(), textMobile.getPhone(),
 					textTel.getPhone(),
 					textAddr.getText(),	roomNum,
 					typeValue[comboStdType.getSelectedIndex()], comboGrade.getSelectedIndex()+1
-					, textEmail.getText());		
+					, textEmail.getEmail(),
+					deprat.selectCodeDepartByName((String)comboDepart.getSelectedItem()));		
 			dao = new DaoInfoStudent();
 					
 			if(dao.insertDao(std) == 0 ) {
@@ -375,7 +397,7 @@ public class StdInsert extends JDialog implements ActionListener {
 		if(textName.getText().equals("") || textJumin.getJumin().equals("")||
 				textMobile.getPhone().equals("") ||				
 				textTel.getPhone().equals("") || textAddr.getText().equals("") ||				
-				textEmail.getText().equals("")) {
+				textEmail.getEmail().equals("")) {
 			compare = false;
 		}		
 		return compare;		
@@ -396,7 +418,7 @@ public class StdInsert extends JDialog implements ActionListener {
 		textTel.setPhone(" - - ");		
 		comboStdType.setSelectedIndex(0);
 		comboGrade.setSelectedIndex(0);
-		textEmail.setText("");
+		textEmail.setEmail(" @ ");
 	}
 	
 	public static int getType(int stdType) {		

@@ -66,6 +66,8 @@ create table depart(
 	tel char(13) not null	
 );
 
+update infostudent set departCode='200' where idx ='2';
+
 insert into depart values (100, "정보", null, "053-111-1111");
 insert into depart values (200, "전자", null, "053-222-2222");
 insert into depart values (300, "기계", null, "053-333-3333");
@@ -73,7 +75,10 @@ insert into depart values (400, "디자인", null, "053-444-4444");
 
 
 
-update depart set name='전자정보', prof=0, tel='053-999-9999' where code=200;
+update depart set name='정보기술', prof=1001, tel='053-999-9999' where code=100;
+update depart set name='전자', prof=2001, tel='053-999-9999' where code=200;
+update depart set name='컴퓨터응용기계', prof=3001, tel='053-999-9999' where code=300;
+update depart set name='디자인', prof=4001, tel='053-999-9999' where code=400;
 select code from depart where name = "정보";
 
 select max(code) from depart;
@@ -93,6 +98,14 @@ insert into professor values(1001, '이순재', 100, "자바프로그래밍");
 insert into professor values(1002, '백일섭', 100, "데이터베이스");
 insert into professor values(2001, '박근영', 200, "안드로이드");
 insert into professor values(2002, '신구', 200, "비주얼베이직");
+insert into professor values(3001, '박건형', 300, "기계제도");
+insert into professor values(3002, '최불암', 300, "재료역학");
+insert into professor values(4001, '앙드레김', 400, "한복");
+insert into professor values(4002, '샤넬', 400, "양장");
+
+
+update professor set course="회로설계" where code = 2001;
+update professor set course="마이크로 프로세서" where code = 2002;
 
 update depart set prof=1001 where code =100;
 update depart set prof=2001 where code =200;

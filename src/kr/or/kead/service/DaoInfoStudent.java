@@ -17,7 +17,7 @@ public class DaoInfoStudent implements DaoTable {
 	public int insertDao(Object obj) {
 		Connection con = MysqlCon.getConnection();		
 		InfoStudent std = (InfoStudent) obj;
-		String sql = "insert into infoStudent values(null,?,?,?,?,?,?,?,?,?,?,?)";	
+		String sql = "insert into infoStudent values(null,?,?,?,?,?,?,?,?,?,?,?,?)";	
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = con.prepareStatement(sql);
@@ -31,7 +31,8 @@ public class DaoInfoStudent implements DaoTable {
 			pstmt.setInt(8, std.getRoomNum());
 			pstmt.setInt(9, std.getStdType());
 			pstmt.setInt(10, std.getGrade());
-			pstmt.setString(11, std.getEmail());			
+			pstmt.setString(11, std.getEmail());
+			pstmt.setInt(12, std.getDepartCode());
 			pstmt.execute();			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -63,7 +64,8 @@ public class DaoInfoStudent implements DaoTable {
 				+ " roomNum=?,"
 				+ " stdType=?,"
 				+ " grade=?,"
-				+ " email=? where idx=?";		
+				+ " email=?,"
+				+ " departCode=? where idx=?";		
 		System.out.println(sql);
 		PreparedStatement pstmt=null;
 		try {
@@ -79,7 +81,8 @@ public class DaoInfoStudent implements DaoTable {
 			pstmt.setInt(9, std.getStdType());
 			pstmt.setInt(10, std.getGrade());
 			pstmt.setString(11, std.getEmail());
-			pstmt.setInt(12, std.getIdx());			
+			pstmt.setInt(12, std.getDepartCode());
+			pstmt.setInt(13, std.getIdx());			
 			pstmt.executeUpdate();
 			
 		} catch (SQLException e) {		
@@ -142,7 +145,8 @@ public class DaoInfoStudent implements DaoTable {
 				std.setRoomNum(rs.getInt("roomNum"));
 				std.setStdType(rs.getInt("stdType"));
 				std.setGrade(rs.getInt("grade"));
-				std.setEmail(rs.getString("email"));				
+				std.setEmail(rs.getString("email"));
+				std.setDepartCode(rs.getInt("departCode"));
 				sendValue.add(std);
 			}			
 			return sendValue;		
@@ -183,6 +187,7 @@ public class DaoInfoStudent implements DaoTable {
 				std.setStdType(Integer.parseInt(rs.getString("stdType")));
 				std.setGrade(Integer.parseInt(rs.getString("grade")));
 				std.setEmail(rs.getString("email"));
+				std.setDepartCode(rs.getInt("departCode"));
 			}else {
 				JOptionPane.showMessageDialog(null, "아이디를 찾을 수 없습니다.");
 			}
