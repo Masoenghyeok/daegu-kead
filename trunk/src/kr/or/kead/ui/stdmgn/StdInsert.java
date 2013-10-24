@@ -4,6 +4,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.StringTokenizer;
@@ -18,6 +20,7 @@ import javax.swing.SwingConstants;
 
 import kr.or.kead.domain.InfoStudent;
 import kr.or.kead.module.PhoneCheck;
+import kr.or.kead.module.PostGetAddr;
 import kr.or.kead.module.RegDate;
 import kr.or.kead.module.RegJumin;
 import kr.or.kead.module.RoomCheck;
@@ -33,7 +36,7 @@ public class StdInsert extends JDialog implements ActionListener {
 	private RegDate textEndDate;
 	private PhoneCheck textMobile;
 	private PhoneCheck textTel;
-	private JTextField textAddr;
+	private JTextField textAddr;	
 	private RoomCheck textRoomNum;
 	private JComboBox<String> comboStdType;
 	private JComboBox<String> comboGrade;
@@ -62,6 +65,9 @@ public class StdInsert extends JDialog implements ActionListener {
 	
 	static final int[] grade={ 1, 2, 3, 4, 5, 6};
 	
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public StdInsert(MenuMgn menuMgn) {
 		this.setTitle("학생추가");
 		makeComponent();
@@ -145,12 +151,23 @@ public class StdInsert extends JDialog implements ActionListener {
 		lblAddr.setHorizontalAlignment(SwingConstants.CENTER);
 		getContentPane().add(lblAddr);
 		
+		
+		
 		textAddr = new JTextField();
-		textAddr.addActionListener(this);
+		textAddr.setToolTipText("클릭하세요");
+		textAddr.addActionListener(this);		
 		textAddr.setHorizontalAlignment(SwingConstants.CENTER);
 		getContentPane().add(textAddr);
 		textAddr.setColumns(10);
-		
+
+		textAddr.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+				System.out.println("focus in");
+				PostGetAddr postDialog = new PostGetAddr(textAddr);
+				postDialog.setVisible(true);
+			}			
+		});			
 		JLabel lblRoomNum = new JLabel("기숙사/통학");
 		lblRoomNum.setFont(new Font("궁서체", Font.BOLD, 12));
 		lblRoomNum.setHorizontalAlignment(SwingConstants.CENTER);
@@ -210,7 +227,7 @@ public class StdInsert extends JDialog implements ActionListener {
 	
 	private void fillText(int stdId) {
 		dao = new DaoInfoStudent();
-		std = dao.selectStudentById(stdId);	
+		std = (InfoStudent)dao.selectById(stdId);	
 		if(std.getIdx() != 0) {
 			textName.setText(std.getStdName());			
 			textJumin.setJumin(std.getJuminNum());

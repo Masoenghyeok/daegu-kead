@@ -10,7 +10,7 @@ import kr.or.kead.service.DaoInfoStudent;
 import kr.or.kead.service.DaoTable;
 
 public class CustomTableModel extends AbstractTableModel {
-	private ArrayList<InfoStudent> students;
+	private ArrayList<Object> students;
 		
 	// ���̺� �� ���� ���� �̸�
 	private static final String[] columnNames = {"번호","이름","주민번호","입학일자","수료일자","휴대폰",
@@ -51,7 +51,7 @@ public class CustomTableModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int row, int col) {
-		InfoStudent std = students.get(row);
+		InfoStudent std = (InfoStudent)students.get(row);
 		switch(col) {
 		case 0 : return std.getIdx();
 		case 1 : return std.getStdName();

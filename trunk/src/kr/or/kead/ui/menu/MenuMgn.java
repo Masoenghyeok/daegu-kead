@@ -71,7 +71,7 @@ public class MenuMgn extends JMenuBar implements ActionListener {
 			if(stdId != null) {
 				DaoTable dao = new DaoInfoStudent();
 				InfoStudent std = new InfoStudent();
-				std = dao.selectStudentById(Integer.parseInt(stdId));
+				std = (InfoStudent)dao.selectById(Integer.parseInt(stdId));
 				if(std.getIdx() != 0) {
 					int confirmDel = JOptionPane.showConfirmDialog(
 							null,

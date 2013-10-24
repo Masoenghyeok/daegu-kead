@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import kr.or.kead.domain.InfoStudent;
-import kr.or.kead.domain.StdAddress;
 import kr.or.kead.utils.MysqlCon;
 
 public class DaoInfoStudent implements DaoTable {	
@@ -121,11 +120,11 @@ public class DaoInfoStudent implements DaoTable {
 	}
 
 	@Override
-	public ArrayList<InfoStudent> selectDao() {
+	public ArrayList<Object> selectDao() {
 		Connection con = MysqlCon.getConnection();
 		String sql = "select * from infoStudent";
 		InfoStudent std;
-		ArrayList<InfoStudent> sendValue = new ArrayList<>();
+		ArrayList<Object> sendValue = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = con.prepareStatement(sql);
@@ -162,14 +161,14 @@ public class DaoInfoStudent implements DaoTable {
 	}
 	
 	@Override
-	public InfoStudent selectStudentById(int stdId) {
+	public InfoStudent selectById(int idx) {
 		Connection con = MysqlCon.getConnection();		
 		String sql = "select * from infoStudent where idx= ?";
 		InfoStudent std = new InfoStudent();	
 		PreparedStatement pstmt=null;
 		try {
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, stdId);
+			pstmt.setInt(1, idx);
 			ResultSet rs = pstmt.executeQuery();
 			if(rs.next()) {
 				std.setIdx(rs.getInt("idx"));
@@ -199,21 +198,5 @@ public class DaoInfoStudent implements DaoTable {
 			}
 		}		
 		return std;
-	}
-
-	@Override
-	public ArrayList<StdAddress> selectStdAddrByDong(String dong) {
-		Connection con = MysqlCon.getConnection();		
-		String sql = "select * from infoStudent where idx= ?";
-		StdAddress stdAddr = new StdAddress();
-		PreparedStatement pstmt =null;
-		try {
-			pstmt = con.prepareStatement(sql);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
+	}	
 }
