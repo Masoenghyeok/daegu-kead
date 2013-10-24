@@ -1,16 +1,16 @@
 package kr.or.kead.domain;
 
-public class InfoSubject {
+public class Depart {
 	private int code;
 	private String name;
 	private int prof;
 	private String tel;
 	
-	public InfoSubject() {
+	public Depart() {
 		super();		
 	}
 
-	public InfoSubject(int code, String name, int prof, String tel) {
+	public Depart(int code, String name, int prof, String tel) {
 		this.code = code;
 		this.name = name;
 		this.prof = prof;

@@ -64,6 +64,8 @@ public class StdInsert extends JDialog implements ActionListener {
 	};
 	
 	static final int[] grade={ 1, 2, 3, 4, 5, 6};
+	private JLabel lblNewLabel;
+	private JComboBox comboBox;
 	
 	/**
 	 * @wbp.parser.constructor
@@ -83,7 +85,7 @@ public class StdInsert extends JDialog implements ActionListener {
 	}	
 	
 	public void makeComponent() {
-		getContentPane().setLayout(new GridLayout(12, 2, 2,2 ));		
+		getContentPane().setLayout(new GridLayout(13, 2, 2,2 ));		
 		JLabel lblName = new JLabel("성    명");
 		lblName.setFont(new Font("궁서체", Font.BOLD, 12));
 		lblName.setHorizontalAlignment(SwingConstants.CENTER);
@@ -212,9 +214,17 @@ public class StdInsert extends JDialog implements ActionListener {
 		getContentPane().add(textEmail);
 		textEmail.setColumns(10);
 		
+		lblNewLabel = new JLabel("학과");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setFont(new Font("궁서체", Font.BOLD, 12));
+		getContentPane().add(lblNewLabel);
+		
+		comboBox = new JComboBox();
+		getContentPane().add(comboBox);
+		
 		btnInsert = new JButton("저장");	
 		btnInsert.addActionListener(this);
-				
+		
 		getContentPane().add(btnInsert);
 		
 		btnCancel = new JButton("취소");
@@ -227,7 +237,7 @@ public class StdInsert extends JDialog implements ActionListener {
 	
 	private void fillText(int stdId) {
 		dao = new DaoInfoStudent();
-		std = (InfoStudent)dao.selectById(stdId);	
+		std = (InfoStudent)dao.selectTableById(stdId);	
 		if(std.getIdx() != 0) {
 			textName.setText(std.getStdName());			
 			textJumin.setJumin(std.getJuminNum());
