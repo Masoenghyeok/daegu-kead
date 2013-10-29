@@ -11,24 +11,27 @@ import kr.or.kead.service.DaoDepart;
 import kr.or.kead.service.DaoInfoStudent;
 import kr.or.kead.service.DaoTable;
 
-public class CustomTableModel extends AbstractTableModel {
+public class CustomStdTableModel extends AbstractTableModel {
 	private ArrayList<Object> students;
+	private DaoDepart daoDepart;
 		
-	// ���̺� �� ���� ���� �̸�
+	// 테이블 column의 이름
 	private static final String[] columnNames = {"번호","이름","주민번호","입학일자","수료일자","휴대폰",
 		"집전화","주소","통학/기숙",
 		"장애유형","장애등급","Email","분야"};
 	
-	// ���̺� �� ���� ���� Ŭ����
+	// column 에 해당하는 자료형
 	private static final Class[] columnClasses = {
 		Integer.class, String.class, String.class, String.class, String.class, String.class,
 		String.class, String.class, Integer.class, Integer.class, Integer.class, String.class,
 		Integer.class
 	};
 	
-	public CustomTableModel() {
+	public CustomStdTableModel() {
 		DaoTable dao = new DaoInfoStudent();
 		students = dao.selectDao();
+		
+		daoDepart = new DaoDepart();
 	}
 	@Override
 	public int getColumnCount() {
@@ -51,12 +54,17 @@ public class CustomTableModel extends AbstractTableModel {
 		return students.size();
 	}
 
+	
+	
 
 	@Override
+	public boolean isCellEditable(int rowIndex, int columnIndex) {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	@Override
 	public Object getValueAt(int row, int col) {
-		InfoStudent std = (InfoStudent)students.get(row);
-		DaoTable dao = new DaoDepart();
-		Depart depart = (Depart)dao.selectTableById(std.getDepartCode());	
+		InfoStudent std = (InfoStudent)students.get(row);	
 			
 		switch(col) {
 		case 0 : return std.getIdx();
@@ -71,7 +79,8 @@ public class CustomTableModel extends AbstractTableModel {
 		case 9 : return StdInsert.type[StdInsert.getType(std.getStdType())];
 		case 10 : return std.getGrade() + "급";
 		case 11 : return "  " + std.getEmail();
-		case 12 : return depart.getName();
+		case 12 : Depart depart = (Depart)daoDepart.selectTableById(std.getDepartCode());
+			return depart.getName();
 		}
 		return "";
 	}

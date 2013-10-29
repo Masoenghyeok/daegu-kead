@@ -72,6 +72,8 @@ insert into depart values (100, "정보", null, "053-111-1111");
 insert into depart values (200, "전자", null, "053-222-2222");
 insert into depart values (300, "기계", null, "053-333-3333");
 insert into depart values (400, "디자인", null, "053-444-4444");
+insert into depart values (500, "경영회계", null, "053-555-5555");
+insert into depart values (600, "경영회계", 2002, "02-1234-2132");
 
 
 
@@ -102,7 +104,8 @@ insert into professor values(3001, '박건형', 300, "기계제도");
 insert into professor values(3002, '최불암', 300, "재료역학");
 insert into professor values(4001, '앙드레김', 400, "한복");
 insert into professor values(4002, '샤넬', 400, "양장");
-
+insert into professor values(4001, '앙드레김', 400, "한복");
+insert into professor values(4002, '샤넬', 400, "양장");
 
 update professor set course="회로설계" where code = 2001;
 update professor set course="마이크로 프로세서" where code = 2002;
@@ -142,12 +145,18 @@ select p.name, p.depart, p.course from depart d, professor p,
  on update cascade
  on delete no action;
  
+ -- 외래키 삭제 foreign key 이름이 없으면 제가 할 수가 없다
+ alter table depart drop foreign key depart_prof_fk;
+ 
+ insert into depart values (700, "텔레마케팅", 7001, "053-1234-2132");
+ 
   alter table professor add constraint professor_depart_fk
  foreign key (depart) references depart(code)
  on update cascade
  on delete no action;
-
+ -- 리팩토링 sgjp
  
  -- 테스트(10/24)
+ -- 학과테이블 삽입시 교수테이블이 비어 있다면 prof 필드에는 null값이 들어 가도록 한다.
 
 
