@@ -76,7 +76,7 @@ public class DepartInsert extends JDialog implements ActionListener {
 	
 	private void fillValues(String departName) {
 		DaoDepart dao = new DaoDepart();
-		Depart departs = (Depart)dao.selectTableById(departName);
+		Depart departs = (Depart)dao.selectCodeByName(departName);
 		txtDepart.setText(departs.getName());
 		txtTel.setPhone(departs.getTel());
 		btnSave.setName("수정");		

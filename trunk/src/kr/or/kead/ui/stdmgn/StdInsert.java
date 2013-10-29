@@ -4,6 +4,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.ParseException;
@@ -175,6 +177,7 @@ public class StdInsert extends JDialog implements ActionListener {
 		textAddr.setHorizontalAlignment(SwingConstants.CENTER);
 		getContentPane().add(textAddr);
 		textAddr.setColumns(10);
+		textAddr.setEditable(false);
 
 		textAddr.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -183,7 +186,8 @@ public class StdInsert extends JDialog implements ActionListener {
 				PostGetAddr postDialog = new PostGetAddr(textAddr);
 				postDialog.setVisible(true);
 			}			
-		});			
+		});	
+		
 		JLabel lblRoomNum = new JLabel("기숙사/통학");
 		lblRoomNum.setFont(new Font("궁서체", Font.BOLD, 12));
 		lblRoomNum.setHorizontalAlignment(SwingConstants.CENTER);
@@ -338,6 +342,7 @@ public class StdInsert extends JDialog implements ActionListener {
 		}
 				
 		try {
+			depart = (Depart)daoDepart.selectCodeByName((String)comboDepart.getSelectedItem());
 			std = new InfoStudent(textName.getText(), textJumin.getJumin(),
 					sdf.parse(textStartDate.toString()), sdf.parse(textEndDate.toString()),
 					textMobile.getPhone(),
@@ -345,7 +350,7 @@ public class StdInsert extends JDialog implements ActionListener {
 					textAddr.getText(),	roomNum,
 					typeValue[comboStdType.getSelectedIndex()], comboGrade.getSelectedIndex()+1
 					, textEmail.getEmail(),
-					daoDepart.selectCodeByName((String)comboDepart.getSelectedItem()));
+					depart.getCode());
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -380,8 +385,9 @@ public class StdInsert extends JDialog implements ActionListener {
 		}				
 		std.setStdType(typeValue[comboStdType.getSelectedIndex()]);
 		std.setGrade(comboGrade.getSelectedIndex()+1);
-		std.setEmail(textEmail.getEmail());						
-		std.setDepartCode(daoDepart.selectCodeByName((String)comboDepart.getSelectedItem()));
+		std.setEmail(textEmail.getEmail());
+		depart = (Depart)daoDepart.selectCodeByName((String)comboDepart.getSelectedItem());
+		std.setDepartCode(depart.getCode());
 		if(dao.updateDao(std) == 0){					
 			this.dispose();
 			menuMgn.refreshList();
