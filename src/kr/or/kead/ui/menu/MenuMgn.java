@@ -12,9 +12,13 @@ import javax.swing.JOptionPane;
 import kr.or.kead.domain.InfoStudent;
 import kr.or.kead.service.DaoInfoStudent;
 import kr.or.kead.service.DaoTable;
-import kr.or.kead.ui.stdmgn.CustomTableModel;
+import kr.or.kead.ui.departmgn.CustomDepartTableModel;
+import kr.or.kead.ui.departmgn.DepartInsert;
+import kr.or.kead.ui.departmgn.DepartList;
+import kr.or.kead.ui.stdmgn.CustomStdTableModel;
 import kr.or.kead.ui.stdmgn.StdInsert;
 import kr.or.kead.ui.stdmgn.StdList;
+import javax.swing.SwingConstants;
 
 public class MenuMgn extends JMenuBar implements ActionListener {
 	private JMenu stdMgn;			// 학생관리
@@ -22,6 +26,14 @@ public class MenuMgn extends JMenuBar implements ActionListener {
 	private JMenuItem stdDel;		// 학생삭제
 	private JMenuItem stdUpdate;	// 학생수정
 	private JMenuItem stdList;		// 학생 리스트
+	
+	private JMenu departMgn;        // 학과 관리
+	private JMenuItem departAdd;	// 학과 추가	
+	private JMenuItem departDel;	// 학과 삭제
+	private JMenuItem departUpdate;	// 학과 수정	
+	private JMenuItem departList;	// 학과 리스트
+	private DepartList departListView;
+	
 	private Container contentPane;
 	private StdList listView;	
 		
@@ -32,8 +44,14 @@ public class MenuMgn extends JMenuBar implements ActionListener {
 	}
 
 
-	private void init() {
+	private void init() {		
+		stdSetting();
+		departSetting();
+	}	
+
+	private void stdSetting() {
 		stdMgn = new JMenu("학생관리");
+		stdMgn.setHorizontalAlignment(SwingConstants.CENTER);
 		stdAdd = new JMenuItem("추가");
 		stdAdd.addActionListener(this);
 		stdDel = new JMenuItem("삭제");
@@ -49,12 +67,37 @@ public class MenuMgn extends JMenuBar implements ActionListener {
 		stdMgn.add(stdList);
 		
 		add(stdMgn);		
-		listView = new StdList(new CustomTableModel());
-		contentPane.add(listView);
+		listView = new StdList(new CustomStdTableModel());
+		contentPane.add(listView);		
 	}
-	
+
+	private void departSetting() {
+		departMgn = new JMenu("학과 관리");
+		departMgn.setHorizontalAlignment(SwingConstants.CENTER);
+		departAdd = new JMenuItem("추가");
+		departAdd.addActionListener(this);
+		departDel = new JMenuItem("삭제");
+		departDel.addActionListener(this);
+		departUpdate = new JMenuItem("수정");
+		departUpdate.addActionListener(this);
+		departList = new JMenuItem("리스트");
+		departList.addActionListener(this);
+		
+		departMgn.add(departAdd);
+		departMgn.add(departDel);
+		departMgn.add(departUpdate);
+		departMgn.add(departList);
+		
+		add(departMgn);		
+	}
+
+
+
 	public void refreshList() {
-		listView.setTableModel(new CustomTableModel());
+		contentPane.removeAll();
+		listView.setTableModel(new CustomStdTableModel());
+		contentPane.add(listView);
+		contentPane.validate();
 	}
 	
 
@@ -92,9 +135,21 @@ public class MenuMgn extends JMenuBar implements ActionListener {
 				StdInsert stdUpdate = new StdInsert(Integer.parseInt(stdId), this);
 				stdUpdate.setVisible(true);
 			}		
-		}else if(e.getSource() == stdList) {
-			refreshList();	
-		}		
+		}else if(e.getSource() == stdList) {		
+			refreshList();				
+		}else if(e.getSource() == departList) {
+			departListView = new DepartList(new CustomDepartTableModel());
+			contentPane.removeAll();
+			contentPane.add(departList);
+			contentPane.validate();			
+		}else if(e.getSource() == departAdd) {
+			DepartInsert departInsert = new DepartInsert(this);
+			departInsert.setVisible(true);
+		}else if(e.getSource() == departUpdate) {
+			String departCode = JOptionPane.showInputDialog("검색하실 학과명을 입력하세요");
+			DepartInsert departInsert = new DepartInsert(departCode, this);
+			departInsert.setVisible(true);
+		}
 	}
 
 }

@@ -6,10 +6,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -18,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.xml.stream.events.StartDocument;
 
 import kr.or.kead.domain.Depart;
 import kr.or.kead.domain.InfoStudent;
@@ -46,16 +51,18 @@ public class StdInsert extends JDialog implements ActionListener {
 	private JComboBox<String> comboGrade;
 	private RegEmail textEmail;
 	private JLabel lblNewLabel;
-	private JComboBox<String> comboDepart;
+	private JComboBox<Object> comboDepart;
 	private JButton btnCancel;
 	private JButton btnInsert;	
 	@SuppressWarnings("unused")
 	private String compareMenu= null;
 	private InfoStudent std = new InfoStudent();
-	private DaoTable dao;
+	private DaoTable dao = new DaoInfoStudent();
+	private DaoDepart daoDepart = new DaoDepart();
 	private int stdId;
 	private MenuMgn menuMgn;
-	Depart depart;
+	private Depart depart;
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
 	
 	static final String[] type={"지체장애","뇌병변장애","시각장애","청각장애",
@@ -78,19 +85,20 @@ public class StdInsert extends JDialog implements ActionListener {
 	 */
 	public StdInsert(MenuMgn menuMgn) {
 		this.setTitle("학생추가");
-		makeComponent();
+		init();
 		this.menuMgn = menuMgn;
 	}
 	
 	public StdInsert(int stdId, MenuMgn menuMgn) {
 		this.setTitle("학생수정");
 		this.stdId = stdId;
-		makeComponent();
+		init();
 		fillText(stdId);
 		this.menuMgn = menuMgn;
 	}	
 	
-	public void makeComponent() {
+	public void init() {
+		setAlwaysOnTop(true);
 		getContentPane().setLayout(new GridLayout(13, 2, 2,2 ));		
 		JLabel lblName = new JLabel("성    명");
 		lblName.setFont(new Font("궁서체", Font.BOLD, 12));
@@ -224,16 +232,17 @@ public class StdInsert extends JDialog implements ActionListener {
 		getContentPane().add(lblNewLabel);
 		
 		
-		dao = new DaoDepart();
-		ArrayList<Object> departNames = dao.selectDao();
-		comboDepart = new JComboBox<>();
-		len = departNames.size();
-		System.out.println("len = " + len);
-		for(int i=0;i<len;i++) {
-			depart = (Depart)departNames.get(i);			
-			comboDepart.addItem(depart.getName());
-			comboDepart.updateUI();
+		daoDepart = new DaoDepart();
+		ArrayList<Object> departs = daoDepart.selectDao();
+		
+		
+		len = departs.size();
+		Object[] obj = new Object[len];
+		for(int i=0;i<len;i++) {			
+			depart = (Depart)departs.get(i);
+			obj[i] = depart.getName();			
 		}
+		comboDepart = new JComboBox<Object>(obj);
 		getContentPane().add(comboDepart);
 		
 		btnInsert = new JButton("저장");	
@@ -249,8 +258,7 @@ public class StdInsert extends JDialog implements ActionListener {
 		pack();
 	}	
 	
-	private void fillText(int stdId) {
-		dao = new DaoInfoStudent();
+	private void fillText(int stdId) {	
 		std = (InfoStudent)dao.selectTableById(stdId);	
 		if(std.getIdx() != 0) {
 			textName.setText(std.getStdName());			
@@ -284,123 +292,103 @@ public class StdInsert extends JDialog implements ActionListener {
 		}
 	}
 	
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == textName) {
-			textJumin.requestFocus();
-		}else if (e.getSource() == textJumin) {
-			textMobile.requestFocus();
-		}else if (e.getSource() == textMobile) {
-			textTel.requestFocus();
-		}else if (e.getSource() == textTel) {
-			textAddr.requestFocus();
-		}else if (e.getSource() == textAddr) {
-			textRoomNum.requestFocus();
-		}else if (e.getSource() == textRoomNum) {
-			comboStdType.requestFocus();
-		}else if (e.getSource() == textEmail) {
-			btnInsert.requestFocus();		
-		}else if (e.getSource() == comboStdType) {
-			comboGrade.requestFocus();
-		}else if (e.getSource() == comboGrade) {
-			textEmail.requestFocus();
-		}else if (e.getSource() == btnInsert) {
-			if(e.getActionCommand().equals("저장")) {					
-				btnInsertActionPerformed(e);
-			}else if(e.getActionCommand().equals("수정")) {
-				btnModifyActionPerformed(e);				
+	public void actionPerformed(ActionEvent e) {			
+		if (e.getSource() == btnInsert) {
+			if(isValidateCheck()) {	
+				if(e.getActionCommand().equals("저장")) {					
+					btnInsertActionPerformed(e);
+				}else if(e.getActionCommand().equals("수정")) {
+					btnModifyActionPerformed(e);				
+				}
 			}
 		}else if (e.getSource() == btnCancel) {			
-			btnCancelActionPerformed(e);
-			
-		}
+			dispose();		
+		}		
 	}
 	
-	private void btnModifyActionPerformed(ActionEvent e) {
-		dao = new DaoInfoStudent();
-			if(isFieldCheck()) {
-				GregorianCalendar startCal = new GregorianCalendar(textStartDate.getYear(),
-						textStartDate.getMonth()-1,textStartDate.getDay());
-				GregorianCalendar endCal = new GregorianCalendar(textEndDate.getYear(),
-						textEndDate.getMonth()-1,textEndDate.getDay());
-				std.setIdx(stdId);
-				std.setStdName(textName.getText());
-				std.setJuminNum(textJumin.getJumin());
-				std.setStartDate(startCal.getTime());
-				std.setEndDate(endCal.getTime());
-				std.setMobile(textMobile.getPhone());			
-				std.setTel(textTel.getPhone());				
-				std.setStdAddr(textAddr.getText());
-				if(textRoomNum.getRadioBtn1()) {
-					std.setRoomNum(500);
-				}else {
-					std.setRoomNum(Integer.parseInt(textRoomNum.getTxtRoomNum()));
-				}				
-				std.setStdType(typeValue[comboStdType.getSelectedIndex()]);
-				std.setGrade(comboGrade.getSelectedIndex()+1);
-				std.setEmail(textEmail.getEmail());
-				
-				
-				std.setDepartCode(new DaoDepart().selectCodeDepartByName(
-						(String)comboDepart.getSelectedItem()));
-				if(dao.updateDao(std) == 0){					
-					this.dispose();
-					menuMgn.refreshList();
-				}else {
-					JOptionPane.showMessageDialog(null, "수정을 완료하였습니다.");
-				}
-			}else {
-				JOptionPane.showMessageDialog(null, "수정을 완료하지 못하였습니다.");
-			}		
-	}
-
-	protected void btnCancelActionPerformed(ActionEvent e) {
-		cleanTextField();		
-	}
-
-	protected void btnInsertActionPerformed(ActionEvent e) {
-		if(isFieldCheck()) {
-			GregorianCalendar startCal = new GregorianCalendar(textStartDate.getYear(),
-					textStartDate.getMonth()-1,textStartDate.getDay());
-			GregorianCalendar endCal = new GregorianCalendar(textEndDate.getYear(),
-					textEndDate.getMonth()-1,textEndDate.getDay());
-			int roomNum;
-			if(textRoomNum.getRadioBtn1()) {
-				roomNum = 500;
-			}else {
-				roomNum = Integer.parseInt(textRoomNum.getTxtRoomNum());
+	private boolean isValidateCheck() {
+		boolean isField = textName.getText().equals("")||textAddr.getText().equals("")||
+				textEmail.getEmail().equals("");
+		if (isField) {
+			JOptionPane.showMessageDialog(null, "빈칸을 채우세요.");
+			textName.requestFocus();
+			return false;
+		}else {
+			String str = textEmail.getEmail();			
+			Pattern pattern = Pattern.compile("(\\w+\\.)*\\w+@(\\w+\\.)+[A-Za-z]+");
+			Matcher match = pattern.matcher(str);
+			if (!match.find()) {
+				JOptionPane.showMessageDialog(null, "메일 형식이 잘못되었습니다.");
+				return false;
 			}
-			DaoDepart deprat = new DaoDepart();
+		}
+		return true;
+	}
+	
+	protected void btnInsertActionPerformed(ActionEvent e) {		
+//		GregorianCalendar startCal = new GregorianCalendar(textStartDate.getYear(),
+//				textStartDate.getMonth()-1,textStartDate.getDay());
+//		GregorianCalendar endCal = new GregorianCalendar(textEndDate.getYear(),
+//				textEndDate.getMonth()-1,textEndDate.getDay());		
+		int roomNum;
+		if(textRoomNum.getRadioBtn1()) {
+			roomNum = 500;
+		}else {
+			roomNum = Integer.parseInt(textRoomNum.getTxtRoomNum());
+		}
+				
+		try {
 			std = new InfoStudent(textName.getText(), textJumin.getJumin(),
-					startCal.getTime(), endCal.getTime(), textMobile.getPhone(),
+					sdf.parse(textStartDate.toString()), sdf.parse(textEndDate.toString()),
+					textMobile.getPhone(),
 					textTel.getPhone(),
 					textAddr.getText(),	roomNum,
 					typeValue[comboStdType.getSelectedIndex()], comboGrade.getSelectedIndex()+1
 					, textEmail.getEmail(),
-					deprat.selectCodeDepartByName((String)comboDepart.getSelectedItem()));		
-			dao = new DaoInfoStudent();
-					
-			if(dao.insertDao(std) == 0 ) {
-				cleanTextField();
-				menuMgn.refreshList();
-				JOptionPane.showMessageDialog(null, "저장을 완료하였습니다.");				
-				this.dispose();
-			}else {				
-				JOptionPane.showMessageDialog(null, "저장을 완료 하지 못하였습니다.");
-			}
-		}else {
-			JOptionPane.showMessageDialog(null, "필수입력요소가 입력되지 않았습니다.");
+					daoDepart.selectCodeByName((String)comboDepart.getSelectedItem()));
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}				
+		if(dao.insertDao(std) == 0 ) {
+			cleanTextField();
+			menuMgn.refreshList();
+			JOptionPane.showMessageDialog(null, "저장을 완료하였습니다.");				
+			this.dispose();
+		}else {				
+			JOptionPane.showMessageDialog(null, "저장을 완료 하지 못하였습니다.");
+		}						
 	}
-	
-	private boolean isFieldCheck() {
-		boolean compare = true;
-		if(textName.getText().equals("") || textJumin.getJumin().equals("")||
-				textMobile.getPhone().equals("") ||				
-				textTel.getPhone().equals("") || textAddr.getText().equals("") ||				
-				textEmail.getEmail().equals("")) {
-			compare = false;
+
+	private void btnModifyActionPerformed(ActionEvent e) {		
+		std.setIdx(stdId);
+		std.setStdName(textName.getText());
+		std.setJuminNum(textJumin.getJumin());
+		try {
+			std.setStartDate(sdf.parse(textStartDate.toString()));
+			std.setEndDate(sdf.parse(textEndDate.toString()));
+		} catch (ParseException e1) {
+			e1.printStackTrace();
 		}		
-		return compare;		
+		std.setMobile(textMobile.getPhone());			
+		std.setTel(textTel.getPhone());				
+		std.setStdAddr(textAddr.getText());
+		if(textRoomNum.getRadioBtn1()) {
+			std.setRoomNum(500);
+		}else {
+			std.setRoomNum(Integer.parseInt(textRoomNum.getTxtRoomNum()));
+		}				
+		std.setStdType(typeValue[comboStdType.getSelectedIndex()]);
+		std.setGrade(comboGrade.getSelectedIndex()+1);
+		std.setEmail(textEmail.getEmail());						
+		std.setDepartCode(daoDepart.selectCodeByName((String)comboDepart.getSelectedItem()));
+		if(dao.updateDao(std) == 0){					
+			this.dispose();
+			menuMgn.refreshList();
+			cleanTextField();
+		}else {
+			JOptionPane.showMessageDialog(null, "수정에 실패하였습니다.");
+		}					
 	}
 	
 	public void cleanTextField() {
