@@ -2,8 +2,10 @@ package kr.or.kead.ui.stdmgn;
 
 import java.util.ArrayList;
 
-import javax.swing.JComboBox;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
 
 import kr.or.kead.domain.Depart;
 import kr.or.kead.domain.InfoStudent;
@@ -25,12 +27,12 @@ public class CustomStdTableModel extends AbstractTableModel {
 		Integer.class, String.class, String.class, String.class, String.class, String.class,
 		String.class, String.class, Integer.class, Integer.class, Integer.class, String.class,
 		Integer.class
+		
 	};
 	
 	public CustomStdTableModel() {
 		DaoTable dao = new DaoInfoStudent();
-		students = dao.selectDao();
-		
+		students = dao.selectDao();		
 		daoDepart = new DaoDepart();
 	}
 	@Override
@@ -55,13 +57,13 @@ public class CustomStdTableModel extends AbstractTableModel {
 	}
 
 	
-	
 
 	@Override
-	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		// TODO Auto-generated method stub
+	public boolean isCellEditable(int rowIndex, int columnIndex) {		
 		return true;
 	}
+	
+
 	@Override
 	public Object getValueAt(int row, int col) {
 		InfoStudent std = (InfoStudent)students.get(row);	

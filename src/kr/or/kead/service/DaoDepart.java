@@ -129,7 +129,7 @@ public class DaoDepart implements DaoTable{
 		return null;
 	}
 	
-	public int selectCodeByName(String name) {
+	public Object selectCodeByName(String name) {
 		Connection con = MysqlCon.getConnection();
 		String sql = "select * from depart where name = ?";
 		PreparedStatement pstmt = null;
@@ -138,7 +138,8 @@ public class DaoDepart implements DaoTable{
 			pstmt.setString(1, name);
 			ResultSet rs = pstmt.executeQuery();
 			if(rs.next()) {
-				return rs.getInt("code");
+				return new Depart(rs.getInt("code"),rs.getString("name"),
+						rs.getInt("prof"),rs.getString("tel"));
 			}
 		} catch (SQLException e) {		
 			e.printStackTrace();
