@@ -1,10 +1,11 @@
 package kr.or.kead.ui.stdmgn;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Date;
+import java.awt.event.WindowStateListener;
 
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -13,22 +14,23 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
 
-import kr.or.kead.domain.InfoStudent;
 import kr.or.kead.service.DaoInfoStudent;
-import kr.or.kead.service.DaoTable;
+import kr.or.kead.ui.menu.MenuMgn;
 
-public class StdList extends JPanel implements TableModelListener  {
+public class StdList extends JPanel {
 	private JTable table;
+	private JPopupMenu popMgn;
+	private JMenuItem jmi, jmi1,jmi2;
+	private MenuMgn contentPane;
+	int  row;
+	int  col;
 	
 	// 테이블에 CustomTableModel 에서 생성한 model을 읽어와 테이블에 세팅
-	public StdList(CustomStdTableModel model) {
-		
+	public StdList(CustomStdTableModel model, final MenuMgn contentPane) {
+		this.contentPane = contentPane;
 		this.table = new JTable(model);
 	
 	    table.setRowSelectionAllowed(true);
@@ -38,39 +40,39 @@ public class StdList extends JPanel implements TableModelListener  {
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setPreferredSize(new Dimension(1100, 400));
 		add(scrollPane);
-		table.getModel().addTableModelListener(this);
 		
 		
-		table.addMouseListener(new MouseAdapter(){
 
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(e.getButton()==MouseEvent.BUTTON3) {
-					int xValue = e.getX();
-					int yValue = e.getY();
-					
-					System.out.println("in in in");
-					
-					JPopupMenu popMgn = new JPopupMenu();
-					JMenuItem jmi = new JMenuItem("복사");
-					JMenuItem jmi1 = new JMenuItem("붙여넣기");
-					JMenuItem jmi2 = new JMenuItem("잘라내기");
-					
-					popMgn.add(jmi);
-					popMgn.add(jmi1);
-					popMgn.add(jmi2);
-					popMgn.setBackground(Color.WHITE);
-					popMgn.setForeground(Color.black);
-					
-					popMgn.show(table, xValue, yValue);
-					popMgn.setVisible(true);
-					table.add(popMgn);
-				}
+		popMgn = new JPopupMenu();
+		popMgn.addMouseListener(new MouseAdapter() {
+			public void mouseExited(MouseEvent e) {
+				popMgn.setVisible(false);
 			}
 			
 		});
+		jmi = new JMenuItem("저장");
+		jmi1 = new JMenuItem("수정");
+		jmi2 = new JMenuItem("삭제");
+		jmi.addMouseListener(new popMgnClicked());	
+		jmi1.addMouseListener(new popMgnClicked());
+		jmi2.addMouseListener(new popMgnClicked());	
+		popMgn.add(jmi);
+		popMgn.add(jmi1);
+		popMgn.add(jmi2);	
 		
-		
+		table.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e) {				
+				if(e.getButton()==MouseEvent.BUTTON3) {					
+					row = table.getSelectedRow();
+					col = table.getSelectedColumn();					
+					if(row >= 0 && col >=0) {						
+						int xValue = e.getX();						
+						int yValue = e.getY();						
+						popMgn.show(null, xValue+10, yValue+20);
+					}										
+				}
+			}	
+		});		
 	}	
 	
 	// 테이블 column 의 크기와 정렬을 설정
@@ -110,38 +112,47 @@ public class StdList extends JPanel implements TableModelListener  {
 	}
 
 	
-	@Override
-	public void tableChanged(TableModelEvent e) {
-		System.out.println(" table model in");
-		int row = e.getFirstRow();
-		int column = e.getColumn();
-		TableModel model = (TableModel)e.getSource();
-		String columnName = model.getColumnName(column);
-		Object data = model.getValueAt(row, column);
-		System.out.println("column = " + columnName + " data = " + data + " row = " + row);
-		Object idx = model.getValueAt(row, 0);
-		System.out.println(idx);
-		DaoTable dao = new DaoInfoStudent();		
-		InfoStudent std = new InfoStudent((int)idx,
-				(String)model.getValueAt(row, 1),
-				(String)model.getValueAt(row, 2),
-				(Date)model.getValueAt(row, 3),
-				(Date)model.getValueAt(row, 4), 
-				(String)model.getValueAt(row, 5),
-				(String)model.getValueAt(row, 6),
-				(String)model.getValueAt(row, 7),
-				Integer.parseInt((String)model.getValueAt(row, 8)),
-				Integer.parseInt((String)model.getValueAt(row, 9)),
-				Integer.parseInt((String)model.getValueAt(row, 10)),
-				(String)model.getValueAt(row, 11),
-				Integer.parseInt((String)model.getValueAt(row, 12)));
-		if(dao.updateDao(std) == 0) {
-			JOptionPane.showMessageDialog(null, "수정되었습니다.");
-		}else {
-			JOptionPane.showMessageDialog(null, "수정을 완료 하지 못하였습니다.");
-		}	
-			
-	}
-	
+	class popMgnClicked extends MouseAdapter {
+		public void mouseClicked(MouseEvent e) {			
+			if(e.getSource()== jmi) {
+				MenuMgn mgn = (MenuMgn) contentPane;
+				StdInsert std = new StdInsert(mgn);				
+			}else if(e.getSource()== jmi1) {				
+				Object idx = table.getModel().getValueAt(row, 0);				
+				MenuMgn mgn = (MenuMgn) contentPane;
+				StdInsert std = new StdInsert((int)idx,mgn);				
+			}else if(e.getSource() == jmi2) {
+				Object idx = table.getModel().getValueAt(row, 0);
+				if(new DaoInfoStudent().deleteDao((int)idx) == -1) {
+					JOptionPane.showMessageDialog(null, "삭제에 실패하였습니다.");										
+				}else {
+					JOptionPane.showMessageDialog(null, "삭제 하였습니다.");
+					contentPane.removeAll();
+					contentPane.refreshList();
+					contentPane.updateUI();
+				}
+			}
+			popMgn.setVisible(false);
+		}
 
+		public void mouseEntered(MouseEvent e) {
+			if(e.getSource() == jmi) {
+				jmi.setBackground(Color.LIGHT_GRAY);
+			}else if(e.getSource() == jmi1) {
+				jmi1.setBackground(Color.LIGHT_GRAY);
+			}else if(e.getSource() == jmi2) {
+				jmi2.setBackground(Color.LIGHT_GRAY);
+			}
+		}		
+
+		public void mouseExited(MouseEvent e) {
+			if(e.getSource() == jmi) {
+				jmi.setBackground(new Color(230,230,230));
+			}else if(e.getSource() == jmi1) {
+				jmi1.setBackground(new Color(230,230,230));
+			}else if(e.getSource() == jmi2) {
+				jmi2.setBackground(new Color(230,230,230));
+			}
+		}		
+	}
 }

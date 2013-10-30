@@ -67,7 +67,7 @@ public class MenuMgn extends JMenuBar implements ActionListener {
 		stdMgn.add(stdList);
 		
 		add(stdMgn);		
-		listView = new StdList(new CustomStdTableModel());
+		listView = new StdList(new CustomStdTableModel(), this);
 		contentPane.add(listView);		
 	}
 
