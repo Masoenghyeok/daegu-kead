@@ -128,7 +128,8 @@ public class StdList extends JPanel {
 				}else {
 					JOptionPane.showMessageDialog(null, "삭제 하였습니다.");
 					contentPane.removeAll();
-					contentPane.refreshList();
+					// d
+					contentPane.refreshList(new StdList(new CustomStdTableModel(), contentPane));
 					contentPane.updateUI();
 				}
 			}

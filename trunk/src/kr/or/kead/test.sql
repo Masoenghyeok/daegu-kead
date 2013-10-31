@@ -196,4 +196,6 @@ static final String[] type={"지체장애","뇌병변장애","시각장애","청
  alter table infoStudent change roornum roomNum int(3);
  
  alter table infoStudent change stdAddr stdAddr varchar(60);
+ 
+ update depart set code=100, name='정보', prof=1003, tel='053-123-1234' where code = 100
 

@@ -339,7 +339,7 @@ public class StdInsert extends JDialog implements ActionListener {
 		}				
 		if(dao.insertDao(std) == 0 ) {
 			cleanTextField();
-			menuMgn.refreshList();
+			menuMgn.refreshList(new StdList(new CustomStdTableModel(), menuMgn));
 			JOptionPane.showMessageDialog(null, "저장을 완료하였습니다.");				
 			this.dispose();
 		}else {				
@@ -372,7 +372,7 @@ public class StdInsert extends JDialog implements ActionListener {
 		std.setDepartCode(depart.getCode());
 		if(dao.updateDao(std) == 0){					
 			this.dispose();
-			menuMgn.refreshList();
+			menuMgn.refreshList(new StdList(new CustomStdTableModel(), menuMgn));
 			cleanTextField();			
 		}else {
 			JOptionPane.showMessageDialog(null, "수정에 실패하였습니다.");
