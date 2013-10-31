@@ -134,4 +134,10 @@ public class DaoHandicap implements DaoTable {
 		}		
 		return res;
 	}
+
+	@Override
+	public ArrayList<String> selectTableAllList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

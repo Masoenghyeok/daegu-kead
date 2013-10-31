@@ -27,9 +27,9 @@ public class DepartInsert extends JDialog implements ActionListener {
 	public DepartInsert(MenuMgn mgn) {
 		initialize();
 	}
-	public DepartInsert(String departName, MenuMgn mgn) {
+	public DepartInsert(int departCode, MenuMgn mgn) {
 		initialize();
-		fillValues(departName);
+		fillValues(departCode);
 	}
 	
 	private void initialize() {
@@ -74,9 +74,9 @@ public class DepartInsert extends JDialog implements ActionListener {
 		}
 	}
 	
-	private void fillValues(String departName) {
+	private void fillValues(int departCode) {
 		DaoDepart dao = new DaoDepart();
-		Depart departs = (Depart)dao.selectCodeByName(departName);
+		Depart departs = (Depart)dao.selectTableById(departCode);
 		txtDepart.setText(departs.getName());
 		txtTel.setPhone(departs.getTel());
 		btnSave.setName("수정");		

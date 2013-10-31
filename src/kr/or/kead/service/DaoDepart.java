@@ -185,6 +185,12 @@ public class DaoDepart implements DaoTable{
 		}
 		return -1;
 	}
+
+	@Override
+	public ArrayList<String> selectTableAllList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 }
