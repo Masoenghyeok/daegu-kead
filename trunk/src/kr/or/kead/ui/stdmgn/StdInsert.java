@@ -67,10 +67,7 @@ public class StdInsert extends JDialog implements ActionListener {
 	private int stdIdx;
 	private MenuMgn menuMgn;
 	private Depart depart;
-	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		
-
-	
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");	
 	static final Integer[] grade={ 1, 2, 3, 4, 5, 6};
 	
 	/*
@@ -323,8 +320,7 @@ public class StdInsert extends JDialog implements ActionListener {
 			roomNum = 500;
 		}else {
 			roomNum = Integer.parseInt(textRoomNum.getTxtRoomNum());
-		}
-				
+		}				
 		try {
 			depart = (Depart)daoDepart.selectCodeByName((String)comboDepart.getSelectedItem());
 			
@@ -351,8 +347,7 @@ public class StdInsert extends JDialog implements ActionListener {
 		}						
 	}
 
-	private void btnModifyActionPerformed(ActionEvent e) {	
-		System.out.println("modify in");
+	private void btnModifyActionPerformed(ActionEvent e) {		
 		std.setIdx(stdIdx);
 		std.setStdName(textName.getText());
 		std.setJuminNum(textJumin.getJumin());
@@ -378,8 +373,7 @@ public class StdInsert extends JDialog implements ActionListener {
 		if(dao.updateDao(std) == 0){					
 			this.dispose();
 			menuMgn.refreshList();
-			cleanTextField();
-			
+			cleanTextField();			
 		}else {
 			JOptionPane.showMessageDialog(null, "수정에 실패하였습니다.");
 		}					
