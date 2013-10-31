@@ -158,5 +158,42 @@ select p.name, p.depart, p.course from depart d, professor p,
  
  -- 테스트(10/24)
  -- 학과테이블 삽입시 교수테이블이 비어 있다면 prof 필드에는 null값이 들어 가도록 한다.
-
+static final String[] type={"지체장애","뇌병변장애","시각장애","청각장애",
+		"언어장애", "안면장애",
+		"신장장애","심장장애","간장애","호흡기장애",
+		"장루,요루장애","간질장애",
+		"지적장애","자폐성장애","정신장애"};
+	static final int[] typeValue={		
+		111,112,113,114,115,116,
+		121,122,123,124,125,126,
+		211,212,
+		221
+	};;
+ 
+ 
+ create table handicap (
+ 	code int primary key,
+ 	name varchar(10) not null
+ );
+ 
+ select * from handicap;
+ 
+ insert into handicap values(111, '지체장애');
+ insert into handicap values(112, '뇌병변장애');
+ insert into handicap values(113, '시각장애');
+ insert into handicap values(114, '청각장애');
+ insert into handicap values(115, '언어장애');
+ insert into handicap values(116, '안면장애');
+ insert into handicap values(121, '신장장애');
+ insert into handicap values(122, '심장장애');
+ insert into handicap values(123, '간장애');
+ insert into handicap values(124, '호흡기장애');
+ insert into handicap values(125, '장루,요루장애');
+ insert into handicap values(126, '간질장애');
+ insert into handicap values(211, '지적장애');
+ insert into handicap values(212, '자폐성장애');
+ insert into handicap values(221, '정신장애');
+ alter table infoStudent change roornum roomNum int(3);
+ 
+ alter table infoStudent change stdAddr stdAddr varchar(60);
 

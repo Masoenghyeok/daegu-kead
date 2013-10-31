@@ -140,7 +140,7 @@ public class MenuMgn extends JMenuBar implements ActionListener {
 		}else if(e.getSource() == departList) {
 			departListView = new DepartList(new CustomDepartTableModel());
 			contentPane.removeAll();
-			contentPane.add(departList);
+			contentPane.add(departListView);
 			contentPane.validate();			
 		}else if(e.getSource() == departAdd) {
 			DepartInsert departInsert = new DepartInsert(this);

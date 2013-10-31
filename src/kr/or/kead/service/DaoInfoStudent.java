@@ -33,7 +33,8 @@ public class DaoInfoStudent implements DaoTable {
 			pstmt.setInt(10, std.getGrade());
 			pstmt.setString(11, std.getEmail());
 			pstmt.setInt(12, std.getDepartCode());
-			pstmt.execute();			
+			System.out.println(pstmt);
+			pstmt.executeUpdate();			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return -1;
