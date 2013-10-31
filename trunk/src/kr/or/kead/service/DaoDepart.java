@@ -131,21 +131,42 @@ public class DaoDepart implements DaoTable{
 	
 	public Object selectCodeByName(String name) {
 		Connection con = MysqlCon.getConnection();
-		String sql = "select * from depart where name = ?";
+		String sql = "select code, name, prof, tel from depart where name = ?";
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, name);
 			ResultSet rs = pstmt.executeQuery();
 			if(rs.next()) {
-				return new Depart(rs.getInt("code"),rs.getString("name"),
-						rs.getInt("prof"),rs.getString("tel"));
+				return new Depart(rs.getInt(1),rs.getString(2),
+						rs.getInt(3),rs.getString(4));
 			}
 		} catch (SQLException e) {		
 			e.printStackTrace();
 			return -1;
 		}
 		return -1;
+	}
+	
+	public ArrayList<Object> selectNames() {
+		Connection con = MysqlCon.getConnection();
+		String sql = "select name from depart";
+		ArrayList<Object> names =new ArrayList<>();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = con.prepareStatement(sql);			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				names.add(rs.getString(1));
+			}
+		}catch (SQLException e) {			
+			e.printStackTrace();
+			return null;
+		}finally {
+			try { rs.close();pstmt.close();con.close();} catch (SQLException e) { }
+		}		
+		return names;
 	}
 	
 	public int selectMaxCode() {

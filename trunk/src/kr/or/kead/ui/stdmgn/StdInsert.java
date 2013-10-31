@@ -27,6 +27,7 @@ import javax.swing.SwingConstants;
 import javax.xml.stream.events.StartDocument;
 
 import kr.or.kead.domain.Depart;
+import kr.or.kead.domain.Handicap;
 import kr.or.kead.domain.InfoStudent;
 import kr.or.kead.module.PhoneCheck;
 import kr.or.kead.module.PostGetAddr;
@@ -35,6 +36,7 @@ import kr.or.kead.module.RegEmail;
 import kr.or.kead.module.RegJumin;
 import kr.or.kead.module.RoomCheck;
 import kr.or.kead.service.DaoDepart;
+import kr.or.kead.service.DaoHandicap;
 import kr.or.kead.service.DaoInfoStudent;
 import kr.or.kead.service.DaoTable;
 import kr.or.kead.ui.menu.MenuMgn;
@@ -49,8 +51,8 @@ public class StdInsert extends JDialog implements ActionListener {
 	private PhoneCheck textTel;
 	private JTextField textAddr;	
 	private RoomCheck textRoomNum;
-	private JComboBox<String> comboStdType;
-	private JComboBox<String> comboGrade;
+	private JComboBox<Object> comboStdType;
+	private JComboBox<Integer> comboGrade;
 	private RegEmail textEmail;
 	private JLabel lblNewLabel;
 	private JComboBox<Object> comboDepart;
@@ -58,28 +60,18 @@ public class StdInsert extends JDialog implements ActionListener {
 	private JButton btnInsert;	
 	@SuppressWarnings("unused")
 	private String compareMenu= null;
-	private InfoStudent std = new InfoStudent();
-	private DaoTable dao = new DaoInfoStudent();
-	private DaoDepart daoDepart = new DaoDepart();
+	private InfoStudent std;
+	private DaoTable dao;
+	private DaoDepart daoDepart;
+	private DaoHandicap daoHandicap;
 	private int stdId;
 	private MenuMgn menuMgn;
 	private Depart depart;
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
+
 	
-	static final String[] type={"지체장애","뇌병변장애","시각장애","청각장애",
-		"언어장애", "안면장애",
-		"신장장애","심장장애","간장앨","호흡기장애",
-		"장루,요루장애","간질장애",
-		"지적장애","자폐성장애","정신장애"};
-	static final int[] typeValue={		
-		111,112,113,114,115,116,
-		121,122,123,124,125,126,
-		211,212,
-		221
-	};
-	
-	static final int[] grade={ 1, 2, 3, 4, 5, 6};
+	static final Integer[] grade={ 1, 2, 3, 4, 5, 6};
 	
 	
 	/**
@@ -99,8 +91,12 @@ public class StdInsert extends JDialog implements ActionListener {
 		this.menuMgn = menuMgn;
 	}	
 	
-	public void init() {
-		setAlwaysOnTop(true);
+	public void init() {		
+		std = new InfoStudent();
+		dao = new DaoInfoStudent();
+		daoDepart = new DaoDepart();
+		daoHandicap = new DaoHandicap();
+		
 		getContentPane().setLayout(new GridLayout(13, 2, 2,2 ));		
 		JLabel lblName = new JLabel("성    명");
 		lblName.setFont(new Font("궁서체", Font.BOLD, 12));
@@ -201,11 +197,10 @@ public class StdInsert extends JDialog implements ActionListener {
 		lblStdType.setHorizontalAlignment(SwingConstants.CENTER);
 		getContentPane().add(lblStdType);
 		
-		comboStdType = new JComboBox<>();
-		int len = type.length;
-		for(int i=0;i<len;i++) {
-			comboStdType.addItem(type[i]);
-		}				
+		ArrayList<Object> handis = daoHandicap.selectDao();
+		Object[] obj = handis.toArray();
+		comboStdType = new JComboBox<>(obj);
+		
 		getContentPane().add(comboStdType);		
 		
 		JLabel lblGrade = new JLabel("등급");
@@ -213,11 +208,7 @@ public class StdInsert extends JDialog implements ActionListener {
 		lblGrade.setHorizontalAlignment(SwingConstants.CENTER);
 		getContentPane().add(lblGrade);
 		
-		comboGrade = new JComboBox<>();
-		len = grade.length;
-		for(int i=0;i<len;i++) {
-			comboGrade.addItem(grade[i] + "급");
-		}
+		comboGrade = new JComboBox<>(grade);		
 		comboGrade.addActionListener(this);		
 		getContentPane().add(comboGrade);		
 		
@@ -236,17 +227,9 @@ public class StdInsert extends JDialog implements ActionListener {
 		getContentPane().add(lblNewLabel);
 		
 		
-		daoDepart = new DaoDepart();
-		ArrayList<Object> departs = daoDepart.selectDao();
-		
-		
-		len = departs.size();
-		Object[] obj = new Object[len];
-		for(int i=0;i<len;i++) {			
-			depart = (Depart)departs.get(i);
-			obj[i] = depart.getName();			
-		}
-		comboDepart = new JComboBox<Object>(obj);
+		ArrayList<Object> departs = daoDepart.selectNames();
+		Object[] arObj = departs.toArray();		
+		comboDepart = new JComboBox<Object>(arObj);
 		getContentPane().add(comboDepart);
 		
 		btnInsert = new JButton("저장");	
@@ -275,7 +258,7 @@ public class StdInsert extends JDialog implements ActionListener {
 			textEndDate.setTxtDate(Integer.parseInt(end_st.nextToken()), 
 					Integer.parseInt(end_st.nextToken()), 
 					Integer.parseInt(end_st.nextToken()));	
-			comboStdType.setSelectedIndex(getType(std.getStdType()));
+			comboStdType.setSelectedItem(daoHandicap.selectTableById(std.getStdType()));
 			comboGrade.setSelectedIndex(std.getGrade()-1);			
 			textMobile.setPhone(std.getMobile());			
 			textTel.setPhone(std.getTel());			
@@ -343,12 +326,14 @@ public class StdInsert extends JDialog implements ActionListener {
 				
 		try {
 			depart = (Depart)daoDepart.selectCodeByName((String)comboDepart.getSelectedItem());
+			
 			std = new InfoStudent(textName.getText(), textJumin.getJumin(),
 					sdf.parse(textStartDate.toString()), sdf.parse(textEndDate.toString()),
 					textMobile.getPhone(),
 					textTel.getPhone(),
 					textAddr.getText(),	roomNum,
-					typeValue[comboStdType.getSelectedIndex()], comboGrade.getSelectedIndex()+1
+					daoHandicap.selectCodeHandiByName((String)comboStdType.getSelectedItem()),
+					comboGrade.getSelectedIndex()+1
 					, textEmail.getEmail(),
 					depart.getCode());
 		} catch (ParseException e1) {
@@ -383,7 +368,7 @@ public class StdInsert extends JDialog implements ActionListener {
 		}else {
 			std.setRoomNum(Integer.parseInt(textRoomNum.getTxtRoomNum()));
 		}				
-		std.setStdType(typeValue[comboStdType.getSelectedIndex()]);
+		std.setStdType(daoHandicap.selectCodeHandiByName((String)comboStdType.getSelectedItem()));
 		std.setGrade(comboGrade.getSelectedIndex()+1);
 		std.setEmail(textEmail.getEmail());
 		depart = (Depart)daoDepart.selectCodeByName((String)comboDepart.getSelectedItem());
@@ -415,29 +400,7 @@ public class StdInsert extends JDialog implements ActionListener {
 		textEmail.setEmail(" @ ");
 	}
 	
-	public static int getType(int stdType) {		
-		switch(stdType) {
-		case 111 : return 0;
-		case 112 : return 1;
-		case 113 : return 2;
-		case 114 : return 3;
-		case 115 : return 4;
-		case 116 : return 5;
-		
-		case 121 : return 6;
-		case 122 : return 7;
-		case 123 : return 8;
-		case 124 : return 9;
-		case 125 : return 10;
-		case 126 : return 11;
-		
-		case 211 : return 12;
-		case 212 : return 13;
-		case 221 : return 14;
-		default :
-			return 0;		
-		}		
-	}
+	
 	
 	public int getMobile(String mobile) {
 		switch(mobile) {

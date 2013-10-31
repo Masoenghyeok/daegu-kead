@@ -10,12 +10,14 @@ import javax.swing.table.TableModel;
 import kr.or.kead.domain.Depart;
 import kr.or.kead.domain.InfoStudent;
 import kr.or.kead.service.DaoDepart;
+import kr.or.kead.service.DaoHandicap;
 import kr.or.kead.service.DaoInfoStudent;
 import kr.or.kead.service.DaoTable;
 
 public class CustomStdTableModel extends AbstractTableModel {
 	private ArrayList<Object> students;
 	private DaoDepart daoDepart;
+	private DaoHandicap daoHandi;
 		
 	// 테이블 column의 이름
 	private static final String[] columnNames = {"번호","이름","주민번호","입학일자","수료일자","휴대폰",
@@ -34,6 +36,7 @@ public class CustomStdTableModel extends AbstractTableModel {
 		DaoTable dao = new DaoInfoStudent();
 		students = dao.selectDao();		
 		daoDepart = new DaoDepart();
+		daoHandi = new DaoHandicap();
 	}
 	@Override
 	public int getColumnCount() {
@@ -66,8 +69,7 @@ public class CustomStdTableModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int row, int col) {
-		InfoStudent std = (InfoStudent)students.get(row);	
-			
+		InfoStudent std = (InfoStudent)students.get(row);		
 		switch(col) {
 		case 0 : return std.getIdx();
 		case 1 : return std.getStdName();
@@ -78,7 +80,7 @@ public class CustomStdTableModel extends AbstractTableModel {
 		case 6 : return std.getTel();
 		case 7 : return "  " + std.getStdAddr();
 		case 8 : return std.getRoomNum() == 500?"통학":std.getRoomNum();
-		case 9 : return StdInsert.type[StdInsert.getType(std.getStdType())];
+		case 9 : return daoHandi.selectTableById(std.getStdType());
 		case 10 : return std.getGrade() + "급";
 		case 11 : return "  " + std.getEmail();
 		case 12 : Depart depart = (Depart)daoDepart.selectTableById(std.getDepartCode());
