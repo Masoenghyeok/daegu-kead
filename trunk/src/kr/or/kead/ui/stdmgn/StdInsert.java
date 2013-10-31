@@ -64,7 +64,7 @@ public class StdInsert extends JDialog implements ActionListener {
 	private DaoTable dao;
 	private DaoDepart daoDepart;
 	private DaoHandicap daoHandicap;
-	private int stdId;
+	private int stdIdx;
 	private MenuMgn menuMgn;
 	private Depart depart;
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -73,21 +73,22 @@ public class StdInsert extends JDialog implements ActionListener {
 	
 	static final Integer[] grade={ 1, 2, 3, 4, 5, 6};
 	
-	
-	/**
-	 * @wbp.parser.constructor
-	 */
+	/*
+	public StdInsert(InfoStudent std, MenuMgn menuMgn) {
+		init();
+	}
+	*/
 	public StdInsert(MenuMgn menuMgn) {
 		this.setTitle("학생추가");
 		init();
 		this.menuMgn = menuMgn;
 	}
 	
-	public StdInsert(int stdId, MenuMgn menuMgn) {
-		this.setTitle("학생수정");
-		this.stdId = stdId;
+	public StdInsert(int stdIdx, MenuMgn menuMgn) {
+		this.setTitle("학생수정");		
 		init();
-		fillText(stdId);
+		this.stdIdx = stdIdx;
+		fillText(this.stdIdx);
 		this.menuMgn = menuMgn;
 	}	
 	
@@ -245,8 +246,8 @@ public class StdInsert extends JDialog implements ActionListener {
 		pack();
 	}	
 	
-	private void fillText(int stdId) {	
-		std = (InfoStudent)dao.selectTableById(stdId);	
+	private void fillText(int stdIdx) {
+		std = (InfoStudent)dao.selectTableById(stdIdx);		
 		if(std.getIdx() != 0) {
 			textName.setText(std.getStdName());			
 			textJumin.setJumin(std.getJuminNum());
@@ -350,8 +351,9 @@ public class StdInsert extends JDialog implements ActionListener {
 		}						
 	}
 
-	private void btnModifyActionPerformed(ActionEvent e) {		
-		std.setIdx(stdId);
+	private void btnModifyActionPerformed(ActionEvent e) {	
+		System.out.println("modify in");
+		std.setIdx(stdIdx);
 		std.setStdName(textName.getText());
 		std.setJuminNum(textJumin.getJumin());
 		try {
@@ -377,6 +379,7 @@ public class StdInsert extends JDialog implements ActionListener {
 			this.dispose();
 			menuMgn.refreshList();
 			cleanTextField();
+			
 		}else {
 			JOptionPane.showMessageDialog(null, "수정에 실패하였습니다.");
 		}					

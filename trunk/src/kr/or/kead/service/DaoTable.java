@@ -9,5 +9,6 @@ public interface DaoTable {
 	int updateDao(Object obj);
 	int deleteDao(int regNo);
 	ArrayList<Object> selectDao();
-	Object selectTableById(int idx);	
+	Object selectTableById(int idx);
+	ArrayList<String> selectTableAllList();
 }

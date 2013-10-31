@@ -3,13 +3,17 @@ package kr.or.kead.ui.menu;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 
 import kr.or.kead.domain.InfoStudent;
+import kr.or.kead.service.DaoDepart;
 import kr.or.kead.service.DaoInfoStudent;
 import kr.or.kead.service.DaoTable;
 import kr.or.kead.ui.departmgn.CustomDepartTableModel;
@@ -18,7 +22,6 @@ import kr.or.kead.ui.departmgn.DepartList;
 import kr.or.kead.ui.stdmgn.CustomStdTableModel;
 import kr.or.kead.ui.stdmgn.StdInsert;
 import kr.or.kead.ui.stdmgn.StdList;
-import javax.swing.SwingConstants;
 
 public class MenuMgn extends JMenuBar implements ActionListener {
 	private JMenu stdMgn;			// 학생관리
@@ -35,11 +38,18 @@ public class MenuMgn extends JMenuBar implements ActionListener {
 	private DepartList departListView;
 	
 	private Container contentPane;
-	private StdList listView;	
+	private StdList listView;
+	
+	private DaoTable dao;
+	private StdInsert stdIn;
+	private DaoDepart daoDepart;
+	private DepartInsert depart; 
 		
 	public MenuMgn(Container contentPane) {
 		super();
 		this.contentPane = contentPane;
+		dao = new DaoInfoStudent();
+		daoDepart = new DaoDepart();
 		init();
 	}
 
@@ -91,9 +101,7 @@ public class MenuMgn extends JMenuBar implements ActionListener {
 		add(departMgn);		
 	}
 
-
-
-	public void refreshList() {
+	public void refreshList() {		
 		contentPane.removeAll();
 		listView.setTableModel(new CustomStdTableModel());
 		contentPane.add(listView);
@@ -104,52 +112,54 @@ public class MenuMgn extends JMenuBar implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == stdAdd) {
-			StdInsert launcher = new StdInsert(this);
-			launcher.setVisible(true);			
+			stdIn = new StdInsert(this);
+			stdIn.setVisible(true);			
 		}else if(e.getSource() == stdDel) {
-			String stdId = JOptionPane.showInputDialog(null, "삭제 할 학생 ID를 입력하세요");
-			if(stdId != null) {
-				DaoTable dao = new DaoInfoStudent();
-				InfoStudent std = new InfoStudent();
-				std = (InfoStudent)dao.selectTableById(Integer.parseInt(stdId));
-				if(std.getIdx() != 0) {
-					int confirmDel = JOptionPane.showConfirmDialog(
-							null,
-							std.getStdName() +" 학생을 삭제 하시겠습니까?",
-							"삭제메시지", 
-							JOptionPane.YES_NO_OPTION,
-							JOptionPane.WARNING_MESSAGE);
-					if(confirmDel == 0) {
-						if(dao.deleteDao(Integer.parseInt(stdId))==0) {
-							JOptionPane.showMessageDialog(null, "삭제가 완료되었습니다.");
-							refreshList();
-						}else {
-							JOptionPane.showMessageDialog(null, "삭제가 완료 되지 않았습니다.");
-						}
-					}					
-				}				
-			}			
+			int res = searchNum(dao,"삭제");
+			if(res != -1 && dao.deleteDao(res) != -1) {
+				refreshList();
+				JOptionPane.showMessageDialog(null, "삭제가 완료되었습니다.");
+			}else {
+				JOptionPane.showMessageDialog(null, "삭제가 완료 되지 않았습니다.");							
+			}									
 		}else if(e.getSource() == stdUpdate) {
-			String stdId = JOptionPane.showInputDialog(null, "수정할 학생의 ID를 입력하세요.");
-			if(stdId != null) {
-				StdInsert stdUpdate = new StdInsert(Integer.parseInt(stdId), this);
-				stdUpdate.setVisible(true);
+			int res = searchNum(dao, "수정");	
+			if(res != -1) {				
+				stdIn = new StdInsert(res, this);
+				stdIn.setVisible(true);				
 			}		
 		}else if(e.getSource() == stdList) {		
 			refreshList();				
-		}else if(e.getSource() == departList) {
+		}else if(e.getSource() == departList) {			
 			departListView = new DepartList(new CustomDepartTableModel());
 			contentPane.removeAll();
 			contentPane.add(departListView);
 			contentPane.validate();			
 		}else if(e.getSource() == departAdd) {
-			DepartInsert departInsert = new DepartInsert(this);
-			departInsert.setVisible(true);
-		}else if(e.getSource() == departUpdate) {
-			String departCode = JOptionPane.showInputDialog("검색하실 학과명을 입력하세요");
-			DepartInsert departInsert = new DepartInsert(departCode, this);
-			departInsert.setVisible(true);
+			depart = new DepartInsert(this);
+			depart.setVisible(true);
+		}else if(e.getSource() == departUpdate) {			
+			int code = searchNum(daoDepart, "수정");
+			if(code != -1) {
+				depart = new DepartInsert(code, this);
+			}			
+			depart.setVisible(true);
 		}
+	}
+	
+	public int searchNum(DaoTable daoTable, String msg) {
+		ArrayList<String> lists = daoTable.selectTableAllList();
+		Object[] arLists = lists.toArray();
+		int result = -1;
+		try {
+			String res = (String) JOptionPane.showInputDialog(null, msg+" 하고자 하는 번호 선택",
+					msg, JOptionPane.OK_CANCEL_OPTION, null, arLists, arLists[0]);
+			StringTokenizer st = new StringTokenizer(res, ":");
+			result = Integer.parseInt(st.nextToken());
+		} catch (NullPointerException e) {
+			JOptionPane.showMessageDialog(null, "취소");
+		}
+		return result;
 	}
 
 }

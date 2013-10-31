@@ -67,7 +67,6 @@ public class DaoInfoStudent implements DaoTable {
 				+ " grade=?,"
 				+ " email=?,"
 				+ " departCode=? where idx=?";		
-		System.out.println(sql);
 		PreparedStatement pstmt=null;
 		try {
 			pstmt = con.prepareStatement(sql);
@@ -130,9 +129,10 @@ public class DaoInfoStudent implements DaoTable {
 		InfoStudent std;
 		ArrayList<Object> sendValue = new ArrayList<>();
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try {
 			pstmt = con.prepareStatement(sql);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				std = new InfoStudent();
 				std.setIdx(rs.getInt("idx"));
@@ -156,6 +156,7 @@ public class DaoInfoStudent implements DaoTable {
 			e.printStackTrace();
 		}finally {
 			try {
+				rs.close();
 				pstmt.close();
 				con.close();
 			} catch (SQLException e) {			
@@ -171,10 +172,11 @@ public class DaoInfoStudent implements DaoTable {
 		String sql = "select * from infoStudent where idx= ?";
 		InfoStudent std = new InfoStudent();	
 		PreparedStatement pstmt=null;
+		ResultSet rs = null;
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, idx);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				std.setIdx(rs.getInt("idx"));
 				std.setStdName(rs.getString("stdName"));
@@ -197,6 +199,7 @@ public class DaoInfoStudent implements DaoTable {
 			e.printStackTrace();
 		}finally {
 			try {
+				rs.close();
 				pstmt.close();
 				con.close();
 			} catch (SQLException e) {			
@@ -204,5 +207,34 @@ public class DaoInfoStudent implements DaoTable {
 			}
 		}		
 		return std;
-	}	
+	}
+
+	@Override
+	public ArrayList<String> selectTableAllList() {
+		Connection con = MysqlCon.getConnection();		
+		String sql = "select idx, stdName from infoStudent";
+		InfoStudent std = new InfoStudent();
+		ArrayList<String> lists = new ArrayList<>();
+		PreparedStatement pstmt=null;
+		ResultSet rs = null;		
+		try {
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				lists.add(rs.getInt(1) + ":" + rs.getString(2));
+			}			
+		}catch (SQLException e) {			
+			e.printStackTrace();
+			return null;
+		}finally {
+			try {
+				rs.close();
+				pstmt.close();
+				con.close();
+			} catch (SQLException e) {			
+				e.printStackTrace();
+			}
+		}
+		return lists;
+	}
 }

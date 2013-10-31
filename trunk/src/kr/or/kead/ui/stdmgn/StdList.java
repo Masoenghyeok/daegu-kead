@@ -1,11 +1,10 @@
 package kr.or.kead.ui.stdmgn;
 
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowStateListener;
 
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -63,12 +62,13 @@ public class StdList extends JPanel {
 		table.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e) {				
 				if(e.getButton()==MouseEvent.BUTTON3) {					
+					Point point = contentPane.getLocationOnScreen();					
 					row = table.getSelectedRow();
 					col = table.getSelectedColumn();					
 					if(row >= 0 && col >=0) {						
 						int xValue = e.getX();						
 						int yValue = e.getY();						
-						popMgn.show(null, xValue+10, yValue+20);
+						popMgn.show(null, xValue+point.x+10, yValue+point.y);
 					}										
 				}
 			}	
