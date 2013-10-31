@@ -50,7 +50,8 @@ public class DaoDepart implements DaoTable{
 			pstmt.setInt(3, depart.getProf());
 			pstmt.setString(4, depart.getTel());
 			pstmt.setInt(5, depart.getCode());			
-			pstmt.executeUpdate();			
+			pstmt.executeUpdate();	
+			System.out.println(pstmt);
 		} catch (SQLException e) {			
 			e.printStackTrace();
 			return -1;
@@ -188,9 +189,21 @@ public class DaoDepart implements DaoTable{
 
 	@Override
 	public ArrayList<String> selectTableAllList() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
+		Connection con = MysqlCon.getConnection();
+		ArrayList<String> arLists = new ArrayList<>();
+		String sql = "select code, name from depart";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				arLists.add(rs.getInt(1) + ":" + rs.getString(2));
+			}
+		} catch (SQLException e) {			
+			e.printStackTrace();
+			return null;
+		}
+		return arLists;
+	}	
 }

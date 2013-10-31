@@ -1,5 +1,6 @@
 package kr.or.kead.ui.menu;
 
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -50,6 +51,7 @@ public class MenuMgn extends JMenuBar implements ActionListener {
 		this.contentPane = contentPane;
 		dao = new DaoInfoStudent();
 		daoDepart = new DaoDepart();
+		
 		init();
 	}
 
@@ -93,18 +95,20 @@ public class MenuMgn extends JMenuBar implements ActionListener {
 		departList = new JMenuItem("리스트");
 		departList.addActionListener(this);
 		
+		
 		departMgn.add(departAdd);
 		departMgn.add(departDel);
 		departMgn.add(departUpdate);
 		departMgn.add(departList);
+		departListView = new DepartList(new CustomDepartTableModel());
 		
 		add(departMgn);		
 	}
 
-	public void refreshList() {		
+	public void refreshList(Component component) {		
 		contentPane.removeAll();
-		listView.setTableModel(new CustomStdTableModel());
-		contentPane.add(listView);
+//		listView.setTableModel(new CustomStdTableModel());
+		contentPane.add(component);
 		contentPane.validate();
 	}
 	
@@ -117,7 +121,8 @@ public class MenuMgn extends JMenuBar implements ActionListener {
 		}else if(e.getSource() == stdDel) {
 			int res = searchNum(dao,"삭제");
 			if(res != -1 && dao.deleteDao(res) != -1) {
-				refreshList();
+				listView.setTableModel(new CustomStdTableModel());
+				refreshList(listView);
 				JOptionPane.showMessageDialog(null, "삭제가 완료되었습니다.");
 			}else {
 				JOptionPane.showMessageDialog(null, "삭제가 완료 되지 않았습니다.");							
@@ -128,22 +133,31 @@ public class MenuMgn extends JMenuBar implements ActionListener {
 				stdIn = new StdInsert(res, this);
 				stdIn.setVisible(true);				
 			}		
-		}else if(e.getSource() == stdList) {		
-			refreshList();				
-		}else if(e.getSource() == departList) {			
-			departListView = new DepartList(new CustomDepartTableModel());
+		}else if(e.getSource() == stdList) {
+			listView.setTableModel(new CustomStdTableModel());
+			refreshList(listView);				
+		}else if(e.getSource() == departList) {				
 			contentPane.removeAll();
 			contentPane.add(departListView);
 			contentPane.validate();			
-		}else if(e.getSource() == departAdd) {
+		}else if(e.getSource() == departAdd) {			
 			depart = new DepartInsert(this);
 			depart.setVisible(true);
 		}else if(e.getSource() == departUpdate) {			
-			int code = searchNum(daoDepart, "수정");
-			if(code != -1) {
-				depart = new DepartInsert(code, this);
-			}			
-			depart.setVisible(true);
+			int res = searchNum(daoDepart, "수정");	
+			if(res != -1) {				
+				depart = new DepartInsert(res, this);
+				depart.setVisible(true);				
+			}
+		}else if(e.getSource() == departDel) {
+			int res = searchNum(daoDepart,"삭제");
+			if(res != -1 && daoDepart.deleteDao(res) != -1) {
+				departListView.setTableModel(new CustomDepartTableModel());
+				refreshList(departListView);
+				JOptionPane.showMessageDialog(null, "삭제가 완료되었습니다.");
+			}else {
+				JOptionPane.showMessageDialog(null, "삭제가 완료 되지 않았습니다.");							
+			}
 		}
 	}
 	

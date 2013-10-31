@@ -23,16 +23,24 @@ public class DepartInsert extends JDialog implements ActionListener {
 	private PhoneCheck txtTel;
 	private JButton btnSave;
 	private JButton btnCancel;
+	private DaoDepart dao;
+	private int departCode;
+	private Depart depart;
+	private MenuMgn menuMgn;
 	
 	public DepartInsert(MenuMgn mgn) {
+		menuMgn = mgn;
 		initialize();
 	}
 	public DepartInsert(int departCode, MenuMgn mgn) {
+		menuMgn = mgn;
+		this.departCode = departCode;
 		initialize();
 		fillValues(departCode);
 	}
 	
 	private void initialize() {
+		dao = new DaoDepart();
 		setBounds(100, 100, 450, 150);
 		getContentPane().setLayout(new GridLayout(3, 2, 5, 5));
 		{
@@ -75,11 +83,11 @@ public class DepartInsert extends JDialog implements ActionListener {
 	}
 	
 	private void fillValues(int departCode) {
-		DaoDepart dao = new DaoDepart();
-		Depart departs = (Depart)dao.selectTableById(departCode);
-		txtDepart.setText(departs.getName());
-		txtTel.setPhone(departs.getTel());
-		btnSave.setName("수정");		
+		dao = new DaoDepart();
+		depart = (Depart)dao.selectTableById(departCode);
+		txtDepart.setText(depart.getName());
+		txtTel.setPhone(depart.getTel());
+		btnSave.setText("수정");		
 	}
 	
 
@@ -88,12 +96,29 @@ public class DepartInsert extends JDialog implements ActionListener {
 			btnCancelActionPerformed(arg0);
 		}
 		if (arg0.getSource() == btnSave) {
-			btnSaveActionPerformed(arg0);
+			if(btnSave.getText().equals("저장")) {
+				btnSaveActionPerformed(arg0);
+			}else {
+				btnUpdateActionPerformed(arg0);
+			}
+		}
+	}
+	private void btnUpdateActionPerformed(ActionEvent e) {
+		if(isFieldCheck()) {
+			depart = (Depart)dao.selectTableById(departCode);
+			depart.setName(txtDepart.getText());
+			depart.setTel(txtTel.getPhone());
+			if(dao.updateDao(depart) == -1) {
+				JOptionPane.showMessageDialog(null, "수정에 실패 하였습니다.");
+				System.out.println("2");
+			}else {
+				menuMgn.refreshList(new DepartList(new CustomDepartTableModel(), menuMgn));
+				dispose();
+			}
 		}
 	}
 	protected void btnSaveActionPerformed(ActionEvent e) {
-		if(isFieldCheck()) {
-			DaoDepart dao = new DaoDepart();
+		if(isFieldCheck()) {			
 			int maxCode = dao.selectMaxCode() + 100;
 			Depart depart = new Depart(maxCode, txtDepart.getText(), 0, txtTel.getPhone());
 			System.out.println(depart);
