@@ -198,4 +198,11 @@ static final String[] type={"지체장애","뇌병변장애","시각장애","청
  alter table infoStudent change stdAddr stdAddr varchar(60);
  
  update depart set code=100, name='정보', prof=1003, tel='053-123-1234' where code = 100
+ 
+ select idx '번호', stdName '성명', juminNum '주민번호', startDate '입학날짜', endDate '수료날짜',
+				mobile '휴대전화', tel '유선전화', stdAddr '주소', roomNum '통학/기숙사', stdType '장애유형', 
+				 grade '등급', email '이메일', departCode '학과' from infostudent
+				 
+				 
+select code '번호', name '학과명', prof '지도교수', tel '연락처' from depart
 

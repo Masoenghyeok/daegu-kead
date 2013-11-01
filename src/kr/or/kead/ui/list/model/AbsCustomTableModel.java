@@ -15,9 +15,10 @@ public abstract class AbsCustomTableModel extends AbstractTableModel {
 	private String[] tableColumnNames;
 	private Class[] tableColumnClasses;
 	private Object[] data;
-	private ArrayList<Object> arData;
-	private String sql;
+	protected ArrayList<Object[]> arData;
+	protected String sql;	
 	
+
 	@Override
 	public int getColumnCount() {
 		return tableColumnNames.length;
@@ -28,6 +29,12 @@ public abstract class AbsCustomTableModel extends AbstractTableModel {
 		return arData.size();
 	}
 
+	
+
+	@Override
+	public String getColumnName(int col) {
+		return tableColumnNames[col];
+	}
 
 	@Override
 	public Class<?> getColumnClass(int col) {
@@ -41,21 +48,25 @@ public abstract class AbsCustomTableModel extends AbstractTableModel {
 		ResultSet rs = null;
 		try {
 			pstmt = con.prepareStatement(sql);
+			System.out.println(sql);
 			rs = pstmt.executeQuery();
+			arData = new ArrayList<>();
 			ResultSetMetaData rsMeta = rs.getMetaData();
 			int columnCount = rsMeta.getColumnCount();
 			tableColumnNames = new String[columnCount];
 			tableColumnClasses = new Class[columnCount];			
 			for(int i=1; i<=columnCount; i ++) {
 				tableColumnNames[i-1] = rsMeta.getColumnLabel(i);
-				tableColumnClasses[i-1] = Class.forName(rsMeta.getColumnName(i));				
+				tableColumnClasses[i-1] = Class.forName(rsMeta.getColumnClassName(i));				
 			}
+			
 			while(rs.next()) {
 				data = new Object[columnCount];
 				for(int i=1;i<=columnCount; i ++) {
 					data[i-1] = rs.getObject(i);					
 				}
 				arData.add(data);
+				
 			}
 		} catch (SQLException e) {e.printStackTrace();}catch(ClassNotFoundException e){e.printStackTrace();
 		} finally {

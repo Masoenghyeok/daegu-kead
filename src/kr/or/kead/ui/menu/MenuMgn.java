@@ -45,6 +45,8 @@ public class MenuMgn extends JMenuBar implements ActionListener {
 	private StdInsert stdIn;
 	private DaoDepart daoDepart;
 	private DepartInsert depart; 
+	private JMenu testMenu;
+	
 		
 	public MenuMgn(Container contentPane) {
 		super();
@@ -58,7 +60,7 @@ public class MenuMgn extends JMenuBar implements ActionListener {
 
 	private void init() {		
 		stdSetting();
-		departSetting();
+		departSetting();		
 	}	
 
 	private void stdSetting() {
@@ -103,6 +105,9 @@ public class MenuMgn extends JMenuBar implements ActionListener {
 		departListView = new DepartList(new CustomDepartTableModel());
 		
 		add(departMgn);		
+		
+		testMenu = new StdMenu(contentPane);
+		add(testMenu);
 	}
 
 	public void refreshList(Component component) {		
