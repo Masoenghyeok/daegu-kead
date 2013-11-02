@@ -4,7 +4,7 @@ import kr.or.kead.ui.list.model.AbsCustomTableModel;
 import kr.or.kead.ui.list.model.StdCustomTableModel;
 
 public class StdTableList extends AbsTableList {
-	private static boolean[] sortColumn = {false, true, true, true, true, true, false, true, true,
+	private static boolean[] sortColumn = {false, false, true, true, true, false, false, true, true,
 		true, true, false, false};
 	public StdTableList(int height) {		
 		super(new StdCustomTableModel(), height, sortColumn);	
