@@ -70,8 +70,12 @@ public abstract class AbsInsertUpdate extends JDialog implements ActionListener 
 			Object obj = getObject();						// 필요한 클래스를 가지고 옴			
 			if (e.getActionCommand() == "추가") {			
 				isOK(daoTable.insertDao(obj), "삽입");
-			}else {			
-				isOK(daoTable.updateDao(obj), "수정");
+			}else {	
+				System.out.println(obj);
+				int i = daoTable.updateDao(obj);
+				System.out.println("i = " +i);
+//				isOK(daoTable.updateDao(obj), "수정");
+				isOK(i, "수정");
 			}
 			dispose();
 		}		

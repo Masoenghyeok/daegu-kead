@@ -19,6 +19,7 @@ public class MenuMgn extends JMenuBar  {
 	private AbsTableList listView; 
 	private JMenu stdMenu;
 	private JMenu departMenu;
+	private JMenu profMenu;
 	private JFrame frame;
 	
 		
@@ -36,8 +37,12 @@ public class MenuMgn extends JMenuBar  {
 		add(stdMenu);		
 		
 		departMenu = new DepartMenu(frame, (int)frame.getSize().getHeight());
-		add(departMenu);
+		add(departMenu);		
+		
+		profMenu = new ProfMenu(frame, (int)frame.getSize().getHeight());
+		add(profMenu);
+		
 		listView = new StdTableList(400);
-		contentPane.add(listView);
+		contentPane.add(listView);		
 	}
 }

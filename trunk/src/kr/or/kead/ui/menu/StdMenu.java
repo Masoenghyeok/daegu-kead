@@ -13,16 +13,17 @@ import kr.or.kead.ui.list.StdTableList;
 
 public class StdMenu extends AbsMenu {
 	private AbsTableList stdListView;
-	private DaoInfoStudent daoStd;
+	private DaoInfoStudent daoStd;	
 	
 	public StdMenu(JFrame frame, int height) {
-		super(frame, "학생 관리");	
+		super(frame, "학생 관리");		
 		stdListView = new StdTableList(height);
 		daoStd = new DaoInfoStudent();
 	}
 	
 	@Override
 	protected void addMenuActionPerformed(ActionEvent e) {
+		listMenuActionPerformed(e);
 		StdInsertUpdate insert = new StdInsertUpdate(null);		
 		insert.setVisible(true);
 		if(insert.showDialog() == 0) {		
@@ -33,6 +34,7 @@ public class StdMenu extends AbsMenu {
 
 	@Override
 	protected void delMenuActionPerformed(ActionEvent e) {
+		listMenuActionPerformed(e);
 		int res = searchNum(daoStd, "삭제");
 		if (res != -1 && daoStd.deleteDao(res) != -1) {			
 			JOptionPane.showMessageDialog(null, "삭제 되었습니다.");
@@ -44,7 +46,8 @@ public class StdMenu extends AbsMenu {
 	}
 		
 	@Override
-	protected void updateMenuActionPerformed(ActionEvent e) {		
+	protected void updateMenuActionPerformed(ActionEvent e) {
+		listMenuActionPerformed(e);
 		int res = searchNum(daoStd, "수정");
 		if(res != -1) {
 			InfoStudent std = daoStd.selectTableById(res);
@@ -57,6 +60,7 @@ public class StdMenu extends AbsMenu {
 	@Override
 	protected void listMenuActionPerformed(ActionEvent e) {		
 		refreshList(stdListView);
+		
 	}
 
 }

@@ -1,5 +1,8 @@
 package kr.or.kead.ui.list.model;
 
+import kr.or.kead.domain.Professor;
+import kr.or.kead.service.DaoProfessor;
+
 
 public class DepartCustomTableModel extends AbsCustomTableModel {
 	
@@ -10,9 +13,13 @@ public class DepartCustomTableModel extends AbsCustomTableModel {
 
 	public Object getValueAt(int row, int col) {
 		Object[] depart = arData.get(row);
+		DaoProfessor daoProfessor = new DaoProfessor();
+		System.out.println(col + " " + depart[col]);
 		switch(col) {
 		case 0:case 1: return depart[col];
-		case 2: return depart[col];   				// 추후 수정
+		
+		case 2: Professor prof = (Professor)daoProfessor.selectTableById((int)depart[col]); 
+			return prof.getName();   				// 추후 수정
 		case 3: return depart[col];
 		}
 		
