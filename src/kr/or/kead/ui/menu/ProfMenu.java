@@ -4,12 +4,15 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JFrame;
 
-public class ProfMenu extends AbsMenu {
-	private 
+import kr.or.kead.ui.list.AbsTableList;
+import kr.or.kead.ui.list.ProfessorTableList;
 
+public class ProfMenu extends AbsMenu {
+	private AbsTableList professorListView;
+	
 	public ProfMenu(JFrame frame, int height) {
 		super(frame, "교수 관리");
-		
+		professorListView = new ProfessorTableList(height);
 	}
 
 	@Override
@@ -32,7 +35,7 @@ public class ProfMenu extends AbsMenu {
 
 	@Override
 	protected void listMenuActionPerformed(ActionEvent e) {
-		refreshList();
+		refreshList(professorListView);
 	}
 
 }

@@ -22,7 +22,8 @@ public class DepartMenu extends AbsMenu {
 	}
 
 	@Override
-	protected void addMenuActionPerformed(ActionEvent e) {		
+	protected void addMenuActionPerformed(ActionEvent e) {	
+		listMenuActionPerformed(e);
 		DepartInsertUpdate insert = new DepartInsertUpdate(null);			
 		insert.setVisible(true);
 		if (insert.showDialog()==0)departListView.setTableModel();
@@ -30,6 +31,7 @@ public class DepartMenu extends AbsMenu {
 
 	@Override
 	protected void delMenuActionPerformed(ActionEvent e) {
+		listMenuActionPerformed(e);
 		int res = searchNum(daoDepart, "삭제");
 		if (res != -1 && daoDepart.deleteDao(res) != -1) {			
 			JOptionPane.showMessageDialog(null, "삭제 되었습니다.");
@@ -41,6 +43,7 @@ public class DepartMenu extends AbsMenu {
 
 	@Override
 	protected void updateMenuActionPerformed(ActionEvent e) {
+		listMenuActionPerformed(e);
 		int res = searchNum(daoDepart, "수정");
 		if(res !=-1) {
 			Depart depart = (Depart)daoDepart.selectTableById(res);

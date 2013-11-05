@@ -46,10 +46,11 @@ public abstract class AbsMenu extends JMenu implements ActionListener{
 	
 	public void refreshList(AbsTableList list) {
 		Container contentPane = frame.getContentPane();
-		contentPane.removeAll();	
-		contentPane.add(list);
+		contentPane.removeAll();		
 		list.setTableModel();
+		contentPane.add(list);		
 		contentPane.validate();
+		frame.pack();
 	}
 	
 	public int searchNum(DaoTable daoTable, String msg) {

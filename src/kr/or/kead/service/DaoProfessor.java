@@ -143,6 +143,28 @@ public class DaoProfessor implements DaoTable {
 		}	
 	}
 	
+	public Object selectCodeNameById(int code) {
+		Connection con = MysqlCon.getConnection();		
+		String sql = "select code, name from professor where code = ?";
+		Object obj = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, code);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				obj = rs.getInt(1) + ":" + rs.getString(2);
+			}
+			return obj;
+		} catch (SQLException e) {			
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {pstmt.close();con.close();} catch (SQLException e) {e.printStackTrace();}
+		}	
+	}
+	
 	public int selectMaxCode() {
 		Connection con = MysqlCon.getConnection();		
 		String sql = "select max(code) from depart";
