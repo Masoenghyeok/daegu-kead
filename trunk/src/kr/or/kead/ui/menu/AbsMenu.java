@@ -18,10 +18,11 @@ public abstract class AbsMenu extends JMenu implements ActionListener{
 	private JMenuItem addMenu;
 	private JMenuItem delMenu;
 	private JMenuItem updateMenu;
-	private JMenuItem listMenu;
-	private Container contentPane;
-	public AbsMenu(Container contentPane, String title) {
-		this.contentPane = contentPane;
+	private JMenuItem listMenu;	
+	private JFrame frame;
+	
+	public AbsMenu(JFrame frame, String title) {
+		this.frame = frame;
 		initialize(title);
 	}
 	private void initialize(String title) {
@@ -43,9 +44,11 @@ public abstract class AbsMenu extends JMenu implements ActionListener{
 		add(listMenu);
 	}
 	
-	public void refreshList(AbsTableList list) {		
-		contentPane.removeAll();
+	public void refreshList(AbsTableList list) {
+		Container contentPane = frame.getContentPane();
+		contentPane.removeAll();	
 		contentPane.add(list);
+		list.setTableModel();
 		contentPane.validate();
 	}
 	
@@ -57,7 +60,7 @@ public abstract class AbsMenu extends JMenu implements ActionListener{
 			String res = (String) JOptionPane.showInputDialog(null, msg+" 하고자 하는 번호 선택",
 					msg, JOptionPane.OK_CANCEL_OPTION, null, arLists, arLists[0]);
 			StringTokenizer st = new StringTokenizer(res, ":");
-			result = Integer.parseInt(st.nextToken());
+			result = Integer.parseInt(st.nextToken().trim());
 		} catch (NullPointerException e) {
 			JOptionPane.showMessageDialog(null, "취소");
 		}

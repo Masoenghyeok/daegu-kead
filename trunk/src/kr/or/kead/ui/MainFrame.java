@@ -13,12 +13,12 @@ public class MainFrame extends JFrame {
 		super();
 		// menu
 		
-		menu = new MenuMgn(this.getContentPane());
+		menu = new MenuMgn(this);
 		setJMenuBar(menu);
 		
 		
 		setTitle("대구직업능력개발원 학사관리");
-		setSize(new Dimension(1120, 300));
+		
 		
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
