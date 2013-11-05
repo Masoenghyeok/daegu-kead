@@ -244,4 +244,6 @@ delete from depart where code = 500;
 
 desc infoStudent;
 
+select max(code) from professor where depart = 100;
+
 

@@ -112,7 +112,7 @@ public class DepartInsertUpdate extends AbsInsertUpdate {
 		lbl_prof.setFont(new Font("맑은 고딕", Font.PLAIN, 16));
 		centerPanel.add(lbl_prof);
 
-		ArrayList<String> arList = daoprofessor.selectTableAllList();	// 번호:이름
+		ArrayList<String> arList = daoprofessor.selectDepartCodeByName((Integer.parseInt(lbl_departCode.getText())));	// 번호:이름
 		Object[] objList = arList.toArray();				
 		comboProf = new JComboBox<>(objList);		
 		centerPanel.add(comboProf);

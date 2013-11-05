@@ -174,7 +174,7 @@ public class DaoDepart implements DaoTable{
 	
 	public int selectMaxCode() {
 		Connection con = MysqlCon.getConnection();		
-		String sql = "select max(code) from professor";
+		String sql = "select max(code) from depart";
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = con.prepareStatement(sql);
@@ -208,4 +208,6 @@ public class DaoDepart implements DaoTable{
 		}
 		return arLists;
 	}	
+	
+	
 }

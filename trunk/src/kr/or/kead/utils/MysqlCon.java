@@ -8,8 +8,8 @@ public class MysqlCon {
 	private static Connection getDatabaseConnection() throws ClassNotFoundException {
 		Class.forName("com.mysql.jdbc.Driver");
 		try {
-			return DriverManager.getConnection("jdbc:mysql://localhost:3306/daegu_kead", "kead", "kead_pass");  // 개발원
-//			return DriverManager.getConnection("jdbc:mysql://localhost:3306/daegu_kead", "shma", "shma_pass");  // 집
+//			return DriverManager.getConnection("jdbc:mysql://localhost:3306/daegu_kead", "kead", "kead_pass");  // 개발원
+			return DriverManager.getConnection("jdbc:mysql://localhost:3306/daegu_kead", "shma", "shma_pass");  // 집
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			throw new RuntimeException(e);

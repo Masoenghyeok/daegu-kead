@@ -44,6 +44,10 @@ public class Professor {
 	public void setCourse(String course) {
 		this.course = course;
 	}
+	
+	public String getToString() {
+		return code+":"+name;
+	}
 
 	
 	@Override
