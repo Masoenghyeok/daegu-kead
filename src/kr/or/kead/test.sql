@@ -140,13 +140,26 @@ select p.name, p.depart, p.course from depart d, professor p,
  on update cascade
  on delete no action;
  
+ alter table infostudent add constraint infostudent_departCode_fk
+foreign key (departCode) references depart(code)
+on update cascade
+on delete no action;
+ 
  alter table depart add constraint depart_prof_fk
  foreign key (prof) references professor(code)
  on update cascade
  on delete no action;
  
+ alter table depart add constraint depart_prof_fk
+foreign key (prof) references professor(code)
+on update cascade
+on delete no action;
+ 
+ 
  -- 외래키 삭제 foreign key 이름이 없으면 제가 할 수가 없다
  alter table depart drop foreign key depart_prof_fk;
+ alter table infoStudent drop foreign key infostudent_departCode_fk;
+ alter table professor drop foreign key professor_depart_fk;
  
  insert into depart values (700, "텔레마케팅", 7001, "053-1234-2132");
  
@@ -154,6 +167,29 @@ select p.name, p.depart, p.course from depart d, professor p,
  foreign key (depart) references depart(code)
  on update cascade
  on delete no action;
+ 
+ alter table professor add constraint professor_depart_fk
+foreign key (depart) references depart(code)
+on update cascade
+on delete no action
+ 
+ 
+ 
+
+--외래키제거
+alter table infostudent drop foreign key infostudent_departCode_fk
+
+
+--외래키 제약 제거
+alter table depart drop foreign key depart_prof_fk;
+insert into depart values (700, "성악",0,"053-444-4444");
+
+;
+ 
+ 
+ 
+ 
+ 
  -- 리팩토링 sgjp
  
  -- 테스트(10/24)
@@ -204,5 +240,8 @@ static final String[] type={"지체장애","뇌병변장애","시각장애","청
 				 grade '등급', email '이메일', departCode '학과' from infostudent
 				 
 				 
-select code '번호', name '학과명', prof '지도교수', tel '연락처' from depart
+delete from depart where code = 500;
+
+desc infoStudent;
+
 

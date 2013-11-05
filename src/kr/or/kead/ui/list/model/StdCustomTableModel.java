@@ -31,7 +31,7 @@ public class StdCustomTableModel extends AbsCustomTableModel {
 		case 12: Depart depart = (Depart)daoDepart.selectTableById((int)std[col]);
 			return depart.getName();
 		}
-		return std;
+		return "";
 	}
 
 }

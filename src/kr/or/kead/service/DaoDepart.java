@@ -70,7 +70,9 @@ public class DaoDepart implements DaoTable{
 		try {
 			pstmt = con.prepareStatement(sql);			
 			pstmt.setInt(1, regNo);
-			pstmt.executeUpdate();			
+			System.out.println(pstmt);
+			pstmt.executeUpdate();
+			
 		} catch (SQLException e) {			
 			e.printStackTrace();
 			return -1;
@@ -172,7 +174,7 @@ public class DaoDepart implements DaoTable{
 	
 	public int selectMaxCode() {
 		Connection con = MysqlCon.getConnection();		
-		String sql = "select max(code) from depart";
+		String sql = "select max(code) from professor";
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = con.prepareStatement(sql);
