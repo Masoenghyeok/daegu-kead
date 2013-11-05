@@ -126,8 +126,7 @@ public class DaoProfessor implements DaoTable {
 		String sql = "select code, name from professor";
 		ArrayList<String> arProf = new ArrayList<>();
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		Professor profs = null;
+		ResultSet rs = null;	
 		try {
 			pstmt = con.prepareStatement(sql);		
 			rs = pstmt.executeQuery();
@@ -165,13 +164,15 @@ public class DaoProfessor implements DaoTable {
 		}	
 	}
 	
-	public int selectMaxCode() {
+	public int selectMaxCode(int code) {
 		Connection con = MysqlCon.getConnection();		
-		String sql = "select max(code) from depart";
+		String sql = "select max(code) from professor where depart = ?";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try {
 			pstmt = con.prepareStatement(sql);
-			ResultSet rs = pstmt.executeQuery();
+			pstmt.setInt(1, code);
+			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				return rs.getInt(1);
 			}
@@ -180,6 +181,26 @@ public class DaoProfessor implements DaoTable {
 			return -1;
 		}
 		return -1;
+	}
+	
+	public ArrayList<String> selectDepartCodeByName(int code) {
+		Connection con = MysqlCon.getConnection();
+		ArrayList<String> arLists = new ArrayList<>();
+		String sql = "select code, name from professor where depart = ?";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, code);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				arLists.add(rs.getInt(1) + ":" + rs.getString(2));
+			}
+		} catch (SQLException e) {			
+			e.printStackTrace();
+			return null;
+		}
+		return arLists;
 	}
 
 }
