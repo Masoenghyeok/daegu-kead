@@ -56,7 +56,7 @@ public class DepartInsertUpdate extends AbsInsertUpdate {
 	@Override
 	protected Object getObject() {
 		String prof = (String)comboProf.getSelectedItem();
-		StringTokenizer st = new StringTokenizer(prof, ":");
+		StringTokenizer	st = new StringTokenizer(prof, ":");				
 		if(obj == null) {				// 추가			
 			depart = new Depart(Integer.parseInt(lbl_departCode.getText()), jtf_departName.getText(),
 					Integer.parseInt(st.nextToken().trim()), txtTel.getPhone());

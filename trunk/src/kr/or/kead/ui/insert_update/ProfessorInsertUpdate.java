@@ -141,7 +141,14 @@ public class ProfessorInsertUpdate extends AbsInsertUpdate {
 	private void codeChange() {
 		System.out.println(codePlus);
 		StringTokenizer st = new StringTokenizer((String)comboDepart.getSelectedItem(), ":");
-		lbl_profCode.setText(Integer.toString(((DaoProfessor)daoTable).selectMaxCode(Integer.parseInt(st.nextToken()))+codePlus));
+		int token = Integer.parseInt(st.nextToken());
+		int code = ((DaoProfessor)daoTable).selectMaxCode(token);
+		if(code == 0) {
+			lbl_profCode.setText(Integer.toString(token+codePlus));
+		}else {
+			lbl_profCode.setText(Integer.toString(code+codePlus));
+		}
+		
 	}
 
 }
