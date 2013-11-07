@@ -193,6 +193,7 @@ public class DaoProfessor implements DaoTable {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, code);
 			rs = pstmt.executeQuery();
+			System.out.println(pstmt);
 			while(rs.next()) {
 				arLists.add(rs.getInt(1) + ":" + rs.getString(2));
 			}

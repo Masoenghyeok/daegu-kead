@@ -1,6 +1,7 @@
 package kr.or.kead.ui.menu;
 
 import java.awt.Container;
+
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
@@ -12,6 +13,8 @@ import kr.or.kead.service.DaoInfoStudent;
 import kr.or.kead.service.DaoTable;
 import kr.or.kead.ui.list.AbsTableList;
 import kr.or.kead.ui.list.StdTableList;
+import org.junit.Test;
+
 
 public class MenuMgn extends JMenuBar  {	
 	
@@ -22,7 +25,7 @@ public class MenuMgn extends JMenuBar  {
 	private JMenu profMenu;
 	private JFrame frame;
 	
-		
+	
 	public MenuMgn(JFrame frame) {
 		super();
 		this.frame = frame;
@@ -30,7 +33,7 @@ public class MenuMgn extends JMenuBar  {
 		init();
 	}
 
-
+	@Test
 	private void init() {	
 		frame.setSize(new Dimension(1280, 400));
 		stdMenu = new StdMenu(frame, (int)frame.getSize().getHeight());

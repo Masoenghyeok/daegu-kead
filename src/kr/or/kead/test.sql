@@ -247,3 +247,13 @@ desc infoStudent;
 select max(code) from professor where depart = 100;
 
 
+<-- 학생은 레벨1 교수는 레벨2 관리자는 레벨 9
+create table member (
+	idx		int	auto_increment,
+	id		varchar(10) not null,
+	pass 	varchar(10) not null,
+	level	int(1) not null,
+	primary key(idx)
+);
+
+

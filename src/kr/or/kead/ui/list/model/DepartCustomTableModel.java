@@ -16,8 +16,7 @@ public class DepartCustomTableModel extends AbsCustomTableModel {
 		DaoProfessor daoProfessor = new DaoProfessor();
 		System.out.println(col + " " + depart[col]);
 		switch(col) {
-		case 0:case 1: return depart[col];
-		
+		case 0:case 1: return depart[col];		
 		case 2: Professor prof = (Professor)daoProfessor.selectTableById((int)depart[col]); 
 			return prof.getName();   				// 추후 수정
 		case 3: return depart[col];

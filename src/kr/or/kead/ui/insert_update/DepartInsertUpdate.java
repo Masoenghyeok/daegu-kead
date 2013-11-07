@@ -45,8 +45,16 @@ public class DepartInsertUpdate extends AbsInsertUpdate {
 		if(depart.getCode() !=0) {
 			lbl_departCode.setText(Integer.toString(depart.getCode()));
 			jtf_departName.setText(depart.getName());
-			Object prof = daoprofessor.selectCodeNameById(depart.getProf());
-			comboProf.setSelectedItem(prof);   // 추후 수정
+			ArrayList<String> arDepart = daoprofessor.selectDepartCodeByName(depart.getCode());
+//			Object prof = daoprofessor.selectDepartCodeByName(depart.getProf());					
+//			comboProf.setSelectedItem(prof);   // 추후 수정
+			int len = arDepart.size();
+			for(int i=0;i<len;i++) {
+				comboProf.addItem(arDepart.get(i));
+			}
+			
+		
+			comboProf.updateUI();
 			txtTel.setPhone(depart.getTel());
 		}else {
 			dispose();

@@ -46,7 +46,7 @@ public class Professor {
 	}
 	
 	public String getToString() {
-		return code+":"+name;
+		return depart+":"+name;
 	}
 
 	
