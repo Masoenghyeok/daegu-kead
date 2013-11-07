@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+
 public class MysqlCon {
+
 	private static Connection getDatabaseConnection() throws ClassNotFoundException {
 		Class.forName("com.mysql.jdbc.Driver");
 		try {
@@ -14,7 +16,8 @@ public class MysqlCon {
 			// TODO Auto-generated catch block
 			throw new RuntimeException(e);
 		}
-	}	
+	}
+
 	public static Connection getConnection() {
 		Connection con = null;
 		try {

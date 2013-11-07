@@ -1,25 +1,23 @@
 package kr.or.kead.ui.insert_update;
 
+import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
+import kr.or.kead.domain.Depart;
 import kr.or.kead.domain.Professor;
 import kr.or.kead.service.DaoDepart;
 import kr.or.kead.service.DaoProfessor;
-
-import java.awt.BorderLayout;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
-
-import javax.swing.SwingConstants;
 
 public class ProfessorInsertUpdate extends AbsInsertUpdate {
 	private JTextField txtName;
@@ -47,7 +45,9 @@ public class ProfessorInsertUpdate extends AbsInsertUpdate {
 		if(prof!=null) {
 			lbl_profCode.setText(Integer.toString(prof.getCode()));
 			txtName.setText(prof.getName());
-			comboDepart.setSelectedItem(prof.getToString());
+			Depart depart = (Depart)daoDepart.selectTableById(prof.getDepart());
+			comboDepart.setSelectedItem(depart.getCode()+":"+depart.getName());
+			comboDepart.setEnabled(false);
 			txtCourse.setText(prof.getCourse());
 		}else {
 			dispose();
@@ -144,7 +144,7 @@ public class ProfessorInsertUpdate extends AbsInsertUpdate {
 		int token = Integer.parseInt(st.nextToken());
 		int code = ((DaoProfessor)daoTable).selectMaxCode(token);
 		if(code == 0) {
-			lbl_profCode.setText(Integer.toString(token+codePlus));
+			lbl_profCode.setText(Integer.toString(token*10+codePlus));
 		}else {
 			lbl_profCode.setText(Integer.toString(code+codePlus));
 		}
