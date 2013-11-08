@@ -17,7 +17,7 @@ public class DaoInfoStudent implements DaoTable {
 	public int insertDao(Object obj) {
 		Connection con = MysqlCon.getConnection();		
 		InfoStudent std = (InfoStudent) obj;
-		String sql = "insert into infoStudent values(null,?,?,?,?,?,?,?,?,?,?,?,?)";	
+		String sql = "insert into infoStudent values(null,?,?,?,?,?,?,?,?,?,?,?,?,?)";	
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = con.prepareStatement(sql);
@@ -32,7 +32,8 @@ public class DaoInfoStudent implements DaoTable {
 			pstmt.setInt(9, std.getStdType());
 			pstmt.setInt(10, std.getGrade());
 			pstmt.setString(11, std.getEmail());
-			pstmt.setInt(12, std.getDepartCode());
+			pstmt.setString(12, std.getPassWord());
+			pstmt.setInt(13, std.getDepartCode());			
 			System.out.println(pstmt);
 			pstmt.executeUpdate();			
 		} catch (SQLException e) {
@@ -66,6 +67,7 @@ public class DaoInfoStudent implements DaoTable {
 				+ " stdType=?,"
 				+ " grade=?,"
 				+ " email=?,"
+				+ " passWord=?"
 				+ " departCode=? where idx=?";		
 		PreparedStatement pstmt=null;
 		try {
@@ -81,8 +83,9 @@ public class DaoInfoStudent implements DaoTable {
 			pstmt.setInt(9, std.getStdType());
 			pstmt.setInt(10, std.getGrade());
 			pstmt.setString(11, std.getEmail());
-			pstmt.setInt(12, std.getDepartCode());
-			pstmt.setInt(13, std.getIdx());			
+			pstmt.setString(12, std.getPassWord());
+			pstmt.setInt(13, std.getDepartCode());
+			pstmt.setInt(14, std.getIdx());			
 			pstmt.executeUpdate();
 			
 		} catch (SQLException e) {		
@@ -137,6 +140,7 @@ public class DaoInfoStudent implements DaoTable {
 				std = new InfoStudent();
 				std.setIdx(rs.getInt("idx"));
 				std.setStdName(rs.getString("stdName"));
+				std.setPassWord(rs.getString("pass"));
 				std.setJuminNum(rs.getString("juminNum"));
 				std.setStartDate(rs.getDate("startDate"));
 				std.setEndDate(rs.getDate("endDate"));
@@ -151,8 +155,7 @@ public class DaoInfoStudent implements DaoTable {
 				sendValue.add(std);
 			}			
 			return sendValue;		
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} catch (SQLException e) {			
 			e.printStackTrace();
 		}finally {
 			try {
@@ -190,6 +193,7 @@ public class DaoInfoStudent implements DaoTable {
 				std.setStdType(Integer.parseInt(rs.getString("stdType")));
 				std.setGrade(Integer.parseInt(rs.getString("grade")));
 				std.setEmail(rs.getString("email"));
+				std.setPassWord(rs.getString("pass"));
 				std.setDepartCode(rs.getInt("departCode"));
 			}else {
 				JOptionPane.showMessageDialog(null, "아이디를 찾을 수 없습니다.");

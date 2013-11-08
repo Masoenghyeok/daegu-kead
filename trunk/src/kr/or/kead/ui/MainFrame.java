@@ -13,6 +13,7 @@ public class MainFrame extends JFrame {
 		super();
 		// menu
 		
+		
 		menu = new MenuMgn(this);
 		setJMenuBar(menu);
 		

@@ -11,6 +11,7 @@ public class InfoStudent {
 	private String mobile;
 	private String tel;
 	private String stdAddr;
+	private String passWord;
 	private int roomNum;			// ����� ���� 500����, 200��, 300��, 400��
 	private int stdType;			// �������
 	private int grade;				// ��ֵ��
@@ -25,7 +26,7 @@ public class InfoStudent {
 	public InfoStudent(int idx, String stdName, String juminNum,
 			Date startDate, Date endDate, String mobile, String tel,
 			String stdAddr, int roomNum, int stdType, int grade, String email,
-			int departCode) {
+			int departCode, String passWord) {
 		this.idx = idx;
 		this.stdName = stdName;
 		this.juminNum = juminNum;
@@ -39,11 +40,12 @@ public class InfoStudent {
 		this.grade = grade;
 		this.email = email;
 		this.departCode = departCode;
+		this.passWord = passWord;
 	}
 	
 	public InfoStudent(String stdName, String juminNum, Date startDate,
 			Date endDate, String mobile, String tel, String stdAddr,
-			int roomNum, int stdType, int grade, String email, int departCode) {
+			int roomNum, int stdType, int grade, String email, int departCode, String passWord) {
 		this.stdName = stdName;
 		this.juminNum = juminNum;
 		this.startDate = startDate;
@@ -56,6 +58,17 @@ public class InfoStudent {
 		this.grade = grade;
 		this.email = email;
 		this.departCode = departCode;
+		this.passWord = passWord;
+	}
+	
+	
+
+	public String getPassWord() {
+		return passWord;
+	}
+
+	public void setPassWord(String passWord) {
+		this.passWord = passWord;
 	}
 
 	public int getIdx() {
@@ -165,12 +178,13 @@ public class InfoStudent {
 	@Override
 	public String toString() {
 		return String
-				.format("InfoStudent [idx=%s, stdName=%s, juminNum=%s, startDate=%s,"
-						+ " endDate=%s, mobile=%s, tel=%s, stdAddr=%s, roomNum=%s, "
-						+ "stdType=%s, grade=%s, email=%s, departCode=%s]",
+				.format("InfoStudent [idx=%s, stdName=%s, juminNum=%s, startDate=%s, endDate=%s, mobile=%s, tel=%s, stdAddr=%s, passWord=%s, roomNum=%s, stdType=%s, grade=%s, email=%s, departCode=%s]",
 						idx, stdName, juminNum, startDate, endDate, mobile,
-						tel, stdAddr, roomNum, stdType, grade, email, departCode);
+						tel, stdAddr, passWord, roomNum, stdType, grade, email,
+						departCode);
 	}
+
+	
 	
 	
 	

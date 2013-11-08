@@ -1,6 +1,12 @@
 package kr.or.kead.ui.list.model;
 
+import java.net.PasswordAuthentication;
+
+import javax.swing.text.Element;
+import javax.swing.text.PasswordView;
+
 import kr.or.kead.domain.Depart;
+import kr.or.kead.domain.InfoStudent;
 import kr.or.kead.service.DaoDepart;
 import kr.or.kead.service.DaoHandicap;
 
@@ -12,7 +18,7 @@ public class StdCustomTableModel extends AbsCustomTableModel {
 	public StdCustomTableModel() {
 		sql = "select idx '번호', stdName '성명', juminNum '주민번호', startDate '입학날짜', endDate '수료날짜',"
 				+ "mobile '휴대전화', tel '유선전화', stdAddr '주소', roomNum '통학/기숙사', stdType '장애유형', "
-				+ "grade '등급', email '이메일', departCode '학과' from infostudent";
+				+ "grade '등급', email '이메일', pass '비밀번호', departCode '학과' from infostudent";
 		getResultSet();
 		daoHandi = new DaoHandicap();
 		daoDepart = new DaoDepart();
@@ -21,6 +27,9 @@ public class StdCustomTableModel extends AbsCustomTableModel {
 
 	public Object getValueAt(int row, int col) {
 		Object[] std = arData.get(row);
+		if(col==13) {
+			
+		}
 		switch(col) {
 		case 0:case 1:case 2:case 3:case 4:case 5:case 6:case 7:
 			return std[col];
@@ -28,7 +37,18 @@ public class StdCustomTableModel extends AbsCustomTableModel {
 		case 9: return daoHandi.selectTableById((int)std[col]);
 		case 10: return std[col]+"등급";
 		case 11: return std[col];
-		case 12: Depart depart = (Depart)daoDepart.selectTableById((int)std[col]);
+		case 12: 				
+				if(std[col] != null) {
+					StringBuffer sPass = new StringBuffer((String)std[col]);					
+					int len = sPass.length();
+					String resultString = "";
+					for(int i=0;i<len;i++) {
+						resultString += sPass.replace(0, len, "*");
+					}					
+					return resultString;
+				}				
+				return std[col];
+		case 13: Depart depart = (Depart)daoDepart.selectTableById((int)std[col]);
 			return depart.getName();
 		}
 		return "";
