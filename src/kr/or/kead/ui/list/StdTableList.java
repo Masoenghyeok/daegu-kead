@@ -10,7 +10,7 @@ public class StdTableList extends AbsTableList {
 
 	@Override
 	public void setColumnSize() {
-		Integer[] size={30,60,100,80,80,90,90,330,60,80,70,150,40};
+		Integer[] size={30,60,100,80,80,90,90,330,60,80,70,150,60,40};
 		for(int i=0; i< size.length;i++) {
 			columnSize.add(size[i]);
 		}

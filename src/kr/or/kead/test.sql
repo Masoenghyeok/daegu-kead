@@ -138,22 +138,22 @@ select p.name, p.depart, p.course from depart d, professor p,
  alter table infoStudent add constraint infoStudent_departCode_fk
  foreign key (departCode) references depart(code)
  on update cascade
- on delete no action;
+ on delete set null;
  
  alter table infostudent add constraint infostudent_departCode_fk
 foreign key (departCode) references depart(code)
 on update cascade
-on delete no action;
+on delete set null;
  
  alter table depart add constraint depart_prof_fk
  foreign key (prof) references professor(code)
  on update cascade
- on delete no action;
+ on delete set null;
  
  alter table depart add constraint depart_prof_fk
 foreign key (prof) references professor(code)
 on update cascade
-on delete no action;
+on delete set null;
  
  
  -- 외래키 삭제 foreign key 이름이 없으면 제가 할 수가 없다
@@ -166,7 +166,7 @@ on delete no action;
   alter table professor add constraint professor_depart_fk
  foreign key (depart) references depart(code)
  on update cascade
- on delete no action;
+ on delete set null;
  
  alter table professor add constraint professor_depart_fk
 foreign key (depart) references depart(code)
@@ -255,5 +255,11 @@ create table member (
 	level	int(1) not null,
 	primary key(idx)
 );
+
+alter table infoStudent add column pass varchar(10) after email;
+alter table member change id id varchar(20) not null;
+alter table infoStudent change roornum roomNum int(3);
+
+insert into member values(null, 'test@test.com', '1111', 9);
 
 

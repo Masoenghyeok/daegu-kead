@@ -16,6 +16,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -46,7 +47,9 @@ public class StdInsertUpdate extends AbsInsertUpdate {
 	private JComboBox<Integer> comboGrade;
 	private RegEmail textEmail;
 	private JLabel lblNewLabel;
-	private JComboBox<Object> comboDepart;	
+	private JComboBox<Object> comboDepart;
+	private JPasswordField passWord;
+	
 	private DaoDepart daoDepart;
 	private DaoHandicap daoHandicap;
 	private InfoStudent std;
@@ -123,7 +126,7 @@ public class StdInsertUpdate extends AbsInsertUpdate {
 					daoHandicap.selectCodeHandiByName((String)comboStdType.getSelectedItem()),
 					comboGrade.getSelectedIndex()+1
 					, textEmail.getEmail(),
-					depart.getCode());
+					depart.getCode(), new String(passWord.getPassword()));
 			return std;
 		}else {
 			std = (InfoStudent)obj;
@@ -145,6 +148,7 @@ public class StdInsertUpdate extends AbsInsertUpdate {
 			std.setEmail(textEmail.getEmail());
 			depart = (Depart)daoDepart.selectCodeByName((String)comboDepart.getSelectedItem());
 			std.setDepartCode(depart.getCode());
+			std.setPassWord(new String(passWord.getPassword()));
 			return std;
 		}
 		
@@ -160,7 +164,7 @@ public class StdInsertUpdate extends AbsInsertUpdate {
 			return false;
 		}
 		boolean isField = textName.getText().equals("")||textAddr.getText().equals("")||
-				textEmail.getEmail().equals("");		
+				textEmail.getEmail().equals("")||new String(passWord.getPassword()).equals("");		
 		if (isField) {			
 			JOptionPane.showMessageDialog(null, "빈칸을 채우세요.");
 			textName.requestFocus();
@@ -179,7 +183,26 @@ public class StdInsertUpdate extends AbsInsertUpdate {
 
 	protected JPanel getMainPanel() {
 		JPanel centerPanel = new JPanel();
-		centerPanel.setLayout(new GridLayout(13, 2, 2,2 ));		
+		centerPanel.setLayout(new GridLayout(13, 2, 2,2 ));
+		
+		JLabel lblEmail = new JLabel("EMAIL");
+		lblEmail.setFont(new Font("궁서체", Font.BOLD, 12));
+		lblEmail.setHorizontalAlignment(SwingConstants.CENTER);
+		centerPanel.add(lblEmail);
+		
+		textEmail = new RegEmail();		
+		centerPanel.add(textEmail);
+		
+		JLabel lblPass = new JLabel("비밀번호");
+		lblPass.setFont(new Font("궁서체", Font.BOLD, 12));
+		lblPass.setHorizontalAlignment(SwingConstants.CENTER);
+		centerPanel.add(lblPass);
+		
+		passWord = new JPasswordField(10);
+		passWord.setFont(new Font("궁서체", Font.BOLD, 12));
+		passWord.setHorizontalAlignment(SwingConstants.CENTER);
+		centerPanel.add(passWord);
+		
 		JLabel lblName = new JLabel("성    명");
 		lblName.setFont(new Font("궁서체", Font.BOLD, 12));
 		lblName.setHorizontalAlignment(SwingConstants.CENTER);
@@ -293,13 +316,7 @@ public class StdInsertUpdate extends AbsInsertUpdate {
 		comboGrade.addActionListener(this);		
 		centerPanel.add(comboGrade);		
 		
-		JLabel lblEmail = new JLabel("EMAIL");
-		lblEmail.setFont(new Font("궁서체", Font.BOLD, 12));
-		lblEmail.setHorizontalAlignment(SwingConstants.CENTER);
-		centerPanel.add(lblEmail);
 		
-		textEmail = new RegEmail();		
-		centerPanel.add(textEmail);
 		
 		
 		lblNewLabel = new JLabel("학과");
