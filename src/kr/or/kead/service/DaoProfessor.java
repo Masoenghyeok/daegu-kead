@@ -15,14 +15,16 @@ public class DaoProfessor implements DaoTable {
 	public int insertDao(Object obj) {
 		Connection con = MysqlCon.getConnection();
 		Professor prof = (Professor)obj;
-		String sql = "insert into professor values(?, ?, ?, ?)";
+		String sql = "insert into professor values(?, ?, ?, ?, ?, ?)";
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, prof.getCode());
-			pstmt.setString(2, prof.getName());
-			pstmt.setInt(3, prof.getDepart());
-			pstmt.setString(4, prof.getCourse());
+			pstmt.setString(2, prof.getEmail());
+			pstmt.setString(3, prof.getPass());
+			pstmt.setString(4, prof.getName());
+			pstmt.setInt(5, prof.getDepart());
+			pstmt.setString(6, prof.getCourse());
 			pstmt.executeUpdate();
 		} catch (SQLException e) {			
 			e.printStackTrace();
@@ -37,14 +39,17 @@ public class DaoProfessor implements DaoTable {
 	public int updateDao(Object obj) {
 		Connection con = MysqlCon.getConnection();
 		Professor prof = (Professor)obj;
-		String sql = "update professor set name = ?, depart = ?, course = ? where code = ?";
+		String sql = "update professor set email = ?, pass = ?, "
+				+ "name = ?, depart = ?, course = ? where code = ?";
 		PreparedStatement pstmt = null;
 		try {
-			pstmt = con.prepareStatement(sql);			
-			pstmt.setString(1, prof.getName());
-			pstmt.setInt(2, prof.getDepart());
-			pstmt.setString(3, prof.getCourse());
-			pstmt.setInt(4, prof.getCode());
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, prof.getEmail());
+			pstmt.setString(2, prof.getPass());
+			pstmt.setString(3, prof.getName());
+			pstmt.setInt(4, prof.getDepart());
+			pstmt.setString(5, prof.getCourse());
+			pstmt.setInt(6, prof.getCode());
 			pstmt.executeUpdate();
 		} catch (SQLException e) {			
 			e.printStackTrace();
@@ -77,7 +82,7 @@ public class DaoProfessor implements DaoTable {
 	public ArrayList<Object> selectDao() {
 		Connection con = MysqlCon.getConnection();
 		ArrayList<Object> arProf = new ArrayList<>();
-		String sql = "select code, name, depart, course from professor";
+		String sql = "select code, email, pass, name, depart, course from professor";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Professor profs;
@@ -85,7 +90,8 @@ public class DaoProfessor implements DaoTable {
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
-				profs = new Professor(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4));
+				profs = new Professor(rs.getInt(1), rs.getString(2), rs.getString(3), 
+						 rs.getString(4), rs.getInt(5), rs.getString(6));
 				arProf.add(profs);
 			}
 			return arProf;
@@ -100,7 +106,7 @@ public class DaoProfessor implements DaoTable {
 	@Override
 	public Object selectTableById(int idx) {
 		Connection con = MysqlCon.getConnection();		
-		String sql = "select code, name, depart, course from professor where code = ?";
+		String sql = "select code, email, pass, name, depart, course from professor where code = ?";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Professor profs = null;
@@ -109,7 +115,8 @@ public class DaoProfessor implements DaoTable {
 			pstmt.setInt(1, idx);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
-				profs = new Professor(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4));
+				profs = new Professor(rs.getInt(1), rs.getString(2), rs.getString(3), 
+						 rs.getString(4), rs.getInt(5), rs.getString(6));
 			}
 			return profs;
 		} catch (SQLException e) {			
@@ -202,6 +209,27 @@ public class DaoProfessor implements DaoTable {
 			return null;
 		}
 		return arLists;
+	}
+	
+	public ArrayList<String> selectDepartCodeByCourse(int departCode) {
+		Connection con = MysqlCon.getConnection();
+		ArrayList<String> arCourses = new ArrayList<>();
+		String sql = "select course from professor where depart = ?";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, departCode);
+			rs = pstmt.executeQuery();
+			System.out.println(pstmt);
+			while(rs.next()) {
+				arCourses.add(rs.getInt(1)+"");				
+			}
+		} catch (SQLException e) {			
+			e.printStackTrace();
+			return null;
+		}
+		return arCourses;
 	}
 
 }

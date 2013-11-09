@@ -264,3 +264,13 @@ insert into member values(null, 'test@test.com', '1111', 9);
 
 select idx '번호', stdName '성명', juminNum '주민번호', startDate '입학날짜', endDate '수료날짜',mobile '휴대전화', tel '유선전화', stdAddr '주소', roomNum '통학/기숙사', stdType '장애유형', grade '등급', email '이메일', pass '비밀번호', departCode '학과' from infostudent
 
+alter table professor add column email varchar(20) after code;
+alter table professor add column pass varchar(10) after email;
+
+create table curriculum (
+	idx		int auto_increment,
+	stdid	varchar(20)	not null,
+	depart	int	not null,
+	profCode int,
+	primary key(idx)
+);
