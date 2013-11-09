@@ -65,13 +65,13 @@ public class LoginJoin extends JPanel implements ActionListener {
 		tabMenu.setFont(new Font("맑은 고딕", Font.PLAIN, 16));
 		add(tabMenu, BorderLayout.CENTER);		
 		
-		stdPanelMake();
-		profPanelMake();		
+		stdTabPanelMake();
+		profTabPanelMake();		
 	
 	}
 	
-	private void stdPanelMake() {
-		img = Toolkit.getDefaultToolkit().getImage("C:/Users/shma/Pictures/kead.jpg");				
+	private void stdTabPanelMake() {
+		img = Toolkit.getDefaultToolkit().getImage("kead.jpg");				
 		stdPanel = new imagePanel(img);	
 		tabMenu.addTab("학생", null, stdPanel, null);
 		stdPanel.setLayout(new BorderLayout(0, 0));
@@ -131,8 +131,8 @@ public class LoginJoin extends JPanel implements ActionListener {
 		stdBtnPanel.add(btnStdJoin);		
 	}
 	
-	private void profPanelMake() {
-		img = Toolkit.getDefaultToolkit().getImage("C:/Users/shma/Pictures/kead2.jpg");		
+	private void profTabPanelMake() {
+		img = Toolkit.getDefaultToolkit().getImage("kead2.jpg");		
 		profPanel = new imagePanel(img);		
 		
 		tabMenu.addTab("교수", null, profPanel, null);
@@ -210,8 +210,8 @@ public class LoginJoin extends JPanel implements ActionListener {
 			JOptionPane.showMessageDialog(null, "success");
 		}else {
 			JOptionPane.showMessageDialog(null, "fail");
+			mem = null;
 		}
-		TestCase.assertEquals("실패", null, mem);
 	}
 	protected void btnStdJoinActionPerformed(ActionEvent arg0) {
 		StdInsertUpdate insert = new StdInsertUpdate(null);

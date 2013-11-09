@@ -46,12 +46,13 @@ public class MenuMgn extends JMenuBar  {
 		profMenu = new ProfMenu(frame, (int)frame.getSize().getHeight());
 		add(profMenu);
 		
-		stdMenu.setEnabled(false);
-		departMenu.setEnabled(false);
-		profMenu.setEnabled(false);
-		
+//		stdMenu.setEnabled(false);
+//		departMenu.setEnabled(false);
+//		profMenu.setEnabled(false);
+//		
 		listView = new StdTableList(400);
-		contentPane.add(new LoginJoin());
+//		contentPane.add(new LoginJoin());
+		contentPane.add(listView);
 		frame.pack();
 	}
 }

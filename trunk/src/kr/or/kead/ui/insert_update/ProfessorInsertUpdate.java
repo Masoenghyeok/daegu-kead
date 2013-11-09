@@ -16,8 +16,11 @@ import javax.swing.SwingConstants;
 
 import kr.or.kead.domain.Depart;
 import kr.or.kead.domain.Professor;
+import kr.or.kead.module.RegEmail;
 import kr.or.kead.service.DaoDepart;
 import kr.or.kead.service.DaoProfessor;
+
+import javax.swing.JPasswordField;
 
 public class ProfessorInsertUpdate extends AbsInsertUpdate {
 	private JTextField txtName;
@@ -27,6 +30,8 @@ public class ProfessorInsertUpdate extends AbsInsertUpdate {
 	private DaoDepart daoDepart;
 	private Professor prof;
 	private int codePlus;
+	private RegEmail txtEmail;
+	private JPasswordField password;
 		
 	
 	public ProfessorInsertUpdate(Object obj) {
@@ -58,7 +63,8 @@ public class ProfessorInsertUpdate extends AbsInsertUpdate {
 	protected Object getObject() {
 		StringTokenizer st = new StringTokenizer((String)comboDepart.getSelectedItem(), ":");
 		if( obj == null) {
-			prof = new Professor(Integer.parseInt(lbl_profCode.getText()), txtName.getText(),
+			prof = new Professor(Integer.parseInt(lbl_profCode.getText()), txtEmail.getEmail(),
+					new String(password.getPassword()),txtName.getText(),
 					Integer.parseInt(st.nextToken()), txtCourse.getText());
 			return prof;
 		}else {
@@ -85,7 +91,7 @@ public class ProfessorInsertUpdate extends AbsInsertUpdate {
 	protected JPanel getMainPanel() {
 		codePlus = 1;
 		JPanel centerPanel = new JPanel();
-		centerPanel.setLayout(new GridLayout(4, 2, 5, 5));
+		centerPanel.setLayout(new GridLayout(6, 2, 5, 5));
 		
 		JLabel lbl_code = new JLabel("교수코드");
 		lbl_code.setHorizontalAlignment(SwingConstants.CENTER);
@@ -96,6 +102,26 @@ public class ProfessorInsertUpdate extends AbsInsertUpdate {
 		lbl_profCode.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_profCode.setFont(new Font("맑은 고딕", Font.PLAIN, 16));
 		centerPanel.add(lbl_profCode);
+		
+		JLabel lbl_email = new JLabel("이 메 일");
+		lbl_email.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_email.setFont(new Font("맑은 고딕", Font.PLAIN, 16));
+		centerPanel.add(lbl_email);
+		
+		txtEmail = new RegEmail();		
+		txtEmail.setFont(new Font("맑은 고딕", Font.PLAIN, 16));
+		centerPanel.add(txtEmail);
+		
+		
+		JLabel lbl_pass = new JLabel("비밀번호");
+		lbl_pass.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_pass.setFont(new Font("맑은 고딕", Font.PLAIN, 16));
+		centerPanel.add(lbl_pass);
+		
+		password = new JPasswordField();
+		password.setHorizontalAlignment(SwingConstants.CENTER);
+		password.setFont(new Font("맑은 고딕", Font.PLAIN, 16));
+		centerPanel.add(password);
 		
 		JLabel lbl_name = new JLabel("교 수 명");
 		lbl_name.setHorizontalAlignment(SwingConstants.CENTER);

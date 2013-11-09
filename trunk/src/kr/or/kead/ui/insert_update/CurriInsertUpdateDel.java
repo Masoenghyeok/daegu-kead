@@ -136,8 +136,7 @@ public class CurriInsertUpdateDel extends JPanel implements ActionListener {
 		String str = st.nextToken()+" " + comboSubejct.getSelectedItem();
 		ImageIcon icon = new ImageIcon("C:\\Users\\it28\\Pictures\\stop.jpg");
 		final JLabel label = new JLabel(str);	
-		label.setIcon(icon);
-		hashLabel.(labelCnt, label);
+		label.setIcon(icon);		
 		labelCnt++;
 		arLabel.add(label);
 		Object[] obj = arLabel.toArray();
