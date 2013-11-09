@@ -2,6 +2,7 @@ package kr.or.kead.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
@@ -9,7 +10,6 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.ImageProducer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -21,16 +21,11 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import junit.framework.TestCase;
 import kr.or.kead.domain.MemberInfo;
 import kr.or.kead.service.DaoMember;
 import kr.or.kead.ui.insert_update.ProfessorInsertUpdate;
 import kr.or.kead.ui.insert_update.StdInsertUpdate;
-import kr.or.kead.ui.menu.StdMenu;
-import kr.or.kead.utils.MysqlCon;
-
-import javax.swing.UIManager;
-
-import java.awt.FlowLayout;
 
 public class LoginJoin extends JPanel implements ActionListener {
 	private JPanel stdLoginPanel;
@@ -76,7 +71,7 @@ public class LoginJoin extends JPanel implements ActionListener {
 	}
 	
 	private void stdPanelMake() {
-		img = Toolkit.getDefaultToolkit().getImage("C:\\Users\\it28\\Downloads\\kead.jpg");				
+		img = Toolkit.getDefaultToolkit().getImage("C:/Users/shma/Pictures/kead.jpg");				
 		stdPanel = new imagePanel(img);	
 		tabMenu.addTab("학생", null, stdPanel, null);
 		stdPanel.setLayout(new BorderLayout(0, 0));
@@ -137,7 +132,7 @@ public class LoginJoin extends JPanel implements ActionListener {
 	}
 	
 	private void profPanelMake() {
-		img = Toolkit.getDefaultToolkit().getImage("C:\\Users\\it28\\Downloads\\kead_student.jpg");		
+		img = Toolkit.getDefaultToolkit().getImage("C:/Users/shma/Pictures/kead2.jpg");		
 		profPanel = new imagePanel(img);		
 		
 		tabMenu.addTab("교수", null, profPanel, null);
@@ -216,6 +211,7 @@ public class LoginJoin extends JPanel implements ActionListener {
 		}else {
 			JOptionPane.showMessageDialog(null, "fail");
 		}
+		TestCase.assertEquals("실패", null, mem);
 	}
 	protected void btnStdJoinActionPerformed(ActionEvent arg0) {
 		StdInsertUpdate insert = new StdInsertUpdate(null);

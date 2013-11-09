@@ -250,7 +250,7 @@ select max(code) from professor where depart = 100;
 <-- 학생은 레벨1 교수는 레벨2 관리자는 레벨 9
 create table member (
 	idx		int	auto_increment,
-	id		varchar(10) not null,
+	id		varchar(20) not null,
 	pass 	varchar(10) not null,
 	level	int(1) not null,
 	primary key(idx)
@@ -262,4 +262,5 @@ alter table infoStudent change roornum roomNum int(3);
 
 insert into member values(null, 'test@test.com', '1111', 9);
 
+select idx '번호', stdName '성명', juminNum '주민번호', startDate '입학날짜', endDate '수료날짜',mobile '휴대전화', tel '유선전화', stdAddr '주소', roomNum '통학/기숙사', stdType '장애유형', grade '등급', email '이메일', pass '비밀번호', departCode '학과' from infostudent
 
