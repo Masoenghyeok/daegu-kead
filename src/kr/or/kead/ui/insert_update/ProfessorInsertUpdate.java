@@ -48,12 +48,14 @@ public class ProfessorInsertUpdate extends AbsInsertUpdate {
 	protected void updateInit() {		
 		prof = (Professor)obj;
 		if(prof!=null) {
-			lbl_profCode.setText(Integer.toString(prof.getCode()));
+			lbl_profCode.setText(Integer.toString(prof.getCode()));			
 			txtName.setText(prof.getName());
 			Depart depart = (Depart)daoDepart.selectTableById(prof.getDepart());
 			comboDepart.setSelectedItem(depart.getCode()+":"+depart.getName());
 			comboDepart.setEnabled(false);
 			txtCourse.setText(prof.getCourse());
+			password.setText(prof.getPass());
+			txtEmail.setEmail(prof.getEmail());
 		}else {
 			dispose();
 		}
@@ -73,6 +75,8 @@ public class ProfessorInsertUpdate extends AbsInsertUpdate {
 			prof.setName(txtName.getText());
 			prof.setDepart(Integer.parseInt(st.nextToken()));
 			prof.setCourse(txtCourse.getText());
+			prof.setPass(new String(password.getPassword()));
+			prof.setEmail(txtEmail.getEmail());
 			return prof;
 		}		
 	}
@@ -159,21 +163,23 @@ public class ProfessorInsertUpdate extends AbsInsertUpdate {
 		txtCourse.setHorizontalAlignment(SwingConstants.CENTER);
 		txtCourse.setFont(new Font("맑은 고딕", Font.PLAIN, 16));
 		centerPanel.add(txtCourse);
-		txtCourse.setColumns(10);		
+		txtCourse.setColumns(10);
 		codeChange();
 		return centerPanel;
 	}
 	
 	private void codeChange() {
-		System.out.println(codePlus);
-		StringTokenizer st = new StringTokenizer((String)comboDepart.getSelectedItem(), ":");
-		int token = Integer.parseInt(st.nextToken());
-		int code = ((DaoProfessor)daoTable).selectMaxCode(token);
-		if(code == 0) {
-			lbl_profCode.setText(Integer.toString(token*10+codePlus));
-		}else {
-			lbl_profCode.setText(Integer.toString(code+codePlus));
+		if(obj ==null) {
+			StringTokenizer st = new StringTokenizer((String)comboDepart.getSelectedItem(), ":");
+			int token = Integer.parseInt(st.nextToken());
+			int code = ((DaoProfessor)daoTable).selectMaxCode(token);
+			if(code == 0) {
+				lbl_profCode.setText(Integer.toString(token*10+codePlus));
+			}else {
+				lbl_profCode.setText(Integer.toString(code+codePlus));
+			}
 		}
+		
 		
 	}
 

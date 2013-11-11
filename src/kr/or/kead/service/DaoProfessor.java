@@ -15,16 +15,16 @@ public class DaoProfessor implements DaoTable {
 	public int insertDao(Object obj) {
 		Connection con = MysqlCon.getConnection();
 		Professor prof = (Professor)obj;
-		String sql = "insert into professor values(?, ?, ?, ?, ?, ?)";
+		String sql = "insert into professor (code, name, depart, course, email) "
+				+ "values(?, ?, ?, ?, ?)";
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, prof.getCode());
-			pstmt.setString(2, prof.getEmail());
-			pstmt.setString(3, prof.getPass());
-			pstmt.setString(4, prof.getName());
-			pstmt.setInt(5, prof.getDepart());
-			pstmt.setString(6, prof.getCourse());
+			pstmt.setInt(1, prof.getCode());			
+			pstmt.setString(2, prof.getName());
+			pstmt.setInt(3, prof.getDepart());
+			pstmt.setString(4, prof.getCourse());			
+			pstmt.setString(5, prof.getEmail());
 			pstmt.executeUpdate();
 		} catch (SQLException e) {			
 			e.printStackTrace();
@@ -39,7 +39,7 @@ public class DaoProfessor implements DaoTable {
 	public int updateDao(Object obj) {
 		Connection con = MysqlCon.getConnection();
 		Professor prof = (Professor)obj;
-		String sql = "update professor set email = ?, pass = ?, "
+		String sql = "update professor set email = ?, passwd = ?, "
 				+ "name = ?, depart = ?, course = ? where code = ?";
 		PreparedStatement pstmt = null;
 		try {
@@ -50,6 +50,7 @@ public class DaoProfessor implements DaoTable {
 			pstmt.setInt(4, prof.getDepart());
 			pstmt.setString(5, prof.getCourse());
 			pstmt.setInt(6, prof.getCode());
+			System.out.println(pstmt);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {			
 			e.printStackTrace();
@@ -82,7 +83,7 @@ public class DaoProfessor implements DaoTable {
 	public ArrayList<Object> selectDao() {
 		Connection con = MysqlCon.getConnection();
 		ArrayList<Object> arProf = new ArrayList<>();
-		String sql = "select code, email, pass, name, depart, course from professor";
+		String sql = "select code, email, passwd, name, depart, course from professor";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Professor profs;
@@ -106,7 +107,7 @@ public class DaoProfessor implements DaoTable {
 	@Override
 	public Object selectTableById(int idx) {
 		Connection con = MysqlCon.getConnection();		
-		String sql = "select code, email, pass, name, depart, course from professor where code = ?";
+		String sql = "select code, email, passwd, name, depart, course from professor where code = ?";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Professor profs = null;

@@ -39,6 +39,15 @@ public abstract class AbsCustomTableModel extends AbstractTableModel {
 		return tableColumnClasses[col];
 	}
 	
+	
+	@Override
+	public Object getValueAt(int arg0, int arg1) {
+		
+		return null;
+	}
+
+	
+
 	public void getResultSet() {		
 		Connection con = MysqlCon.getConnection();
 		PreparedStatement pstmt = null;

@@ -23,6 +23,7 @@ import javax.swing.event.ListSelectionListener;
 
 import kr.or.kead.service.DaoDepart;
 import kr.or.kead.service.DaoProfessor;
+import javax.swing.JTextField;
 
 public class CurriInsertUpdateDel extends JPanel implements ActionListener {
 	private JPanel panel;
@@ -46,6 +47,10 @@ public class CurriInsertUpdateDel extends JPanel implements ActionListener {
 	private int labelCnt=0;
 	
 	private ArrayList<JLabel> arLabel;
+	private JPanel panel_3;
+	private JComboBox cmbSearch;
+	private JTextField txtSearch;
+	private JButton btnSearch;
 	
 	public CurriInsertUpdateDel() {
 		daoDepart = new DaoDepart();
@@ -92,6 +97,22 @@ public class CurriInsertUpdateDel extends JPanel implements ActionListener {
 		
 		listCurriculum = new JList();
 		panel_1.add(listCurriculum);
+		
+		panel_3 = new JPanel();
+		panel_1.add(panel_3, BorderLayout.SOUTH);
+		
+		cmbSearch = new JComboBox();
+		cmbSearch.setFont(new Font("맑은 고딕", Font.PLAIN, 16));
+		panel_3.add(cmbSearch);
+		
+		txtSearch = new JTextField();
+		txtSearch.setFont(new Font("맑은 고딕", Font.PLAIN, 16));
+		panel_3.add(txtSearch);
+		txtSearch.setColumns(20);
+		
+		btnSearch = new JButton("검색");
+		btnSearch.setFont(new Font("맑은 고딕", Font.PLAIN, 16));
+		panel_3.add(btnSearch);
 		listModel = new DefaultListModel<>();
 		
 		

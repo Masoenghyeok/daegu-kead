@@ -10,9 +10,12 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -21,13 +24,12 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import junit.framework.TestCase;
-import kr.or.kead.domain.MemberInfo;
-import kr.or.kead.service.DaoMember;
+import kr.or.kead.domain.Auth;
+import kr.or.kead.service.DaoAuth;
 import kr.or.kead.ui.insert_update.ProfessorInsertUpdate;
 import kr.or.kead.ui.insert_update.StdInsertUpdate;
 
-public class LoginJoin extends JPanel implements ActionListener {
+public class LoginJoin extends JFrame implements ActionListener {
 	private JPanel stdLoginPanel;
 	private JPanel stdBtnPanel;
 	private JButton btnStdLogin;
@@ -54,9 +56,12 @@ public class LoginJoin extends JPanel implements ActionListener {
 	private JPanel profBtnPanel;
 	private JButton btnProfLogin;
 	private JButton btnProfJoin;
+	private DaoAuth daoAuth;
+	private Auth auth;
 	
 	public LoginJoin() {
 		initialize();
+		daoAuth = new DaoAuth();
 	}
 	private void initialize() {
 		setLayout(new BorderLayout(10, 10));
@@ -66,7 +71,8 @@ public class LoginJoin extends JPanel implements ActionListener {
 		add(tabMenu, BorderLayout.CENTER);		
 		
 		stdTabPanelMake();
-		profTabPanelMake();		
+		profTabPanelMake();
+		setVisible(true);
 	
 	}
 	
@@ -204,14 +210,20 @@ public class LoginJoin extends JPanel implements ActionListener {
 	}
 	
 	protected void btnStdLoginActionPerformed(ActionEvent e) {
-		DaoMember daoMem = new DaoMember();
-		MemberInfo mem = (MemberInfo)daoMem.compareIdPass(txtStdId.getText(), new String(txtStdPass.getPassword()));
-		if(mem != null) {
-			JOptionPane.showMessageDialog(null, "success");
+		if (isPasswdCorrect(txtStdPass.getPassword())) {
+			StringTokenizer st = new StringTokenizer(
+					(String)daoAuth.selectTableByEmail(txtStdId.getText()).trim(), ":");
+			auth = new Auth(st.nextToken(), Integer.parseInt(st.nextToken()));
+			dispose();
+			new MainFrame(auth);
 		}else {
-			JOptionPane.showMessageDialog(null, "fail");
-			mem = null;
+			JOptionPane.showMessageDialog(null, "아이디 또는 패스워드 불일치");
+			txtStdId.setText("");
+			txtStdPass.setText("");
+			txtStdId.requestFocus();
+			return;
 		}
+		
 	}
 	protected void btnStdJoinActionPerformed(ActionEvent arg0) {
 		StdInsertUpdate insert = new StdInsertUpdate(null);
@@ -225,6 +237,19 @@ public class LoginJoin extends JPanel implements ActionListener {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	private boolean isPasswdCorrect(char[] input) {
+		boolean isCorrect = true;
+		char[] correctPasswd = daoAuth.selectPasswdByEmail(txtStdId.getText().trim()).toCharArray();
+		if(input.length != correctPasswd.length) {
+			isCorrect = false;
+		}else {
+			isCorrect = Arrays.equals(input, correctPasswd);
+		}
+		Arrays.fill(correctPasswd, '0');
+		return isCorrect;
+	}
+	
 	
 	class imagePanel extends JPanel {
 		Image img;
