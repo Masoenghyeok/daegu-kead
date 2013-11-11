@@ -274,3 +274,7 @@ create table curriculum (
 	profCode int,
 	primary key(idx)
 );
+
+update professor set email = 'prof2@naver.com', passwd = 'naver', name = '데니스리치', depart = 100, course = 'c언어' where code = 1007;
+
+

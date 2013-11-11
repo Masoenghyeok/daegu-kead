@@ -7,14 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
-import kr.or.kead.service.DaoDepart;
-import kr.or.kead.service.DaoInfoStudent;
-import kr.or.kead.service.DaoTable;
-import kr.or.kead.ui.LoginJoin;
+import kr.or.kead.domain.Auth;
 import kr.or.kead.ui.list.AbsTableList;
 import kr.or.kead.ui.list.StdTableList;
-
-import org.junit.Test;
 
 
 public class MenuMgn extends JMenuBar  {	
@@ -25,16 +20,35 @@ public class MenuMgn extends JMenuBar  {
 	private JMenu departMenu;
 	private JMenu profMenu;
 	private JFrame frame;
+	private Auth auth;
 	
 	
 	public MenuMgn(JFrame frame) {
 		super();
-		this.frame = frame;
+		this.frame = frame;		
 		this.contentPane = frame.getContentPane();						
 		init();
+		
 	}
 
 	
+	public void enableMenu() {	
+		if(this.auth != null) {
+			int level = this.auth.getLevel();
+			if (level ==1) {			// 학생
+				System.out.println("1");
+				departMenu.setVisible(false);
+				profMenu.setVisible(false);
+			}else if(level == 2) {		// 교수
+				System.out.println("2");
+				stdMenu.setVisible(false);
+				departMenu.setVisible(false);
+			}
+		}
+		
+	}
+
+
 	private void init() {	
 		frame.setSize(new Dimension(1280, 400));
 		stdMenu = new StdMenu(frame, (int)frame.getSize().getHeight());
@@ -55,4 +69,16 @@ public class MenuMgn extends JMenuBar  {
 		contentPane.add(listView);
 		frame.pack();
 	}
+
+
+	public Auth getAuth() {
+		return auth;
+	}
+
+
+	public void setAuth(Auth auth) {
+		this.auth = auth;
+	}
+	
+	
 }

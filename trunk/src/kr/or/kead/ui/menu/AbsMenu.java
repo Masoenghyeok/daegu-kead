@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import kr.or.kead.service.DaoTable;
 import kr.or.kead.ui.list.AbsTableList;
@@ -48,9 +49,14 @@ public abstract class AbsMenu extends JMenu implements ActionListener{
 		Container contentPane = frame.getContentPane();
 		contentPane.removeAll();		
 		list.setTableModel();
-		contentPane.add(list);		
+		contentPane.add(list);
+		setFrameSize(list);
 		contentPane.validate();
 		frame.pack();
+	}
+	private void setFrameSize(JPanel panel) {
+		this.frame.setSize(panel.getPreferredSize());
+		this.frame.validate();
 	}
 	
 	public int searchNum(DaoTable daoTable, String msg) {
