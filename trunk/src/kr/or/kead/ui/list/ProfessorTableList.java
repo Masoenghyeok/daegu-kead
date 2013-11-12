@@ -19,10 +19,18 @@ public class ProfessorTableList extends AbsTableList {
 	}
 
 	@Override
-	public void setColumnSize() {	
+	public void setColumnSize() {
+//		TableColumn aColumn = new TableColumn();
+//		  
+//		aColumn.setHeaderValue("5번째 컬럼"); 
+//		table.addColumn(aColumn);
+//		aColumn = table.getColumn(4);		
+//		aColumn.setCellEditor(new DefaultCellEditor(new JCheckBox()));
+		
 		columnSize.add(40);
 		columnSize.add(120);
 		columnSize.add(80);
+		columnSize.add(120);
 		columnSize.add(120);
 	}	
 }
