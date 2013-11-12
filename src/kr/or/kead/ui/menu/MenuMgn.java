@@ -19,6 +19,7 @@ public class MenuMgn extends JMenuBar  {
 	private JMenu stdMenu;
 	private JMenu departMenu;
 	private JMenu profMenu;
+	private JMenu logMenu;
 	private JFrame frame;
 	private Auth auth;
 	
@@ -51,6 +52,10 @@ public class MenuMgn extends JMenuBar  {
 
 	private void init() {	
 		frame.setSize(new Dimension(1280, 400));
+		
+		logMenu = new LogMenu(frame, (int)frame.getSize().getHeight());
+		add(logMenu);
+		
 		stdMenu = new StdMenu(frame, (int)frame.getSize().getHeight());
 		add(stdMenu);		
 		

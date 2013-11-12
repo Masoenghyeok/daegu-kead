@@ -16,10 +16,10 @@ import kr.or.kead.service.DaoTable;
 import kr.or.kead.ui.list.AbsTableList;
 
 public abstract class AbsMenu extends JMenu implements ActionListener{
-	private JMenuItem addMenu;
-	private JMenuItem delMenu;
-	private JMenuItem updateMenu;
-	private JMenuItem listMenu;	
+	protected JMenuItem addMenu;
+	protected JMenuItem delMenu;
+	protected JMenuItem updateMenu;
+	protected JMenuItem listMenu;	
 	private JFrame frame;
 	
 	public AbsMenu(JFrame frame, String title) {
