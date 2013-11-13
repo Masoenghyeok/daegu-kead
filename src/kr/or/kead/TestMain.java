@@ -3,11 +3,13 @@ package kr.or.kead;
 
 import kr.or.kead.ui.LoginJoin;
 import kr.or.kead.ui.MainFrame;
+import kr.or.kead.ui.TabModifyLoginJoin;
 
 public class TestMain {
 
 	public static void main(String[] args) {		
 //		new MainFrame();
+//		new TabModifyLoginJoin();
 		new LoginJoin();
 //		CreateInsertPostAddr cip = new CreateInsertPostAddr();
 //		cip.makeInsertSql();
