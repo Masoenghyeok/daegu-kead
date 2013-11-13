@@ -6,15 +6,25 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import kr.or.kead.domain.Auth;
+import kr.or.kead.domain.InfoStudent;
+import kr.or.kead.service.DaoInfoStudent;
 import kr.or.kead.ui.LoginJoin;
+import kr.or.kead.ui.MainFrame;
+import kr.or.kead.ui.insert_update.StdInsertUpdate;
 
 public class LogMenu extends AbsMenu {
 	private JFrame frame;
 	private Auth auth;
-	public LogMenu(JFrame frame, int height, Auth auth) {
+	private DaoInfoStudent daoStd;
+	private InfoStudent std;
+	
+	public LogMenu(JFrame frame, int height) {
 		super(frame, "로그인 관리");
 		this.frame = frame;
-		this.auth = auth;
+		MainFrame mainFrame = (MainFrame)frame;
+		auth = mainFrame.getAuth();
+		this.setText(auth.getEmail());
+		daoStd = new DaoInfoStudent();
 		init();
 	}
 
@@ -27,12 +37,15 @@ public class LogMenu extends AbsMenu {
 
 	@Override
 	protected void addMenuActionPerformed(ActionEvent e) {
-		
+		std = daoStd.selectTableByEmail(auth.getEmail());
+		StdInsertUpdate insert = new StdInsertUpdate(std);
+		insert.setVisible(true);
 	}
 
 	@Override
 	protected void delMenuActionPerformed(ActionEvent e) {
-		String rePasswd = JOptionPane.showInputDialog(null, "변경하실 비밀번호를 입력하세요");
+		PasswdChange passwdChange = new PasswdChange(auth.getEmail());
+		passwdChange.setVisible(true);
 		
 	}
 	
