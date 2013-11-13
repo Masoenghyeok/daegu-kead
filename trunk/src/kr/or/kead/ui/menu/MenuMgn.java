@@ -76,7 +76,7 @@ public class MenuMgn extends JMenuBar  {
 		Image image = Toolkit.getDefaultToolkit().getImage("symbol_1.gif");		
 		frame.setIconImage(image);
 		
-		logMenu = new LogMenu(frame, (int)frame.getSize().getHeight(), auth);
+		logMenu = new LogMenu(frame, (int)frame.getSize().getHeight());
 		add(logMenu);
 		
 		stdMenu = new StdMenu(frame, (int)frame.getSize().getHeight());

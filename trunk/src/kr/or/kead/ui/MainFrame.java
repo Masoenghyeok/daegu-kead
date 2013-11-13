@@ -9,10 +9,11 @@ import kr.or.kead.ui.menu.MenuMgn;
 
 public class MainFrame extends JFrame {
 	private MenuMgn menu;
+	private Auth auth;
 	public MainFrame(Auth auth) throws HeadlessException {
 		super();
 		// menu
-		
+		this.auth = auth;
 		
 		menu = new MenuMgn(this);
 		menu.setAuth(auth);
@@ -26,5 +27,12 @@ public class MainFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 		
 	}
+	public Auth getAuth() {
+		return auth;
+	}
+	public void setAuth(Auth auth) {
+		this.auth = auth;
+	}
+	
 	
 }

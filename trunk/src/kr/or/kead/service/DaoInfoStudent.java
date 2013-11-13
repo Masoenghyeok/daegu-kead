@@ -18,8 +18,8 @@ public class DaoInfoStudent implements DaoTable {
 		Connection con = MysqlCon.getConnection();		
 		InfoStudent std = (InfoStudent) obj;
 		String sql = "insert into infoStudent (idx, stdName, juminNum, startDate, endDate, mobile,"
-				+ "tel, stdAddr, roomNum, stdType, grade, email, departCode)"
-				+ " values(null,?,?,?,?,?,?,?,?,?,?,?,?)";	
+				+ "tel, stdAddr, roomNum, stdType, grade, email, passwd, departCode)"
+				+ " values(null,?,?,?,?,?,?,?,?,?,?,?,?,?)";	
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = con.prepareStatement(sql);
@@ -33,8 +33,9 @@ public class DaoInfoStudent implements DaoTable {
 			pstmt.setInt(8, std.getRoomNum());
 			pstmt.setInt(9, std.getStdType());
 			pstmt.setInt(10, std.getGrade());
-			pstmt.setString(11, std.getEmail());			
-			pstmt.setInt(12, std.getDepartCode());			
+			pstmt.setString(11, std.getEmail());
+			pstmt.setString(12, std.getPassWord());
+			pstmt.setInt(13, std.getDepartCode());			
 			System.out.println(pstmt);
 			pstmt.executeUpdate();			
 		} catch (SQLException e) {
@@ -69,7 +70,7 @@ public class DaoInfoStudent implements DaoTable {
 				+ " grade=?,"
 				+ " email=?,"				
 				+ " departCode=?"
-				+ " passWord=? where idx=?";		
+				+ " passwd=? where idx=?";		
 		PreparedStatement pstmt=null;
 		try {
 			pstmt = con.prepareStatement(sql);
@@ -240,5 +241,50 @@ public class DaoInfoStudent implements DaoTable {
 			}
 		}
 		return lists;
+	}
+	
+	public InfoStudent selectTableByEmail(String email) {
+		Connection con = MysqlCon.getConnection();		
+		String sql = "select * from infoStudent where email= ?";
+		InfoStudent std = new InfoStudent();	
+		PreparedStatement pstmt=null;
+		ResultSet rs = null;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, email);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				std.setIdx(rs.getInt("idx"));
+				std.setStdName(rs.getString("stdName"));
+				std.setJuminNum(rs.getString("juminNum"));
+				std.setStartDate(rs.getDate("startDate"));
+				std.setEndDate(rs.getDate("endDate"));
+				std.setMobile(rs.getString("mobile"));
+				std.setTel(rs.getString("tel"));
+				std.setStdAddr(rs.getString("stdAddr"));
+				std.setRoomNum(Integer.parseInt(rs.getString("roomNum")));
+				std.setStdType(Integer.parseInt(rs.getString("stdType")));
+				std.setGrade(Integer.parseInt(rs.getString("grade")));
+				std.setEmail(rs.getString("email"));
+				std.setPassWord(rs.getString("passwd"));
+				std.setDepartCode(rs.getInt("departCode"));
+				return std;
+			}else {
+				JOptionPane.showMessageDialog(null, "아이디를 찾을 수 없습니다.");
+			}
+		} catch (SQLException e) {			
+			e.printStackTrace();
+			return null;
+		}finally {
+			try {
+				rs.close();
+				pstmt.close();
+				con.close();
+			} catch (SQLException e) {			
+				e.printStackTrace();
+			}
+		}		
+		return null;
+	
 	}
 }

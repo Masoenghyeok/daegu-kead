@@ -8,7 +8,7 @@ import kr.or.kead.ui.LoginJoin;
 public class MasterTester extends TestCase {
 
 	public static void main(String[] args) {
-		junit.textui.TestRunner.run(suite());
+//		junit.textui.TestRunner.run(suite());
 
 	}
 	
