@@ -96,6 +96,7 @@ public class StdInsertUpdate extends AbsInsertUpdate {
 				textRoomNum.setTxtRoomNum(String.valueOf(std.getRoomNum()));
 			}			
 			textEmail.setEmail(std.getEmail());
+			passWord.setText(std.getPassWord());
 			depart = (Depart)new DaoDepart().selectTableById(std.getDepartCode());
 			comboDepart.setSelectedItem(depart.getName());		
 		}else {			

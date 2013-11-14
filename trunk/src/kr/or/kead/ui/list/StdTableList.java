@@ -1,11 +1,13 @@
 package kr.or.kead.ui.list;
 
+import java.awt.Color;
+
 import kr.or.kead.ui.list.model.StdCustomTableModel;
 
 public class StdTableList extends AbsTableList {
 
 	public StdTableList(int height) {
-		super(new StdCustomTableModel(), height);	
+		super(new StdCustomTableModel(), height);		
 	}
 
 	@Override

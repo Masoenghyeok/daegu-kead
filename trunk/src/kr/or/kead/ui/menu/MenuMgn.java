@@ -17,7 +17,9 @@ import javax.swing.JPanel;
 
 import kr.or.kead.domain.Auth;
 import kr.or.kead.ui.list.AbsTableList;
+import kr.or.kead.ui.list.LoginTableList;
 import kr.or.kead.ui.list.StdTableList;
+import kr.or.kead.ui.list.model.LoginCustomTableModel;
 
 
 public class MenuMgn extends JMenuBar  {	
@@ -58,6 +60,7 @@ public class MenuMgn extends JMenuBar  {
 				System.out.println("1");
 				departMenu.setVisible(false);
 				profMenu.setVisible(false);
+				
 			}else if(level == 2) {		// 교수
 				System.out.println("2");
 				stdMenu.setVisible(false);
@@ -65,7 +68,11 @@ public class MenuMgn extends JMenuBar  {
 			}else {
 				listView = new StdTableList(400);
 				contentPane.add(listView);
+				frame.pack();
 			}
+			listView = new LoginTableList(80, auth);
+			mainPanel.add(listView);
+			frame.pack();
 		}
 		
 	}
