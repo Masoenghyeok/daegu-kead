@@ -233,4 +233,73 @@ public class DaoProfessor implements DaoTable {
 		return arCourses;
 	}
 
+	@Override
+	public String selectPasswdByEmail(String email) {
+		Connection con = MysqlCon.getConnection();		
+		String sql = "select passwd from professor where email = ?";		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, email);			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				return rs.getString(1);
+			}		
+		} catch (SQLException e) {			
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {pstmt.close();con.close();} catch (SQLException e) {e.printStackTrace();}
+		}
+		return null;
+	}
+
+	@Override
+	public Professor selectTableByEmail(String email) {
+		Connection con = MysqlCon.getConnection();		
+		String sql = "select code, email, passwd, name, depart, course from professor where email = ?";
+		Professor prof = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, email);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				prof = new Professor(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
+						rs.getInt(5), rs.getString(6));
+				return prof;
+			}		
+		} catch (SQLException e) {			
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {pstmt.close();con.close();} catch (SQLException e) {e.printStackTrace();}
+		}
+		return null;
+	}
+
+	@Override
+	public int updatePasswdByEmail(String passwd, String email) {
+		Connection con = MysqlCon.getConnection();		
+		String sql = "update professor set passwd = ? where email = ?";
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, passwd);
+			pstmt.setString(2, email);
+			System.out.println(pstmt);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {			
+			e.printStackTrace();
+			return -1;
+		} finally {
+			try {pstmt.close();con.close();} catch (SQLException e) {e.printStackTrace();}
+		}				
+		return 0;
+	}
+	
+	
+
 }

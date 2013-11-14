@@ -69,7 +69,7 @@ public class DaoInfoStudent implements DaoTable {
 				+ " stdType=?,"
 				+ " grade=?,"
 				+ " email=?,"				
-				+ " departCode=?"
+				+ " departCode=?,"
 				+ " passwd=? where idx=?";		
 		PreparedStatement pstmt=null;
 		try {
@@ -243,6 +243,63 @@ public class DaoInfoStudent implements DaoTable {
 		return lists;
 	}
 	
+	public String selectPasswdByEmail(String email) {
+		Connection con = MysqlCon.getConnection();		
+		String sql = "select passwd from infoStudent where email= ?";
+		InfoStudent std = new InfoStudent();	
+		PreparedStatement pstmt=null;
+		ResultSet rs = null;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, email);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {				
+				return rs.getString(1);
+			}else {
+				JOptionPane.showMessageDialog(null, "아이디를 찾을 수 없습니다.");
+			}
+		} catch (SQLException e) {			
+			e.printStackTrace();
+			return null;
+		}finally {
+			try {
+				rs.close();
+				pstmt.close();
+				con.close();
+			} catch (SQLException e) {			
+				e.printStackTrace();
+			}
+		}		
+		return null;	
+	}
+
+	@Override
+	public int updatePasswdByEmail(String passwd, String email) {
+		Connection con = MysqlCon.getConnection();		
+		String sql = "update infoStudent set"
+				+ " passwd=? where email = ?";		
+		PreparedStatement pstmt=null;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, passwd);
+			pstmt.setString(2, email);
+			System.out.println(pstmt);
+			pstmt.executeUpdate();		
+		} catch (SQLException e) {		
+			e.printStackTrace();
+			return -1;
+		}finally {
+			try {
+				pstmt.close();
+				con.close();
+			} catch (SQLException e) {			
+				e.printStackTrace();
+			}
+		}
+		return 0;
+	}
+
+	@Override
 	public InfoStudent selectTableByEmail(String email) {
 		Connection con = MysqlCon.getConnection();		
 		String sql = "select * from infoStudent where email= ?";
@@ -272,7 +329,7 @@ public class DaoInfoStudent implements DaoTable {
 			}else {
 				JOptionPane.showMessageDialog(null, "아이디를 찾을 수 없습니다.");
 			}
-		} catch (SQLException e) {			
+		} catch (SQLException e) {	
 			e.printStackTrace();
 			return null;
 		}finally {
@@ -285,6 +342,5 @@ public class DaoInfoStudent implements DaoTable {
 			}
 		}		
 		return null;
-	
-	}
+	}	
 }

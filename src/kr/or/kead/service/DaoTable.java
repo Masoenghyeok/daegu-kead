@@ -11,4 +11,7 @@ public interface DaoTable {
 	ArrayList<Object> selectDao();
 	Object selectTableById(int idx);
 	ArrayList<String> selectTableAllList();
+	String selectPasswdByEmail(String email);
+	Object selectTableByEmail(String email);
+	int updatePasswdByEmail(String email, String passwd);
 }

@@ -38,6 +38,9 @@ insert into infoStudent values(null,'wfwefew','fdgfdgdfg','2013-11-19','2014-12-
 
 select * from post where seq = 40000;
 
+ALTER TABLE post
+ADD KEY post_dong_idx (dong);
+
 desc infostudent;
 
 alter table infoStudent add column grade int after stdtype;

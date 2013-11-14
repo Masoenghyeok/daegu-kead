@@ -5,17 +5,23 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 
 import kr.or.kead.domain.Auth;
 import kr.or.kead.domain.InfoStudent;
+import kr.or.kead.domain.Professor;
 import kr.or.kead.service.DaoInfoStudent;
+import kr.or.kead.service.DaoProfessor;
+import kr.or.kead.service.DaoTable;
 
 public class PasswdChange extends JDialog implements ActionListener {
 
@@ -24,17 +30,25 @@ public class PasswdChange extends JDialog implements ActionListener {
 	private JPasswordField newPasswd;
 	private JPasswordField confirmPasswd;
 	private JButton okButton;
-	private JButton cancelButton;
-	private DaoInfoStudent daoStd;
-	private InfoStudent std;
+	private JButton cancelButton;	
+	private DaoTable dao;	
+	private Professor prof;
+	private String passwd;
+	private int level;
 	private String email;
 
 	
-	public PasswdChange(String email) {	
-		this.email = email;
+	public PasswdChange(Auth auth) {		
 		init();
-		daoStd = new DaoInfoStudent();
-		
+		level = auth.getLevel();
+		email = auth.getEmail();
+		if(level == 1) {
+			dao = new DaoInfoStudent();
+			passwd = dao.selectPasswdByEmail(auth.getEmail());	
+		}else if(level == 2) {
+			dao = new DaoProfessor();
+			passwd = dao.selectPasswdByEmail(auth.getEmail());
+		}		
 	}
 
 	private void init() {
@@ -108,9 +122,22 @@ public class PasswdChange extends JDialog implements ActionListener {
 		}
 	}
 	protected void actionPerformedOkButton(ActionEvent arg0) {
-		
+		if(Arrays.equals(oldPasswd.getPassword() , passwd.toCharArray())){
+			if(Arrays.equals(newPasswd.getPassword(), confirmPasswd.getPassword())) {
+				if(dao.updatePasswdByEmail(new String(confirmPasswd.getPassword()), email) > -1){
+					JOptionPane.showMessageDialog(null, "비밀번호가 변경 되었습니다.");
+					dispose();
+				}else {
+					JOptionPane.showMessageDialog(null, "비밀번호가 변경실패.");
+				}
+			}else {
+				JOptionPane.showMessageDialog(null, "비밀번호가 일치 하지 않습니다.");
+			}
+		}else {
+			JOptionPane.showMessageDialog(null, "기존의 비밀번호와 일치 하지 않습니다.");
+		}		
 	}
 	protected void actionPerformedCancelButton(ActionEvent arg0) {
 		dispose();
-	}
+	}	
 }
