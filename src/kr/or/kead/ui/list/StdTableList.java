@@ -6,8 +6,8 @@ import kr.or.kead.ui.list.model.StdCustomTableModel;
 
 public class StdTableList extends AbsTableList {
 
-	public StdTableList(int height) {
-		super(new StdCustomTableModel(), height);		
+	public StdTableList(int height, String email) {
+		super(new StdCustomTableModel(email), height);		
 	}
 
 	@Override

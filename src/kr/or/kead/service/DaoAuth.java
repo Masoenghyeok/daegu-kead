@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.JOptionPane;
+
 import kr.or.kead.domain.Auth;
 import kr.or.kead.utils.MysqlCon;
 
@@ -42,6 +44,8 @@ public class DaoAuth  {
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				return rs.getString(1);
+			}else {
+				JOptionPane.showMessageDialog(null, "아이디가 없습니다.");
 			}
 		} catch (SQLException e) {			
 			e.printStackTrace();

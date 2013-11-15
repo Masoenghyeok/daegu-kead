@@ -14,8 +14,8 @@ import kr.or.kead.ui.list.model.ProfessorCustomTableModel;
 
 public class ProfessorTableList extends AbsTableList {
 	
-	public ProfessorTableList(int height) {
-		super(new ProfessorCustomTableModel(), height);
+	public ProfessorTableList(int height, String email) {
+		super(new ProfessorCustomTableModel(email), height);
 	}
 
 	@Override

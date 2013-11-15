@@ -12,7 +12,9 @@ public class MainFrame extends JFrame {
 	private Auth auth;
 	public MainFrame(Auth auth) throws HeadlessException {
 		super();
-		// menu
+		this.setBounds(100, 100, 600, 400);
+		
+		// menu		
 		this.auth = auth;
 		
 		menu = new MenuMgn(this);

@@ -18,7 +18,7 @@ public class StdMenu extends AbsMenu {
 	
 	public StdMenu(JFrame frame, int height) {
 		super(frame, "학생 관리");		
-		stdListView = new StdTableList(height);
+		stdListView = new StdTableList(height, null);
 		daoStd = new DaoInfoStudent();
 	}
 	
