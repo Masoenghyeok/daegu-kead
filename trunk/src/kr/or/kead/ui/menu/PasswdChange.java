@@ -5,9 +5,12 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -23,6 +26,8 @@ import kr.or.kead.service.DaoInfoStudent;
 import kr.or.kead.service.DaoProfessor;
 import kr.or.kead.service.DaoTable;
 
+import javax.swing.ImageIcon;
+
 public class PasswdChange extends JDialog implements ActionListener {
 
 	private final JPanel contentPanel = new JPanel();
@@ -36,9 +41,13 @@ public class PasswdChange extends JDialog implements ActionListener {
 	private String passwd;
 	private int level;
 	private String email;
+	private JLabel lbl_check_oldpass;
+	private JLabel lbl_check_danger;
+	private JLabel lbl_check_same;
+	private ImageIcon icon;
 
 	
-	public PasswdChange(Auth auth) {		
+	public PasswdChange(Auth auth) {
 		init();
 		level = auth.getLevel();
 		email = auth.getEmail();
@@ -58,39 +67,57 @@ public class PasswdChange extends JDialog implements ActionListener {
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		icon = new ImageIcon("stop.jpg");
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		{
 			JLabel lbl_oldPass = new JLabel("기존 비밀번호");
-			lbl_oldPass.setFont(new Font("맑은 고딕", Font.PLAIN, 16));
+			lbl_oldPass.setFont(new Font("맑은 고딕", Font.PLAIN, 14));
 			contentPanel.add(lbl_oldPass);
 		}
 		{
 			oldPasswd = new JPasswordField();
-			oldPasswd.setFont(new Font("맑은 고딕", Font.PLAIN, 16));
+			oldPasswd.setFont(new Font("맑은 고딕", Font.PLAIN, 14));
+			oldPasswd.addKeyListener(new ComparePasswd());
 			oldPasswd.setColumns(20);
 			contentPanel.add(oldPasswd);
 		}
 		{
+			lbl_check_oldpass = new JLabel("");
+			lbl_check_oldpass.setIcon(icon);			
+			contentPanel.add(lbl_check_oldpass);
+		}
+		{
 			JLabel lbl_newPass = new JLabel("새 비밀번호   ");
-			lbl_newPass.setFont(new Font("맑은 고딕", Font.PLAIN, 16));
+			lbl_newPass.setFont(new Font("맑은 고딕", Font.PLAIN, 14));
 			contentPanel.add(lbl_newPass);
 		}
 		{
 			newPasswd = new JPasswordField();
-			newPasswd.setFont(new Font("맑은 고딕", Font.PLAIN, 16));
+			newPasswd.setFont(new Font("맑은 고딕", Font.PLAIN, 14));
 			newPasswd.setColumns(20);
 			contentPanel.add(newPasswd);
 		}
 		{
+			lbl_check_danger = new JLabel("");
+			lbl_check_danger.setIcon(icon);
+			contentPanel.add(lbl_check_danger);
+		}
+		{
 			JLabel lbl_passConfirm = new JLabel("비밀번호 확인");
-			lbl_passConfirm.setFont(new Font("맑은 고딕", Font.PLAIN, 16));
+			lbl_passConfirm.setFont(new Font("맑은 고딕", Font.PLAIN, 14));
 			contentPanel.add(lbl_passConfirm);
 		}
 		{
 			confirmPasswd = new JPasswordField();
-			confirmPasswd.setFont(new Font("맑은 고딕", Font.PLAIN, 16));
+			confirmPasswd.setFont(new Font("맑은 고딕", Font.PLAIN, 14));
+			confirmPasswd.addKeyListener(new ComparePasswd());
 			confirmPasswd.setColumns(20);
 			contentPanel.add(confirmPasswd);
+		}
+		{
+			lbl_check_same = new JLabel("");
+			lbl_check_same.setIcon(icon);
+			contentPanel.add(lbl_check_same);
 		}
 		{
 			JPanel buttonPane = new JPanel();
@@ -140,4 +167,28 @@ public class PasswdChange extends JDialog implements ActionListener {
 	protected void actionPerformedCancelButton(ActionEvent arg0) {
 		dispose();
 	}	
+	
+	class ComparePasswd extends KeyAdapter {
+		@Override
+		public void keyReleased(KeyEvent e) {
+			if(e.getSource() == oldPasswd) {
+				if(Arrays.equals(oldPasswd.getPassword(),passwd.toCharArray())){
+					icon = new ImageIcon("Synced.png");
+					lbl_check_oldpass.setIcon(icon);
+					oldPasswd.setEditable(false);
+				}
+			}else if(e.getSource() == confirmPasswd) {				
+				if(Arrays.equals(newPasswd.getPassword(), confirmPasswd.getPassword())) {
+					icon = new ImageIcon("Synced.png");
+					lbl_check_same.setIcon(icon);					
+				}else {
+					icon = new ImageIcon("stop.jpg");
+					lbl_check_same.setIcon(icon);
+				}
+			}
+			
+		}
+		
+		
+	}
 }

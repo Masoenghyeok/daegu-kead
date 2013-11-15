@@ -15,10 +15,17 @@ public class StdCustomTableModel extends AbsCustomTableModel {
 	private DaoDepart daoDepart;
 	
 	
-	public StdCustomTableModel() {
-		sql = "select idx '번호', stdName '성명', juminNum '주민번호', startDate '입학날짜', endDate '수료날짜',"
-				+ "mobile '휴대전화', tel '유선전화', stdAddr '주소', roomNum '통학/기숙사', stdType '장애유형', "
-				+ "grade '등급', email '이메일', passwd '비밀번호', departCode '학과' from infostudent";
+	public StdCustomTableModel(String email) {
+		if(email != null) {
+			sql = "select idx '번호', stdName '성명', juminNum '주민번호', startDate '입학날짜', endDate '수료날짜',"
+					+ "mobile '휴대전화', tel '유선전화', stdAddr '주소', roomNum '통학/기숙사', stdType '장애유형', "
+					+ "grade '등급', email '이메일', passwd '비밀번호', departCode '학과' from infostudent"
+					+ " where email='" + email + "'" ;
+		}else {
+			sql = "select idx '번호', stdName '성명', juminNum '주민번호', startDate '입학날짜', endDate '수료날짜',"
+					+ "mobile '휴대전화', tel '유선전화', stdAddr '주소', roomNum '통학/기숙사', stdType '장애유형', "
+					+ "grade '등급', email '이메일', passwd '비밀번호', departCode '학과' from infostudent";
+		}		
 		getResultSet();
 		daoHandi = new DaoHandicap();
 		daoDepart = new DaoDepart();

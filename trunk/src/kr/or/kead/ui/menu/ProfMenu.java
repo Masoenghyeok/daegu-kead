@@ -18,7 +18,7 @@ public class ProfMenu extends AbsMenu {
 	
 	public ProfMenu(JFrame frame, int height) {
 		super(frame, "교수 관리");
-		professorListView = new ProfessorTableList(height);
+		professorListView = new ProfessorTableList(height, null);
 		daoProf = new DaoProfessor();
 	}
 

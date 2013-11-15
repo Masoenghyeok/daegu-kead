@@ -6,9 +6,16 @@ import javax.swing.JCheckBox;
 
 public class ProfessorCustomTableModel extends AbsCustomTableModel {
 	
-	public ProfessorCustomTableModel() {
-		sql = "select code '코드', name '교수명', depart '학과명', course '담당과목', email '이메일',"
-				+ "passwd '비밀번호' from professor";
+	public ProfessorCustomTableModel(String email) {
+		if(email != null) {
+			sql = "select code '코드', name '교수명', depart '학과명', course '담당과목', email '이메일',"
+					+ "passwd '비밀번호' from professor"
+					+ " where email='" + email + "'";	
+		}else {
+			sql = "select code '코드', name '교수명', depart '학과명', course '담당과목', email '이메일',"
+					+ "passwd '비밀번호' from professor";
+		}
+		
 		getResultSet();
 	}
 	

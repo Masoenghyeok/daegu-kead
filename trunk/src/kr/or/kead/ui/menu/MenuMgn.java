@@ -1,25 +1,20 @@
 package kr.or.kead.ui.menu;
 
-import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
 import kr.or.kead.domain.Auth;
 import kr.or.kead.ui.list.AbsTableList;
-import kr.or.kead.ui.list.LoginTableList;
+import kr.or.kead.ui.list.ProfessorTableList;
 import kr.or.kead.ui.list.StdTableList;
-import kr.or.kead.ui.list.model.LoginCustomTableModel;
 
 
 public class MenuMgn extends JMenuBar  {	
@@ -37,7 +32,8 @@ public class MenuMgn extends JMenuBar  {
 	
 	public MenuMgn(JFrame frame) {
 		super();
-		this.frame = frame;		
+		this.frame = frame;	
+		this.frame.setBounds(100, 100, 600, 400);
 		this.contentPane = frame.getContentPane();				
 		init();
 		mainPanel = new JPanel(){
@@ -48,7 +44,7 @@ public class MenuMgn extends JMenuBar  {
 			}			
 		};
 		contentPane.add(mainPanel);								
-		contentPane.validate();
+		contentPane.validate();		
 		
 	}
 
@@ -60,21 +56,18 @@ public class MenuMgn extends JMenuBar  {
 				System.out.println("1");
 				departMenu.setVisible(false);
 				profMenu.setVisible(false);
-				
+				listView = new StdTableList(100, auth.getEmail());				
 			}else if(level == 2) {		// 교수
 				System.out.println("2");
 				stdMenu.setVisible(false);
 				departMenu.setVisible(false);
+				listView = new ProfessorTableList(100, auth.getEmail());
 			}else {
-				listView = new StdTableList(400);
-				contentPane.add(listView);
-				frame.pack();
+				listView = new StdTableList(400, null);								
 			}
-			listView = new LoginTableList(80, auth);
-			mainPanel.add(listView);
+			contentPane.add(listView);
 			frame.pack();
-		}
-		
+		}		
 	}
 
 
@@ -103,7 +96,7 @@ public class MenuMgn extends JMenuBar  {
 //		profMenu.setEnabled(false);
 //		
 
-//		frame.pack();
+		
 	}
 
 

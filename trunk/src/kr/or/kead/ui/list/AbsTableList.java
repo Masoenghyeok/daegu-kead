@@ -29,7 +29,7 @@ public abstract class AbsTableList extends JPanel{
 	}
 
 	private void initialize() {
-		table = new JTable(model);
+		table = new JTable(model);		
 		scrollPane = new JScrollPane(table);
 		table.setColumnSelectionAllowed(true);
 		setFullColumnSize();
@@ -45,8 +45,10 @@ public abstract class AbsTableList extends JPanel{
 			model.getColumn(i).setMaxWidth(columnSize.get(i));
 			totalColumnSize +=model.getColumn(i).getMaxWidth();
 		}
+		if(height<100)height=400;
 		setPreferredSize(new Dimension(totalColumnSize+20, height));
 		scrollPane.setPreferredSize(new Dimension(totalColumnSize, height));
+		
 		add(scrollPane);
 	}
 
