@@ -61,6 +61,7 @@ public abstract class AbsMenu extends JMenu implements ActionListener{
 	
 	public int searchNum(DaoTable daoTable, String msg) {
 		ArrayList<String> lists = daoTable.selectTableAllList();
+		
 		Object[] arLists = lists.toArray();
 		int result = -1;
 		try {

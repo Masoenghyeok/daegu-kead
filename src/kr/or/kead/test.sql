@@ -280,4 +280,82 @@ create table curriculum (
 
 update professor set email = 'prof2@naver.com', passwd = 'naver', name = '데니스리치', depart = 100, course = 'c언어' where code = 1007;
 
+-- 강좌테이블
+create table course(
+	code int primary key,          -- 강좌코드
+	depart_code int not null,      -- 학과코드
+	subject varchar(40) not null,  -- 과목명 
+	material varchar(40) ,		   -- 교제명
+	prof_code int not null         -- 개설강좌 교수코드
+);
 
+-- 외래키 제약 조건 추가
+-- alter table 테이블명  add constraint 제약키명
+-- foreign (필드) references 참조테이블명(필드)
+-- on update cascade   (갱신시 연쇄 적용)
+-- on delete no action (참조 되는 테이블에서 삭제시 삭제 불가)
+alter table course add constraint course_depart_fk
+foreign key (depart_code) references depart(code)
+on update cascade on delete no action;
+
+alter table course add constraint course_prof_fk
+foreign key (prof_code) references professor(code)
+on update cascade on delete no action;
+
+select * from depart;
+select * from professor;
+
+-- 앞세자리는 학과코드 나머지 3자리는 순서
+insert into course values(100001, 100, 'JAVA', 'POWER JAVA', 1002);
+insert into course values(100002, 100, '프로젝트', '프린트물', 1002);
+insert into course values(200001, 200, '컴퓨터구조', '컴퓨터구조', 2001);
+insert into course values(200002, 200, '논리회로', '논리와 놀자', 2001);
+
+select * from course;
+
+-- join 예제
+-- 1
+select c.code as '강좌코드',d.name as '학과', c.subject as '강좌명',
+	c.material as '교재명', c.prof_code as '교수명',  from course c, depart d
+	where c.depart_code = d.code;
+
+
+	
+select c.code as '강좌코드',d.name as '학과', c.subject as '강좌명',
+	c.material as '교재명',  p.name '교수명'  
+	from course c, depart d, professor p
+	where c.depart_code = d.code and c.prof_code = p.code;
+
+--2
+select c.code as '강좌코드',d.name as '학과', c.subject as '강좌명',
+	c.material as '교재명', c.prof_code as '교수명',  from course c join depart d
+	on c.depart_code = d.code;
+	
+	
+select c.code as '강좌코드',d.name as '학과', c.subject as '강좌명',
+	c.material as '교재명',  p.name '교수명'
+	from course c join depart d
+	on c.depart_code = d.code join professor p on c.prof_code = p.code;
+	
+-- View table 만들기 (논리테이블)
+
+-- 1. 뷰생성
+-- create View 뷰이름 as 쿼리 문장;
+-- 2. 뷰를 호출
+-- select * from 뷰이름;
+-- 3. 뷰를 삭제
+-- drop view 뷰이름
+
+create View view_course_depart_prof AS	
+select c.code as '강좌코드',d.name as '학과', c.subject as '강좌명',
+	c.material as '교재명',  p.name '교수명'
+	from course c join depart d
+	on c.depart_code = d.code join professor p on c.prof_code = p.code;
+	
+select * from view_course_depart_prof;
+
+select max(code) from course where depart_code = 100;
+
+select 강좌코드, 학과, 강좌명, 교재명, 교수명 from view_course_depart_prof where code = 100002;
+	
+	

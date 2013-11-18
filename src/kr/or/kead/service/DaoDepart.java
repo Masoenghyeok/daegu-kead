@@ -153,7 +153,7 @@ public class DaoDepart implements DaoTable{
 	
 	public ArrayList<Object> selectNames() {
 		Connection con = MysqlCon.getConnection();
-		String sql = "select name from depart";
+		String sql = "select code,name from depart";
 		ArrayList<Object> names =new ArrayList<>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -161,7 +161,7 @@ public class DaoDepart implements DaoTable{
 			pstmt = con.prepareStatement(sql);			
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
-				names.add(rs.getString(1));
+				names.add(rs.getInt(1) +":"+ rs.getString(2));
 			}
 		}catch (SQLException e) {			
 			e.printStackTrace();
@@ -170,6 +170,27 @@ public class DaoDepart implements DaoTable{
 			try { rs.close();pstmt.close();con.close();} catch (SQLException e) { }
 		}		
 		return names;
+	}
+	
+	public String selectNameByCode(int code) {
+		Connection con = MysqlCon.getConnection();
+		String sql = "select code, name from depart where code = ?";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, code);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				return rs.getInt(1) + rs.getString(2);						
+			}
+		} catch (SQLException e) {		
+			e.printStackTrace();
+			return null;
+		}finally {
+			try { rs.close();pstmt.close();con.close();} catch (SQLException e) { }
+		}
+		return null;
 	}
 	
 	public int selectMaxCode() {
