@@ -25,6 +25,7 @@ public class MenuMgn extends JMenuBar  {
 	private JMenu departMenu;
 	private JMenu profMenu;
 	private JMenu logMenu;
+	private JMenu courseMenu;
 	private JFrame frame;
 	private Auth auth;
 	private JPanel mainPanel;
@@ -34,7 +35,8 @@ public class MenuMgn extends JMenuBar  {
 		super();
 		this.frame = frame;	
 		this.frame.setBounds(100, 100, 600, 400);
-		this.contentPane = frame.getContentPane();				
+		this.contentPane = frame.getContentPane();	
+		auth = getAuth();
 		init();
 		mainPanel = new JPanel(){
 			@Override
@@ -43,6 +45,7 @@ public class MenuMgn extends JMenuBar  {
 				g.drawImage(image, 0, 0, this.getWidth() , this.getHeight(), this);
 			}			
 		};
+		
 		contentPane.add(mainPanel);								
 		contentPane.validate();		
 		
@@ -56,11 +59,12 @@ public class MenuMgn extends JMenuBar  {
 				System.out.println("1");
 				departMenu.setVisible(false);
 				profMenu.setVisible(false);
+				courseMenu.setVisible(false);
 				listView = new StdTableList(100, auth.getEmail());				
 			}else if(level == 2) {		// 교수
 				System.out.println("2");
 				stdMenu.setVisible(false);
-				departMenu.setVisible(false);
+				departMenu.setVisible(false);				
 				listView = new ProfessorTableList(100, auth.getEmail());
 			}else {
 				listView = new StdTableList(400, null);								
@@ -87,6 +91,9 @@ public class MenuMgn extends JMenuBar  {
 		
 		profMenu = new ProfMenu(frame, (int)frame.getSize().getHeight());
 		add(profMenu);
+		
+		courseMenu = new CourseMenu(frame, (int)frame.getSize().getHeight());
+		add(courseMenu);
 		
 		
 		

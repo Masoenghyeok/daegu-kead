@@ -16,9 +16,9 @@ public class DepartMenu extends AbsMenu {
 	private DaoDepart daoDepart;
 	
 	public DepartMenu(JFrame frame, int height) {
-		super(frame, "학과 관리");
-		departListView = new DepartTableList(height);
+		super(frame, "학과 관리");		
 		daoDepart = new DaoDepart();
+		departListView = new DepartTableList(height);
 	}
 
 	@Override
