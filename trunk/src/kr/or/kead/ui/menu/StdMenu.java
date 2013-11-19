@@ -36,7 +36,7 @@ public class StdMenu extends AbsMenu {
 	@Override
 	protected void delMenuActionPerformed(ActionEvent e) {
 		listMenuActionPerformed(e);
-		int res = searchNum(daoStd, "삭제");
+		int res = searchNum(daoStd, "삭제", 0);
 		if (res != -1 && daoStd.deleteDao(res) != -1) {			
 			JOptionPane.showMessageDialog(null, "삭제 되었습니다.");
 			stdListView.setTableModel();
@@ -50,7 +50,7 @@ public class StdMenu extends AbsMenu {
 	@Override
 	protected void updateMenuActionPerformed(ActionEvent e) {
 		listMenuActionPerformed(e);
-		int res = searchNum(daoStd, "수정");
+		int res = searchNum(daoStd, "수정", 0);
 		if(res != -1) {
 			InfoStudent std = daoStd.selectTableById(res);
 			StdInsertUpdate update = new StdInsertUpdate(std);

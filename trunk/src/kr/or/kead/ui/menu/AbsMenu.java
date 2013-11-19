@@ -12,6 +12,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import kr.or.kead.service.DaoCourse;
 import kr.or.kead.service.DaoTable;
 import kr.or.kead.ui.list.AbsTableList;
 
@@ -59,8 +60,14 @@ public abstract class AbsMenu extends JMenu implements ActionListener{
 		this.frame.validate();
 	}
 	
-	public int searchNum(DaoTable daoTable, String msg) {
-		ArrayList<String> lists = daoTable.selectTableAllList();
+	public int searchNum(DaoTable daoTable, String msg, int code) {
+		ArrayList<String> lists;
+		if(code == 0) {
+			lists = daoTable.selectTableAllList();
+		}else {
+			lists = ((DaoCourse)daoTable).selectTableAllListByCode(code);
+		}
+		
 		
 		Object[] arLists = lists.toArray();
 		int result = -1;

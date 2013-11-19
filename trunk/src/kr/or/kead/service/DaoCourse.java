@@ -150,7 +150,7 @@ public class DaoCourse implements DaoTable {
 
 	@Override
 	public Object selectTableByEmail(String email) {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
@@ -179,6 +179,26 @@ public class DaoCourse implements DaoTable {
 		}finally {try {pstmt.close();con.close();} catch (SQLException e) {e.printStackTrace();}
 		}
 		return -1;
+	}
+	
+	public ArrayList<String> selectTableAllListByCode(int code) {
+		Connection con = MysqlCon.getConnection();
+		ArrayList<String> arLists = new ArrayList<>();
+		String sql = "select code, subject from course where prof_code = ?";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, code);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				arLists.add(rs.getInt(1) + ":" + rs.getString(2));
+			}
+		} catch (SQLException e) {			
+			e.printStackTrace();
+			return null;
+		}
+		return arLists;
 	}
 
 }
