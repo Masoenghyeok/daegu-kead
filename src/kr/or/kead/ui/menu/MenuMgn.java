@@ -27,7 +27,7 @@ public class MenuMgn extends JMenuBar  {
 	private JMenu logMenu;
 	private JMenu courseMenu;
 	private JFrame frame;
-	private Auth auth;
+	private static Auth auth;
 	private JPanel mainPanel;
 	
 	
@@ -107,7 +107,7 @@ public class MenuMgn extends JMenuBar  {
 	}
 
 
-	public Auth getAuth() {
+	public static Auth getAuth() {
 		return auth;
 	}
 

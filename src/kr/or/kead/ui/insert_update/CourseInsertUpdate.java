@@ -14,11 +14,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import kr.or.kead.domain.Auth;
 import kr.or.kead.domain.Course;
 import kr.or.kead.domain.Professor;
 import kr.or.kead.service.DaoCourse;
 import kr.or.kead.service.DaoDepart;
 import kr.or.kead.service.DaoProfessor;
+import kr.or.kead.ui.MainFrame;
+import kr.or.kead.ui.menu.MenuMgn;
 
 public class CourseInsertUpdate extends AbsInsertUpdate {
 	private JLabel lblNewLabel;
@@ -36,13 +39,15 @@ public class CourseInsertUpdate extends AbsInsertUpdate {
 	private DaoProfessor daoProf;
 	private Course course;
 	private String email;
+	private Auth auth;
 	public CourseInsertUpdate(Object obj, String email) {		
-		super(obj, "강좌 정보");
-		this.email = email;
+		super(obj, "강좌 정보");		
 	}
+	
 
 	@Override
-	protected void initDao() {		
+	protected void initDao() {
+		auth = MenuMgn.getAuth();
 		daoTable = new DaoCourse();
 		daoCourse = new DaoCourse();
 		daoDepart = new DaoDepart();
@@ -60,8 +65,7 @@ public class CourseInsertUpdate extends AbsInsertUpdate {
 	}
 
 	@Override
-	protected Object getObject() {	
-		
+	protected Object getObject() {			
 		if(obj == null) {			
 			course = new Course(Integer.parseInt(lbl_courseCode.getText()),
 					stringTokenComboItem(combo_depart.getSelectedItem()),
@@ -79,18 +83,13 @@ public class CourseInsertUpdate extends AbsInsertUpdate {
 		
 			return course;
 		}	
-	}
-	
-	
+	}	
 
-	private void comboBoxSelect() {
-		System.out.println("comboBoxSelect");
-		System.out.println("email = " + email);
-		if(email != null) {
-			System.out.println("email in");
-			Professor prof = daoProf.selectTableByEmail(email);
-			combo_prof.setSelectedItem(prof.getCode() + ":" + prof.getName());
-			combo_prof.setEditable(false);
+	private void comboBoxSelect() {		
+		if(auth.getLevel() == 2) {			
+			Professor prof = daoProf.selectTableByEmail(auth.getEmail());
+			combo_prof.setSelectedItem(prof.getCode() + ":" + prof.getName());			
+			combo_prof.setEnabled(false);
 		}		
 	}
 
@@ -175,9 +174,8 @@ public class CourseInsertUpdate extends AbsInsertUpdate {
 		combo_prof.setFont(new Font("맑은 고딕", Font.PLAIN, 16));
 		mainPanel.add(combo_prof);
 		
-		
-		codeChange();
 		comboBoxSelect();
+		codeChange();		
 		return mainPanel;
 	}
 	

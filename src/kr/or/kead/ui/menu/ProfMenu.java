@@ -33,7 +33,7 @@ public class ProfMenu extends AbsMenu {
 	@Override
 	protected void delMenuActionPerformed(ActionEvent e) {
 		listMenuActionPerformed(e);
-		int res = searchNum(daoProf, "삭제");
+		int res = searchNum(daoProf, "삭제", 0);
 		if(res != -1 && daoProf.deleteDao(res) != -1) {
 			JOptionPane.showMessageDialog(null, "삭제 되었습니다.");
 			professorListView.setTableModel();
@@ -46,7 +46,7 @@ public class ProfMenu extends AbsMenu {
 	@Override
 	protected void updateMenuActionPerformed(ActionEvent e) {
 		listMenuActionPerformed(e);
-		int res = searchNum(daoProf, "수정");
+		int res = searchNum(daoProf, "수정", 0);
 		if(res != -1) {
 			Professor prof = (Professor)daoProf.selectTableById(res);
 			profInsertUpdate = new ProfessorInsertUpdate(prof);
