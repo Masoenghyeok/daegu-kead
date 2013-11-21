@@ -309,6 +309,7 @@ public class DaoInfoStudent implements DaoTable {
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, email);
+			System.out.println("info rs = " + pstmt);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				std.setIdx(rs.getInt("idx"));
@@ -341,6 +342,12 @@ public class DaoInfoStudent implements DaoTable {
 				e.printStackTrace();
 			}
 		}		
+		return null;
+	}
+
+	@Override
+	public ArrayList<String> selectTableAllListByCode(int code) {
+		// TODO Auto-generated method stub
 		return null;
 	}	
 }

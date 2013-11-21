@@ -27,9 +27,8 @@ public class CourseMenu extends AbsMenu {
 	public CourseMenu(JFrame frame, int height) {
 		super(frame, "강좌 관리");
 		daoCourse = new DaoCourse();
-		daoProf = new DaoProfessor();
-		MainFrame mainFrame = (MainFrame)frame;
-		auth = mainFrame.getAuth();
+		daoProf = new DaoProfessor();		
+		auth = ((MainFrame)frame).getAuth();		
 		level = auth.getLevel();
 		if(auth.getLevel() == 3) {
 			courseListView = new CourseTableList(height, null);

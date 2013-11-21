@@ -299,6 +299,12 @@ public class DaoProfessor implements DaoTable {
 		}				
 		return 0;
 	}
+
+	@Override
+	public ArrayList<String> selectTableAllListByCode(int code) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 

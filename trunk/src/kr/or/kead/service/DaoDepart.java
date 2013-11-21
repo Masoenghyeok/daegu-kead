@@ -246,6 +246,12 @@ public class DaoDepart implements DaoTable{
 	public int updatePasswdByEmail(String email, String passwd) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public ArrayList<String> selectTableAllListByCode(int code) {
+		// TODO Auto-generated method stub
+		return null;
 	}	
 	
 	

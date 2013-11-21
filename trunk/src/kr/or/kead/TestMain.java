@@ -2,8 +2,6 @@ package kr.or.kead;
 
 
 import kr.or.kead.ui.LoginJoin;
-import kr.or.kead.ui.MainFrame;
-import kr.or.kead.ui.TabModifyLoginJoin;
 
 public class TestMain {
 

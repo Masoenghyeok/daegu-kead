@@ -65,7 +65,7 @@ public abstract class AbsMenu extends JMenu implements ActionListener{
 		if(code == 0) {
 			lists = daoTable.selectTableAllList();
 		}else {
-			lists = ((DaoCourse)daoTable).selectTableAllListByCode(code);
+			lists = daoTable.selectTableAllListByCode(code);
 		}
 		
 		

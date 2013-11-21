@@ -357,5 +357,51 @@ select * from view_course_depart_prof;
 select max(code) from course where depart_code = 100;
 
 select 강좌코드, 학과, 강좌명, 교재명, 교수명 from view_course_depart_prof where code = 100002;
+
+
+create table request_course (
+	idx int primary key auto_increment,
+	std_idx int not null,
+	course_code int not null,
+	grade int
+);
+
+alter table request_course add constraint request_infostd_fk
+foreign key (std_idx) references infoStudent(idx)
+on update cascade on delete no action;
+
+alter table request_course add constraint request_course_fk
+foreign key (course_code) references course(code)
+on update cascade on delete no action;
+
+insert into request_course values(null, 20, 100001, null);
+insert into request_course values(null, 20, 100002, null);
+
+insert into request_course values(null, 23, 200001, null);
+insert into request_course values(null, 23, 200002, null);
+
+select * from request_course;
+
+
+
+
+drop view view_request_infostd_course;
+
+
+create view view_request_infostd_course AS
+select r.idx as '번호', r.std_idx as '학생번호',i.stdName as '학생명',
+	i.email as '학생이메일', r.course_code as '과목번호',c.subject as '과목명',
+	d.name as '학과',	p.name as '담당교수',	p.email as '교수이메일',
+	r.grade as '학점', c.material as '교제'
+from request_course r, infoStudent i, course c, depart d, professor p
+where r.std_idx = i.idx and r.course_code=c.code and c.depart_code=d.code
+and c.prof_code=p.code;
+
+
+select * from view_request_infostd_course;
+
+select * from infoStudent where email= 'SDFSD@kead.com';
+
+select 과목번호, 과목명 from view_request_infostd_course where std_idx = 20;
 	
 	

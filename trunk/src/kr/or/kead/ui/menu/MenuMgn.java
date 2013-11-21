@@ -26,6 +26,7 @@ public class MenuMgn extends JMenuBar  {
 	private JMenu profMenu;
 	private JMenu logMenu;
 	private JMenu courseMenu;
+	private JMenu requestCourseMenu;
 	private JFrame frame;
 	private static Auth auth;
 	private JPanel mainPanel;
@@ -95,6 +96,8 @@ public class MenuMgn extends JMenuBar  {
 		courseMenu = new CourseMenu(frame, (int)frame.getSize().getHeight());
 		add(courseMenu);
 		
+		requestCourseMenu = new RequestCourseMenu(frame, (int)frame.getSize().getHeight());
+		add(requestCourseMenu);
 		
 		
 		
