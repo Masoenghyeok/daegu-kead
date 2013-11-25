@@ -200,5 +200,7 @@ public class DaoCourse implements DaoTable {
 		}
 		return arLists;
 	}
+	
+	
 
 }

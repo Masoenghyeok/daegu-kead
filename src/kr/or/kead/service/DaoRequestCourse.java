@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import kr.or.kead.domain.Depart;
 import kr.or.kead.domain.Professor;
 import kr.or.kead.domain.RequestCourse;
 import kr.or.kead.utils.MysqlCon;
@@ -16,32 +17,30 @@ public class DaoRequestCourse implements DaoTable {
 
 	@Override
 	public int insertDao(Object obj) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateDao(Object obj) {
-		Connection con = MysqlCon.getConnection();
-		String sql ="update request_course set std_idx =?, course_code=?, grade=? where idx =?";
-		RequestCourse reqCourse = (RequestCourse)obj;
+		Connection con = MysqlCon.getConnection();		
+		RequestCourse reqCourse = (RequestCourse) obj;
+		String sql = "insert into request_course (std_idx, course_code) values (?, ?)";
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, reqCourse.getStd_idx());
-			pstmt.setInt(2, reqCourse.getCourseCode());
-			pstmt.setInt(3, reqCourse.getGrade());
-			pstmt.setInt(4, reqCourse.getIdx());			
-			System.out.println(pstmt);
-			pstmt.executeUpdate();
+			pstmt.setInt(2, reqCourse.getCourseCode());					
+			pstmt.executeUpdate();			
 		} catch (SQLException e) {			
 			e.printStackTrace();
 			return -1;
 		} finally {
-			try {pstmt.close();con.close();} catch (SQLException e) {e.printStackTrace();}
-		}		
+			try { pstmt.close(); con.close();} 
+			catch (SQLException e) { e.printStackTrace();}			
+		}
 		return 0;
 	}
+	
+	@Override
+	public int updateDao(Object obj) {
+		// TODO Auto-generated method stub
+		return 0;
+	}	
 
 	@Override
 	public int deleteDao(int regNo) {
@@ -80,8 +79,22 @@ public class DaoRequestCourse implements DaoTable {
 
 	@Override
 	public ArrayList<String> selectTableAllList() {
-		// TODO Auto-generated method stub
-		return null;
+		Connection con = MysqlCon.getConnection();
+		ArrayList<String> arLists = new ArrayList<>();
+		String sql = "select 과목번호, 과목명 from view_request_infostd_course";			
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = con.prepareStatement(sql);		
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				arLists.add(rs.getInt(1) + ":" + rs.getString(2));
+			}
+		} catch (SQLException e) {			
+			e.printStackTrace();
+			return null;
+		}
+		return arLists;	
 	}
 
 	@Override
@@ -112,8 +125,7 @@ public class DaoRequestCourse implements DaoTable {
 		ResultSet rs = null;
 		try {
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, code);
-			System.out.println("selectTable" + pstmt);
+			pstmt.setInt(1, code);			
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				arLists.add(rs.getInt(1) + ":" + rs.getString(2));
@@ -124,5 +136,9 @@ public class DaoRequestCourse implements DaoTable {
 		}
 		return arLists;		
 	}
+	
+	
+
+	
 
 }
