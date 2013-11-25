@@ -56,9 +56,13 @@ public class RequestCourseMenu extends AbsMenu {
 	@Override
 	protected void updateMenuActionPerformed(ActionEvent e) {
 		System.out.println("email =" + auth.getEmail());
-		InfoStudent std = daoStd.selectTableByEmail(auth.getEmail());
-		System.out.println(std);
-		int res = searchNum(daoReqCourse, "수정", std.getIdx());		
+		int res;
+		if(level == 3) {
+			res = searchNum(daoReqCourse, "수정", 0);
+		}else {
+			InfoStudent std = daoStd.selectTableByEmail(auth.getEmail());			
+			res = searchNum(daoReqCourse, "수정", std.getIdx());			
+		}
 		if(res != -1) {
 			reqCourse = (RequestCourse)daoReqCourse.selectTableById(res);			
 			insUpdate = new RequestCourseInsertUpdate(reqCourse);

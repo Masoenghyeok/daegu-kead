@@ -3,9 +3,15 @@ package kr.or.kead.ui.list.model;
 import kr.or.kead.domain.Auth;
 
 public class RequestCourseCustomTableModel extends AbsCustomTableModel {	
-	public RequestCourseCustomTableModel(Auth auth) {		
-		int level = auth.getLevel();
-		String where = null;
+	public RequestCourseCustomTableModel(Auth auth) {
+		int level;
+		if(auth != null) {
+			level = auth.getLevel();
+		}else {
+			level =3;
+		}
+		
+		String where = "";
 		if(level ==2) {
 			where = " where 교수이메일='" + auth.getEmail() + "'";		
 		}else if(level ==1) {

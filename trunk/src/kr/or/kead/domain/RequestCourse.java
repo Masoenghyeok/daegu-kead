@@ -12,6 +12,11 @@ public class RequestCourse {
 		this.courseCode = courseCode;
 		this.grade = grade;
 	}
+	
+	public RequestCourse(int std_idx, int courseCode) {		
+		this.std_idx = std_idx;
+		this.courseCode = courseCode;		
+	}
 
 	public int getIdx() {
 		return idx;

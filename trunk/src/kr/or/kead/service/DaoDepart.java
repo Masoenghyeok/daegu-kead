@@ -182,7 +182,7 @@ public class DaoDepart implements DaoTable{
 			pstmt.setInt(1, code);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
-				return rs.getInt(1) + rs.getString(2);						
+				return rs.getInt(1) +":"+ rs.getString(2);						
 			}
 		} catch (SQLException e) {		
 			e.printStackTrace();
