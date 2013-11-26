@@ -38,13 +38,44 @@ public class DaoRequestCourse implements DaoTable {
 	
 	@Override
 	public int updateDao(Object obj) {
-		// TODO Auto-generated method stub
-		return 0;
+		Connection con = MysqlCon.getConnection();
+		ArrayList<Object> arProf = new ArrayList<>();
+		String sql = "update request_course set std_idx = ?, course_code = ?, grade = ? where idx = ?";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		RequestCourse reqCourse = (RequestCourse)obj;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, reqCourse.getStd_idx());
+			pstmt.setInt(2, reqCourse.getCourseCode());
+			pstmt.setInt(3, reqCourse.getGrade());
+			pstmt.setInt(4, reqCourse.getIdx());
+			pstmt.executeUpdate();
+			return 0;
+		} catch (SQLException e) {			
+			e.printStackTrace();
+			return -1;
+		} finally {
+			try {pstmt.close();con.close();} catch (SQLException e) {e.printStackTrace();}
+		}		
 	}	
 
 	@Override
 	public int deleteDao(int regNo) {
-		// TODO Auto-generated method stub
+		Connection con = MysqlCon.getConnection();		
+		String sql = "delete from request_course where code = ?";
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, regNo);
+			System.out.println("reg no = " + regNo);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {			
+			e.printStackTrace();
+			return -1;
+		} finally {
+			try {pstmt.close();con.close();} catch (SQLException e) {e.printStackTrace();}
+		}				
 		return 0;
 	}
 
@@ -81,14 +112,14 @@ public class DaoRequestCourse implements DaoTable {
 	public ArrayList<String> selectTableAllList() {
 		Connection con = MysqlCon.getConnection();
 		ArrayList<String> arLists = new ArrayList<>();
-		String sql = "select 과목번호, 과목명 from view_request_infostd_course";			
+		String sql = "select 번호, 학생명, 과목명 from view_request_infostd_course";			
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
 			pstmt = con.prepareStatement(sql);		
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
-				arLists.add(rs.getInt(1) + ":" + rs.getString(2));
+				arLists.add(rs.getString(1) + ":" +rs.getString(2) + ":" + rs.getString(3));
 			}
 		} catch (SQLException e) {			
 			e.printStackTrace();

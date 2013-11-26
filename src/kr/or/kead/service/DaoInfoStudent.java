@@ -347,7 +347,23 @@ public class DaoInfoStudent implements DaoTable {
 
 	@Override
 	public ArrayList<String> selectTableAllListByCode(int code) {
-		// TODO Auto-generated method stub
-		return null;
+		Connection con = MysqlCon.getConnection();
+		ArrayList<String> arLists = new ArrayList<>();
+		String sql = "select 과목번호, 과목명 from view_request_infostd_course"
+				+ " where 학생번호 = ?";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, code);			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				arLists.add(rs.getInt(1) + ":" + rs.getString(2));
+			}
+		} catch (SQLException e) {			
+			e.printStackTrace();
+			return null;
+		}
+		return arLists;
 	}	
 }
