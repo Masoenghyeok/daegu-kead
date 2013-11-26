@@ -302,8 +302,24 @@ public class DaoProfessor implements DaoTable {
 
 	@Override
 	public ArrayList<String> selectTableAllListByCode(int code) {
-		// TODO Auto-generated method stub
-		return null;
+		Connection con = MysqlCon.getConnection();
+		ArrayList<String> arLists = new ArrayList<>();
+		String sql = "select v.과목번호, v.과목명 from view_request_infostd_course v, professor p"
+				+ " where v.담당교수 = p.name and p.code = ?";		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, code);			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				arLists.add(rs.getInt(1) + ":" + rs.getString(2));
+			}
+		} catch (SQLException e) {			
+			e.printStackTrace();
+			return null;
+		}
+		return arLists;
 	}
 	
 	

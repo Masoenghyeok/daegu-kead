@@ -405,5 +405,10 @@ select * from infoStudent where email= 'SDFSD@kead.com';
 select 과목번호, 과목명 from view_request_infostd_course where std_idx = 20;
 
 insert into request_course (std_idx, course_code) values (20, 100003);
+
+select * from infoStudent where email= 'SDFSD@kead.com';
+
+select v.과목번호, v.과목명, p.name from view_request_infostd_course v, professor p
+where v.담당교수 = p.name and p.code = 1002;
 	
 	

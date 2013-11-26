@@ -48,11 +48,12 @@ public class RequestCourseInsertUpdate extends AbsInsertUpdate implements ItemLi
 
 	public RequestCourseInsertUpdate(Object obj) {
 		super(obj, "강좌 정보");
-		auth = MenuMgn.getAuth();
+		
 	}
 
 	@Override
 	protected void initDao() {
+		auth = MenuMgn.getAuth();
 		daoTable = new DaoRequestCourse();
 		daoDepart = new DaoDepart();
 		daoCourse = new DaoCourse();
@@ -72,6 +73,10 @@ public class RequestCourseInsertUpdate extends AbsInsertUpdate implements ItemLi
 		combo_course.setSelectedItem(daoCourse.selectTableAllListByCode(course.getCode()));
 		txt_grade.setText(String.valueOf(reqCourse.getGrade()));
 		
+		if(auth.getLevel() == 2) {
+			txt_grade.setEditable(true);
+		}
+		
 		combo_depart.updateUI();
 		combo_prof.updateUI();
 		combo_course.updateUI();
@@ -79,15 +84,15 @@ public class RequestCourseInsertUpdate extends AbsInsertUpdate implements ItemLi
 
 	@Override
 	protected Object getObject() {
+		System.out.println("auth " + auth);
 		std = daoStd.selectTableByEmail(auth.getEmail());
 		StringTokenizer st = new StringTokenizer((String)combo_course.getSelectedItem(), ":");
-		if(obj == null) {						
+		if(obj == null) {			
 			reqCourse = new RequestCourse(std.getIdx(),Integer.parseInt(st.nextToken()));
 			System.out.println( "reqCourse = " + reqCourse);
 			return reqCourse;			
 		}else {			
-			//점수 수정
-			reqCourse.setGrade(0);
+			reqCourse.setGrade(Integer.parseInt(txt_grade.getText()));
 			reqCourse.setCourseCode(Integer.parseInt(st.nextToken()));
 			return reqCourse;
 		}		
