@@ -349,7 +349,7 @@ public class DaoInfoStudent implements DaoTable {
 	public ArrayList<String> selectTableAllListByCode(int code) {
 		Connection con = MysqlCon.getConnection();
 		ArrayList<String> arLists = new ArrayList<>();
-		String sql = "select 과목번호, 과목명 from view_request_infostd_course"
+		String sql = "select 번호, 과목명 from view_request_infostd_course"
 				+ " where 학생번호 = ?";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;

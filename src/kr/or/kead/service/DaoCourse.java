@@ -201,6 +201,28 @@ public class DaoCourse implements DaoTable {
 		return arLists;
 	}
 	
+	public Object selectTableByProfCode(int prof_code) {
+		Connection con = MysqlCon.getConnection();
+		String sql = "select code, depart_code, subject, material, prof_code from course"
+				+ " where prof_code = ?";
+		PreparedStatement pstmt = null;
+		ResultSet rs =null;
+		try {
+			pstmt = con.prepareStatement(sql);			
+			pstmt.setInt(1, prof_code);			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				return new Course(rs.getInt(1), rs.getInt(2), rs.getString(3),
+						rs.getString(4), rs.getInt(5));
+			}
+		} catch (SQLException e) {			
+			e.printStackTrace();
+			return null;			
+		}finally {try {pstmt.close();con.close();} catch (SQLException e) {e.printStackTrace();}
+		}
+		return null;
+	}
+	
 	
 
 }
