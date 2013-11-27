@@ -88,7 +88,7 @@ public class DaoRequestCourse implements DaoTable {
 	@Override
 	public Object selectTableById(int idx) {
 		Connection con = MysqlCon.getConnection();		
-		String sql = "select idx, std_idx, course_code, grade from request_course where course_code = ?";
+		String sql = "select idx, std_idx, course_code, grade from request_course where idx = ?";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		RequestCourse reqCourse = null;
@@ -150,8 +150,8 @@ public class DaoRequestCourse implements DaoTable {
 	public ArrayList<String> selectTableAllListByCode(int code) {
 		Connection con = MysqlCon.getConnection();
 		ArrayList<String> arLists = new ArrayList<>();
-		String sql = "select 과목번호, 과목명 from view_request_infostd_course"
-				+ " where 학생번호 = ?";
+		String sql = "select 번호, 학생명, 과목명 from view_request_infostd_course"
+				+ " where 번호 = ?";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
@@ -159,7 +159,7 @@ public class DaoRequestCourse implements DaoTable {
 			pstmt.setInt(1, code);			
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
-				arLists.add(rs.getInt(1) + ":" + rs.getString(2));
+				arLists.add(rs.getInt(1) + ":" + rs.getString(2)+ ":" + rs.getString(3));
 			}
 		} catch (SQLException e) {			
 			e.printStackTrace();
@@ -168,6 +168,49 @@ public class DaoRequestCourse implements DaoTable {
 		return arLists;		
 	}
 	
+	public Object selectTableByStd_idx(int std_idx) {
+		Connection con = MysqlCon.getConnection();		
+		String sql = "select idx, std_idx, course_code, grade from request_course where std_idx = ?";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		RequestCourse reqCourse = null;
+		try {
+			pstmt = con.prepareStatement(sql);			
+			pstmt.setInt(1, std_idx);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				reqCourse = new RequestCourse(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4));
+			}
+			return reqCourse;
+		} catch (SQLException e) {			
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {pstmt.close();con.close();} catch (SQLException e) {e.printStackTrace();}
+		}		
+	}
+	
+	public Object selectTableByCourse_code(int course_code) {
+		Connection con = MysqlCon.getConnection();		
+		String sql = "select idx, std_idx, course_code, grade from request_course where course_code = ?";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		RequestCourse reqCourse = null;
+		try {
+			pstmt = con.prepareStatement(sql);			
+			pstmt.setInt(1, course_code);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				reqCourse = new RequestCourse(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4));
+			}
+			return reqCourse;
+		} catch (SQLException e) {			
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {pstmt.close();con.close();} catch (SQLException e) {e.printStackTrace();}
+		}		
+	}
 	
 
 	

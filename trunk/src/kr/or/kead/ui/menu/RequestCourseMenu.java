@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import kr.or.kead.domain.Auth;
+import kr.or.kead.domain.Course;
 import kr.or.kead.domain.InfoStudent;
 import kr.or.kead.domain.Professor;
 import kr.or.kead.domain.RequestCourse;
@@ -14,7 +15,6 @@ import kr.or.kead.service.DaoInfoStudent;
 import kr.or.kead.service.DaoProfessor;
 import kr.or.kead.service.DaoRequestCourse;
 import kr.or.kead.ui.MainFrame;
-import kr.or.kead.ui.insert_update.ProfessorInsertUpdate;
 import kr.or.kead.ui.insert_update.RequestCourseInsertUpdate;
 import kr.or.kead.ui.list.AbsTableList;
 import kr.or.kead.ui.list.RequestCourseTableList;
@@ -27,12 +27,14 @@ public class RequestCourseMenu extends AbsMenu {
 	private DaoInfoStudent daoStd;
 	private DaoProfessor daoProf;
 	private RequestCourse reqCourse;
+	private DaoCourse daoCourse;
 	private RequestCourseInsertUpdate insUpdate;
 	
 	public RequestCourseMenu(JFrame frame, int height) {
 		super(frame, "개설 강좌");
 		auth = ((MainFrame)frame).getAuth();
 		daoReqCourse = new DaoRequestCourse();
+		daoCourse = new DaoCourse();
 		daoStd = new DaoInfoStudent();
 		daoProf = new DaoProfessor();
 		level = auth.getLevel();
@@ -64,12 +66,14 @@ public class RequestCourseMenu extends AbsMenu {
 		int res;
 		if(level == 3) {
 			res = searchNum(daoReqCourse, "삭제", 0);
-		}else if(level ==2) {
-			// 수정 수정 수정
+		}else if(level ==2) {		
 			Professor prof = daoProf.selectTableByEmail(auth.getEmail());
-			res = searchNum(daoReqCourse, "삭제", prof.getCode());
+//			Course course = (Course)daoCourse.selectTableByProfCode(prof.getCode());
+//			RequestCourse reqCourse = (RequestCourse)daoReqCourse.selectTableByCourse_code(course.getCode());
+			res = searchNum(daoCourse, "삭제", prof.getCode());
 		}else {
-			InfoStudent std = daoStd.selectTableByEmail(auth.getEmail());			
+			InfoStudent std = daoStd.selectTableByEmail(auth.getEmail());
+//			RequestCourse reqCourse = (RequestCourse)daoReqCourse.selectTableByStd_idx(std.getIdx());
 			res = searchNum(daoStd, "삭제", std.getIdx());			
 		}
 		System.out.println("res = "+ res);
@@ -91,10 +95,12 @@ public class RequestCourseMenu extends AbsMenu {
 			res = searchNum(daoReqCourse, "수정", 0);
 		}else if(level ==2) {		
 			Professor prof = daoProf.selectTableByEmail(auth.getEmail());
-			System.out.println("prof code " + prof.getCode());
+//			Course course = (Course)daoCourse.selectTableByProfCode(prof.getCode());
+//			RequestCourse reqCourse = (RequestCourse)daoReqCourse.selectTableByCourse_code(course.getCode());
 			res = searchNum(daoProf, "수정", prof.getCode());
 		}else {
-			InfoStudent std = daoStd.selectTableByEmail(auth.getEmail());			
+			InfoStudent std = daoStd.selectTableByEmail(auth.getEmail());
+//			RequestCourse reqCourse = (RequestCourse)daoReqCourse.selectTableByStd_idx(std.getIdx());
 			res = searchNum(daoStd, "수정", std.getIdx());			
 		}
 		if(res != -1) {

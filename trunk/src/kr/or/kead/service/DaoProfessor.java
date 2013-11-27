@@ -304,7 +304,7 @@ public class DaoProfessor implements DaoTable {
 	public ArrayList<String> selectTableAllListByCode(int code) {
 		Connection con = MysqlCon.getConnection();
 		ArrayList<String> arLists = new ArrayList<>();
-		String sql = "select v.과목번호, v.과목명 from view_request_infostd_course v, professor p"
+		String sql = "select v.번호, v.과목명, v.학생명 from view_request_infostd_course v, professor p"
 				+ " where v.담당교수 = p.name and p.code = ?";		
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -313,7 +313,7 @@ public class DaoProfessor implements DaoTable {
 			pstmt.setInt(1, code);			
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
-				arLists.add(rs.getInt(1) + ":" + rs.getString(2));
+				arLists.add(rs.getInt(1) + ":" + rs.getString(2)+ ":" + rs.getString(3));
 			}
 		} catch (SQLException e) {			
 			e.printStackTrace();
