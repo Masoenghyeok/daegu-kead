@@ -69,13 +69,13 @@ public class LoginJoin extends JFrame implements ActionListener {
 		lbl_join = new JLabel("회원가입");
 		lbl_join.setForeground(Color.BLUE);
 		lbl_join.setFont(new Font("맑은 고딕", Font.PLAIN, 16));
-		lbl_join.addMouseListener(new mouseAction());
+		lbl_join.addMouseListener(new ClickedJoinPassFind());
 		title_panel.add(lbl_join);
 		
 		lbl_search_passwd = new JLabel("비밀번호 찾기");
 		lbl_search_passwd.setForeground(Color.RED);
 		lbl_search_passwd.setFont(new Font("맑은 고딕", Font.PLAIN, 16));
-		lbl_search_passwd.addMouseListener(new mouseAction());
+		lbl_search_passwd.addMouseListener(new ClickedJoinPassFind());
 		title_panel.add(lbl_search_passwd);
 		
 		center_panel = new JPanel(){
@@ -165,24 +165,28 @@ public class LoginJoin extends JFrame implements ActionListener {
 		return isCorrect;
 	}
 	
-	class mouseAction extends MouseAdapter {		
+	class ClickedJoinPassFind extends MouseAdapter {		
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			if(e.getSource() == lbl_join) {
 				clickedJoin();
 			}else {
-				String searchPass = JOptionPane.showInputDialog(null, "이메일을 입력하세요");
-				if(checkEmail(searchPass)) {
-					String message = daoAuth.selectPasswdByEmail(searchPass);
-					if(message !=null) {
-						JOptionPane.showMessageDialog(null, searchPass + "님의 비밀번호는 \n" +message);
-					}else {
-						JOptionPane.showMessageDialog(null, searchPass + "에 해당하는 아이디가 없습니다.");
-					}
-				}else {
-					JOptionPane.showMessageDialog(null, searchPass + "는 형식이 잘못되었습니다.");
-				}
+				passFind();
 			}			
+			
+		}
+		private void passFind() {
+			String searchPass = JOptionPane.showInputDialog(null, "이메일을 입력하세요");
+			if(checkEmail(searchPass)) {
+				String message = daoAuth.selectPasswdByEmail(searchPass);
+				if(message !=null) {
+					JOptionPane.showMessageDialog(null, searchPass + "님의 비밀번호는 \n" +message);
+				}else {
+					JOptionPane.showMessageDialog(null, searchPass + "에 해당하는 아이디가 없습니다.");
+				}
+			}else {
+				JOptionPane.showMessageDialog(null, searchPass + "는 형식이 잘못되었습니다.");
+			}
 			
 		}
 		private void clickedJoin() {
